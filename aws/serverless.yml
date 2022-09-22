@@ -1,0 +1,26 @@
+service: moments
+
+frameworkVersion: '3'
+
+package:
+  individually: true
+
+custom:
+  webpack:
+    webpackConfig: './webpack.config.js'
+    includeModules:
+      forceExclude:
+        -aws-sdk
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: us-east-1
+
+plugins:
+  - serverless-webpack
+  - '@silvermine/serverless-plugin-cloudfront-lambda-edge'
+
+functions: ${file(serverless-configs/functions.yml)}
+

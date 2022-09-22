@@ -1,0 +1,25 @@
+{
+  "name": "moments",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "aws-start": "serverless offline",
+    "aws-deploy": "serverless deploy",
+    "aws-remove": "serverless remove",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Who-put-that-in-my-drive/Moments.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Who-put-that-in-my-drive/Moments/issues"
+  },
+  "homepage": "https://github.com/Who-put-that-in-my-drive/Moments#readme",
+  "engines": {
+    "node": ">=16.14.2"
+  }
+}
