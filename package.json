@@ -3,10 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
     "aws-start": "serverless offline",
     "aws-deploy": "serverless deploy",
     "aws-remove": "serverless remove",
+    "start-all": "concurrently \"npm start -w server\" \"npm start -w client\"",
+    "start-server": "npm start -w server",
+    "start-client": "npm start -w client",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,5 +28,8 @@
   "homepage": "https://github.com/Who-put-that-in-my-drive/Moments#readme",
   "engines": {
     "node": ">=16.14.2"
+  },
+  "devDependencies": {
+    "concurrently": "^7.4.0"
   }
 }
