@@ -22,5 +22,9 @@ plugins:
   - serverless-webpack
   - '@silvermine/serverless-plugin-cloudfront-lambda-edge'
 
-functions: ${file(serverless-configs/functions.yml)}
-
+functions: ${file(serverless-configs/resources/functions.yml)}
+resources:
+  - ${file(serverless-configs/resources/api-gateway.yml)}
+  - ${file(serverless-configs/resources/cloudfront.yml)}
+  - ${file(serverless-configs/resources/ec2.yml)}
+  - ${file(serverless-configs/resources/s3.yml)}

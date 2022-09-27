@@ -1,0 +1,41 @@
+Resources:
+  #API Default Responses
+  GatewayResponseDefault4XX:
+    Type: AWS::ApiGateway::GatewayResponse
+    Properties:
+      ResponseParameters:
+        gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+        gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+      ResponseType: DEFAULT_4XX
+      RestApiId:
+        Ref: apiGateway
+
+  GatewayResponseDefault5XX:
+    Type: AWS::ApiGateway::GatewayResponse
+    Properties:
+      ResponseParameters:
+        gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+        gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+      ResponseType: DEFAULT_5XX
+      RestApiId:
+        Ref: apiGateway
+
+  ### Rest API Gateway ###
+  apiGateway:
+    Type: "AWS::ApiGateway::RestApi"
+    Properties:
+      Name: !Ref "apiGatewayName"
+      Description: !Ref "apiGatewayDescription"
+
+  ### Provided Default Data ###
+  apiGatewayModel:
+    Type: "AWS::ApiGateway::Model"
+    Properties:
+      ContentType: 'application/json'
+      RestApiId: !Ref "apiGateway"
+      Schema: { }
+
+Parameters:
+  domainHost:
+    Type: "String"
+    Default: "http://ec2-.compute-1.amazonaws.com:5000/api"
