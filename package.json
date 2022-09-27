@@ -3,33 +3,34 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
-  "workspaces": [
-    "client",
-    "server"
-  ],
-  "scripts": {
-    "aws-start": "serverless offline",
-    "aws-deploy": "serverless deploy",
-    "aws-remove": "serverless remove",
-    "start-all": "concurrently \"npm start -w server\" \"npm start -w client\"",
-    "start-server": "npm start -w server",
-    "start-client": "npm start -w client",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "author": "",
+  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Who-put-that-in-my-drive/Moments.git"
   },
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/Who-put-that-in-my-drive/Moments/issues"
   },
   "homepage": "https://github.com/Who-put-that-in-my-drive/Moments#readme",
-  "engines": {
-    "node": ">=16.14.2"
+  "workspaces": [
+    "aws",
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "aws-deploy": "npm deploy -w aws",
+    "aws-remove": "npm remove -w aws",
+    "start-all": "concurrently \"npm start -w server\" \"npm start -w client\"",
+    "start-aws": "npm start -w aws",
+    "start-client": "npm start -w client",
+    "start-server": "npm start -w server",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "concurrently": "^7.4.0"
+  },
+  "engines": {
+    "node": ">=16"
   }
 }
