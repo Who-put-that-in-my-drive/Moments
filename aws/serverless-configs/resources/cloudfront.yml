@@ -56,7 +56,7 @@ Resources:
             CustomOriginConfig:
               OriginProtocolPolicy: match-viewer
           - Id: MomentsServerOrigin
-            DomainName: med48t92s5.execute-api.us-east-1.amazonaws.com
+            DomainName: w87ddloe8i.execute-api.us-east-1.amazonaws.com
             CustomOriginConfig:
               OriginProtocolPolicy: match-viewer
         ViewerCertificate:
