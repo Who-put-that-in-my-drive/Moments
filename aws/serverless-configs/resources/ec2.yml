@@ -6,5 +6,5 @@ Resources:
       DisableApiTermination: true
       ImageId: 'ami-026b57f3c383c2eec'
       InstanceType: 't2.micro'
-      KeyName: 'Genesis2013BK2'
+      KeyName: 'TLGenesis'
       SecurityGroups: [ 'launch-wizard-2' ]
