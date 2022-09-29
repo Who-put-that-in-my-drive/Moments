@@ -3,7 +3,7 @@ import { Container, Heading } from '@chakra-ui/react';
 import { Spinner } from '@chakra-ui/react'
 
 const MainContainer: React.FC = () => {
-  const [message, setMessage] = useState(<Spinner />);
+  const [message, setMessage] = useState('Connecting to server'+ <Spinner />);
   useEffect(()=>{
     fetch('/test')
     .then(res => res.json())
