@@ -3,11 +3,15 @@ import { Container, Heading } from '@chakra-ui/react';
 import { Spinner } from '@chakra-ui/react'
 
 const MainContainer: React.FC = () => {
-  const [message, setMessage] = useState('Connecting to server'+ <Spinner />);
+
+
+  const [message, setMessage] = useState('Connecting to server...');
+  const [spinnerDisplay, setSpinnerDisplay] = useState(true)
   useEffect(()=>{
     fetch('/test')
     .then(res => res.json())
-    .then(data => { setMessage(data.data)})
+    .then(data => { setMessage(data.data); setSpinnerDisplay(false)})
+    .catch(error => console.log(error))
   }, []);
 
   return(
@@ -16,7 +20,8 @@ const MainContainer: React.FC = () => {
     <Heading as='h1' size='xl' noOfLines={1}>
     Hello from Moments team!
     </Heading>
-      <h2>{message}</h2> 
+      <h2>{message}
+      <Spinner size="sm" hidden={!spinnerDisplay} /></h2> 
     </div>
     </Container>
  )
