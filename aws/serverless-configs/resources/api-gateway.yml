@@ -27,6 +27,37 @@ Resources:
       Name: !Ref "apiGatewayName"
       Description: !Ref "apiGatewayDescription"
 
+  ### Service Resources ###
+  apiGatewayTestResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGateway.RootResourceId"
+      PathPart: 'test'
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayTestMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "GET"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/test' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayTestResource"
+      RestApiId: !Ref "apiGateway"
+
   ### Provided Default Data ###
   apiGatewayModel:
     Type: "AWS::ApiGateway::Model"
@@ -35,7 +66,13 @@ Resources:
       RestApiId: !Ref "apiGateway"
       Schema: { }
 
+  apiGatewayDeployment:
+    Type: "AWS::ApiGateway::Deployment"
+    DependsOn: "apiGatewayTestMethod"
+    Properties:
+      RestApiId: !Ref "apiGateway"
+
 Parameters:
   domainHost:
     Type: "String"
-    Default: "http://ec2-.compute-1.amazonaws.com:5000/api"
+    Default: "http://ec2-3-93-63-205.compute-1.amazonaws.com:5000/api"
