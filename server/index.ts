@@ -29,6 +29,7 @@ const resolvers = {
 
 async function startApolloServer(typeDefs: any, resolvers: any) {
     const app = express();
+    const port = process.env.port || 4000;
     const httpServer = http.createServer(app);
     const server = new ApolloServer({
         typeDefs,
@@ -40,10 +41,13 @@ async function startApolloServer(typeDefs: any, resolvers: any) {
             ApolloServerPluginLandingPageLocalDefault({ embed: true }),
         ],
     });
+    app.get('/test', (req, res)=> {
+        res.send({data: `Connected to the server @ port ${port}`})
+    })
     await server.start();
     server.applyMiddleware({ app });
-    await new Promise<void>(resolve => httpServer.listen({ port: 4000 }, resolve));
-    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+    await new Promise<void>(resolve => httpServer.listen({ port: port }, resolve));
+    console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`);
 }
 
 startApolloServer(typeDefs, resolvers);
