@@ -1,6 +1,6 @@
 Resources:
   ### S3 Bucket ###
-  videosS3Bucket:
+  galleryS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: moments-gallery
