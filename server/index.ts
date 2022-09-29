@@ -41,7 +41,7 @@ async function startApolloServer(typeDefs: any, resolvers: any) {
             ApolloServerPluginLandingPageLocalDefault({ embed: true }),
         ],
     });
-    app.get('/test', (req, res)=> {
+    app.get('/api/test', (req, res)=> {
         res.send({data: `Connected to the server @ port ${port}`})
     })
     await server.start();
