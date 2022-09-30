@@ -19,6 +19,7 @@ client/coverage
 
 # production
 client/build
+client/.env*
 
 # misc
 .serverless
