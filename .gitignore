@@ -45,3 +45,4 @@ server/yarn-debug.log*
 server/yarn-error.log*
 
 .env
+*.pem

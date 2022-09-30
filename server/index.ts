@@ -30,7 +30,7 @@ const resolvers = {
 
 async function startApolloServer(typeDefs: any, resolvers: any) {
     const app = express();
-    const port = process.env.port || 4000;
+    const port = process.env.port || 5000;
     const httpServer = http.createServer(app);
     const server = new ApolloServer({
         typeDefs,
