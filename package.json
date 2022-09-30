@@ -21,6 +21,7 @@
   "scripts": {
     "aws-deploy": "npm run deploy -w aws",
     "aws-remove": "npm run remove -w aws",
+    "server-deploy": "npm run deploy -w server",
     "start-all": "concurrently \"npm start -w server\" \"npm start -w client\"",
     "start-aws": "npm start -w aws",
     "start-client": "npm start -w client",
