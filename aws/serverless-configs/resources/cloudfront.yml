@@ -4,6 +4,8 @@ Resources:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
+        Aliases:
+          - momentsimagegallery.site
         CacheBehaviors:
           - PathPattern: 'api/*'
             AllowedMethods:
@@ -52,7 +54,7 @@ Resources:
         PriceClass: PriceClass_100
         Origins:
           - Id: MomentsDomainOrigin
-            DomainName: moments-image-gallery.netlify.app
+            DomainName: momentsimagegallery.site
             CustomOriginConfig:
               OriginProtocolPolicy: match-viewer
           - Id: MomentsServerOrigin
@@ -60,7 +62,9 @@ Resources:
             CustomOriginConfig:
               OriginProtocolPolicy: match-viewer
         ViewerCertificate:
-          CloudFrontDefaultCertificate: true
+          AcmCertificateArn: arn:aws:acm:us-east-1:820184071950:certificate/e2e8cefe-a56e-46f7-83ec-b512943885d2
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: 'TLSv1.2_2021'
 
 Parameters:
   apiGatewayName:
