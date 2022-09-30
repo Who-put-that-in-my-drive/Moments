@@ -8,7 +8,7 @@ const MainContainer: React.FC = () => {
   const [message, setMessage] = useState('Connecting to server...');
   const [spinnerDisplay, setSpinnerDisplay] = useState(true)
   useEffect(()=>{
-    fetch('/test')
+    fetch('/api/test')
     .then(res => res.json())
     .then(data => { setMessage(data.data); setSpinnerDisplay(false)})
     .catch(error => console.log(error.message))
