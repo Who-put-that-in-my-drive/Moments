@@ -5,6 +5,7 @@ import {
 } from 'apollo-server-core';
 import express from 'express';
 import http from 'http';
+import cors from 'cors';
 
 const typeDefs = gql`
     type User {
@@ -41,9 +42,15 @@ async function startApolloServer(typeDefs: any, resolvers: any) {
             ApolloServerPluginLandingPageLocalDefault({ embed: true }),
         ],
     });
+    app.use(
+        cors({
+            origin: "*",
+            credentials: true
+        })
+    );
     app.get('/api/test', (req, res)=> {
         res.send({data: `Connected to the server @ port ${port}`})
-    })
+    });
     await server.start();
     server.applyMiddleware({ app });
     await new Promise<void>(resolve => httpServer.listen({ port: port }, resolve));
