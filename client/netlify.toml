@@ -13,7 +13,7 @@ compress = true
 
 [[redirects]]
 from = "/api/*"
-to = "https://d1y3prq37qnoyl.cloudfront.net/api/:splat"
+to = "https://d3on1zqpuckm19.cloudfront.net/api/:splat"
 status = 200
 force = true
 headers = { X-From = "Netlify" }
