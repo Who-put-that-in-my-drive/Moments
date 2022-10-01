@@ -29,3 +29,8 @@ npm start -w client
 ```sh
 npm start -w server
 ```
+
+### To run cloud services ONLY
+```sh
+npm start -w aws
+```

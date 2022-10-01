@@ -1,7 +1,5 @@
 # AWS Cloud Services
 
-*Complete Netlify Setup Before Working With AWS*
-
 ## Pre-requisites 
 ### GoDaddy
 #### Receiving domain
