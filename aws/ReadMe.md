@@ -1,4 +1,4 @@
-# AWS Cloud Services
+# Cloud Services
 
 ## Pre-requisites 
 ### GoDaddy
@@ -18,7 +18,7 @@
 6. Set the build command to be `react-scripts build`
 7. Set the publish directory as `/client/build`
 
-## Cloud Services
+## AWS Cloud Services
 ### 1. Route53
 #### Connecting domain from GoDaddy to AWS
 1. Navigate to Route53
@@ -50,4 +50,57 @@
 
 ### 4. Cloudformation 
 Once the yml files for the AWS resources are ready, ensure to deploy the resources using the `serverless deploy` or `npm run deploy`.
-This will create the Cloudformation/Stack of all of the resources to be used.
+This will create the Cloudformation/Stack for all the resources to be used.
+
+## Creating new API route
+### Covers providing a new route in api-gateway for the API to become available
+*Remember to do the following*
+- Consider tab indents
+- Give block properties unique names (e.g apiGatewayTestResource, apiGatewayTestMethod)
+
+These properties refer to the `serverless-configs/resources/api-gateway.yml` file.
+
+Example Resource: 
+```  
+  apiGatewayTestResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGateway.RootResourceId"
+      PathPart: 'test'
+      RestApiId: !Ref "apiGateway"
+```
+The properties which are most commonly changed for methods are:
+- PathPart (eg. test, login, register,)
+
+Also requires:
+```
+  apiGatewayTestMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "GET"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/test' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayTestResource"
+      RestApiId: !Ref "apiGateway"
+```
+The properties which are most commonly changed for methods are:
+- HttpMethod (eg. GET, POST, PUT)
+- Uri (eg. /test, /login, /register)
+- ResourceId (refers to corresponding resource)
+
+After you have completed adding this to the correct file, run `serverless deploy`.
+Following this make sure to deploy the new APIs by deploying the resources under API Gateway in the AWS console.
