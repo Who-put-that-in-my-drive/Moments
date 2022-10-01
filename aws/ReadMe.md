@@ -41,12 +41,24 @@
 4. Enter the name of the site, in this case `momentsimagegallery.site` and click `Request`
 5. Once the status changes to *Issued* you may proceed
 
-### 3. EC2 Key Pair
+### 3. EC2
 #### Set up credentials to use for the EC2 instance
 1. Navigate to EC2 > Key Pairs
 2. Click `Create key pair`
 3. Give a name for the credentials (you will use this for the ec2 cloudformation template)
 4. Continue with the default and click `Create key pair`
+
+#### Create security group for the EC2 instance
+1. Navigate to EC2 > Security Group
+2. Click `Create security group`
+3. Give this group a name and description (you will use this group for the ec2 cloudformation template)
+4. For inbound rules, click `Add Rule` and add the following:
+
+These allow the server to accept incoming requests to a designated port, we will use port `5000` in this case:
+- Protocol: TCP, Port range: 5000, Source: ::/0
+- Protocol: TCP, Port range: 5000, Source: 0.0.0.0/0
+
+5. Finish off by clicking `Create Security Group`
 
 ### 4. Cloudformation 
 Once the yml files for the AWS resources are ready, ensure to deploy the resources using the `serverless deploy` or `npm run deploy`.
