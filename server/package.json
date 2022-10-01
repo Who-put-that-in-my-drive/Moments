@@ -4,7 +4,6 @@
   "main": "index.ts",
   "scripts": {
     "start": "nodemon index.ts",
-    "deploy": "sh deploy.md",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
