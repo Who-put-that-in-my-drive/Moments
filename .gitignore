@@ -5,12 +5,15 @@
 .vscode
 
 # dependencies
+package-lock.json
 /node_modules
 aws/node_modules
 client/node_modules
+client/package-lock.json
 client/.pnp
 client/.pnp.js
 server/node_modules
+server/package-lock.json
 server/.pnp
 server/.pnp.js
 
