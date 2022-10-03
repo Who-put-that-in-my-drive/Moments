@@ -28,7 +28,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "concurrently": "^7.4.0"
+    "concurrently": "^7.4.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-sort-keys-fix": "^1.1.2",
+    "simple-git-hooks": "^2.8.0"
   },
   "engines": {
     "node": ">=16"

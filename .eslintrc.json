@@ -49,6 +49,7 @@
       "error",
       "always"
     ],
+    "sort-keys-fix/sort-keys-fix": "warn",
     "@typescript-eslint/no-unused-vars": 0
   }
 }
