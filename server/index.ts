@@ -1,61 +1,17 @@
-import { ApolloServer, gql } from 'apollo-server-express';
-import {
-    ApolloServerPluginDrainHttpServer,
-    ApolloServerPluginLandingPageLocalDefault,
-} from 'apollo-server-core';
-import express from 'express';
-import http from 'http';
-import cors from 'cors';
+import express from "express";
+import cors from "cors";
 
-const typeDefs = gql`
-    type User {
-        name: String
-    },
-    type Query {
-        users: [User]
-    }
-`;
+import dotenv from "dotenv";
 
-const users = [
-    {
-        name: "Joe"
-    }
-]
+dotenv.config();
+const app = express();
+app.use(cors);
+const port = process.env.PORT || 8080;
 
-const resolvers = {
-    Query: {
-        users: () => users,
-    }
-}
+app.get("/api/test", (req, res) => {
+  res.send("This is a test response!");
+});
 
-async function startApolloServer(typeDefs: any, resolvers: any) {
-    const app = express();
-    const port = process.env.port || 5000;
-    const httpServer = http.createServer(app);
-    const server = new ApolloServer({
-        typeDefs,
-        resolvers,
-        csrfPrevention: true,
-        cache: 'bounded',
-        plugins: [
-            ApolloServerPluginDrainHttpServer({ httpServer }),
-            ApolloServerPluginLandingPageLocalDefault({ embed: true }),
-        ],
-    });
-    app.use(
-        cors({
-            origin: "*",
-            credentials: true
-        })
-    );
-    app.get('/api/test', (req, res)=> {
-        res.send({data: `Connected to the server @ port ${port}`})
-    });
-    await server.start();
-    server.applyMiddleware({ app });
-    await new Promise<void>(resolve => httpServer.listen({ port: port }, resolve));
-    console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`);
-}
-
-startApolloServer(typeDefs, resolvers);
-
+app.listen(port, () => {
+  console.log("server started and binded to port successfully");
+});

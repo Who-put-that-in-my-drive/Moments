@@ -3,7 +3,7 @@ Resources:
   ec2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      DisableApiTermination: true
+      DisableApiTermination: false
       ImageId: 'ami-026b57f3c383c2eec'
       InstanceType: 't2.micro'
       KeyName: 'TLGenesis'
