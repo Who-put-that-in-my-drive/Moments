@@ -1,5 +1,10 @@
 # Moments
 
+### To add git hooks
+```sh
+npx simple-git-hooks
+```
+
 ### To install packages -- this will install all packages for front-end and back-end
 ```sh
 npm install
