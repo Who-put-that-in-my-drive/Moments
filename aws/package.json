@@ -6,9 +6,7 @@
   "scripts": {
     "start": "serverless offline",
     "deploy": "serverless deploy",
-    "remove": "serverless remove",
-    "lint": "tslint src/**/*.ts{,x}",
-    "lint:fix": "tslint src/**/*.ts{,x} --fix"
+    "remove": "serverless remove"
   },
   "devDependencies": {
     "@silvermine/serverless-plugin-cloudfront-lambda-edge": "2.2.3",

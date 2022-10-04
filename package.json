@@ -21,6 +21,10 @@
   "scripts": {
     "aws-deploy": "npm run deploy -w aws",
     "aws-remove": "npm run remove -w aws",
+    "install-git-hooks": "npx simple-git-hooks",
+    "lint": "npm run lint-client && npm run lint-server",
+    "lint-client": "npm run lint:fix -w client",
+    "lint-server": "npm run lint:fix -w server",
     "start-all": "concurrently \"npm start -w server\" \"npm start -w client\"",
     "start-aws": "npm start -w aws",
     "start-client": "npm start -w client",
@@ -28,7 +32,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "concurrently": "^7.4.0"
+    "@babel/preset-env": "^7.19.3",
+    "concurrently": "^7.4.0",
+    "eslint-import-resolver-typescript": "^3.5.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-sort-keys-fix": "^1.1.2",
+    "lint-staged": "^13.0.3",
+    "simple-git-hooks": "^2.8.0"
   },
   "engines": {
     "node": ">=16"
