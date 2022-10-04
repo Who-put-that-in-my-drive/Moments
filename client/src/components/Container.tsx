@@ -16,7 +16,7 @@ const MainContainer: React.FC = () => {
                 setSpinnerDisplay(false);
             })
             .catch(error => console.log(error.message));
-    },[]);
+    },[]); 
 
     return(
         <Container>
