@@ -19,6 +19,10 @@ sudo cp /usr/bin/7za /usr/bin/7z
 
 ## Deploying server to EC2 instance
 
+### Building the express server
+
+Run the build command from the root of the project, `npm run build-server`.
+
 ### Receive credentials
 A credentials .pem file is required to ssh into the ec2 instance. Please place the .pem file you have received into the `prod` folder (the current directory this README.md file is in).
 
