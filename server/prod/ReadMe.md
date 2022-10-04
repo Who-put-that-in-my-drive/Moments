@@ -35,5 +35,10 @@ ssh -i "TLGenesis.pem" ec2-user@ec2-174-129-50-55.compute-1.amazonaws.com
 ### Deploy the server
 Now ssh into the ec2 instance by using your IDE's console and run the following one-liner:
 ```
-fuser -k 5000/tcp && npm i && screen npm run start > output.log &
+fuser -k 5000/tcp
 ```
+then
+```
+npm i && screen npm run start > output.log &
+```
+then you can hit enter and that's all!
