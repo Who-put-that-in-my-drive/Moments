@@ -51,3 +51,4 @@ server/yarn-error.log*
 .env
 *.pem
 *.cer
+*.zip
