@@ -12,6 +12,9 @@ curl -sL https://rpm.nodesource.com/setup_16.x | sudo bash
 then enter the following ...
 ```
 sudo yum -y install gcc-c++ make nodejs
+sudo amazon-linux-extras install epel
+sudo yum install p7zip -y
+sudo cp /usr/bin/7za /usr/bin/7z
 ```
 
 ## Deploying server to EC2 instance
@@ -19,13 +22,8 @@ sudo yum -y install gcc-c++ make nodejs
 ### Receive credentials
 A credentials .pem file is required to ssh into the ec2 instance. Please place the .pem file you have received into the `prod` folder (the current directory this README.md file is in).
 
-### Prepare the server start-up
-Files which need to be transferred to the server are the following:
-- index.ts
-- package.json
-- tsconfig.json
-
-In order to complete this step, please run the `prepare.sh` bash script
+## Transferring the server to the instance
+In order to complete this step, please run the `prepare.sh` bash script in the `prod` folder.
 
 ## SSH into the ec2 instance
 ```
@@ -35,9 +33,15 @@ ssh -i "TLGenesis.pem" ec2-user@ec2-174-129-50-55.compute-1.amazonaws.com
 ### Deploy the server
 Now ssh into the ec2 instance by using your IDE's console and run the following one-liner:
 ```
+rm -r *
+7z x prod.zip
+cd dist
+```
+continuing on...
+```
 fuser -k 5000/tcp
 ```
-then
+then...
 ```
 npm i && screen npm run start > output.log &
 ```

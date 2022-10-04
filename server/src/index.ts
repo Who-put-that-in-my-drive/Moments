@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
@@ -9,13 +9,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 const port = process.env.PORT || 5000;
 
-
 app.use(cors({
     credentials: true,
     origin:'*'
 }));
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
     res.send({message:'Server Online!'});
 });
 

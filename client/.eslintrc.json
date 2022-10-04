@@ -5,7 +5,9 @@
   "parserOptions": {
     "ecmaVersion": 2021,
     "ecmaFeatures": {
-      "jsx": true
+      "experimentalObjectRestSpread": true,
+      "jsx": true,
+      "modules": true
     },
     "sourceType": "module",
     "requireConfigFile": false,
@@ -28,11 +30,14 @@
   ],
 
   "rules": {
+    "no-unused-vars": "warn",
+    "react/display-name": "warn",
     "react/jsx-no-bind": ["error", {
       "allowArrowFunctions": true,
       "allowBind": false,
       "ignoreRefs": true
     }],
+    "react/jsx-uses-vars": "warn",
     "react/no-did-update-set-state": "error",
     "react/no-unknown-property": "error",
     "react/no-unused-prop-types": "error",
