@@ -19,6 +19,11 @@
   },
 
   "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    },
     "react": {
       "version": "detect"
     }
@@ -42,6 +47,7 @@
     "react/no-unknown-property": "error",
     "react/no-unused-prop-types": "error",
     "react/prop-types": "error",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "sort-keys-fix/sort-keys-fix": "warn"
   }
 }

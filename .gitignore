@@ -22,7 +22,6 @@ client/coverage
 
 # production
 client/build
-client/.env*
 server/dist
 
 # misc
@@ -48,7 +47,6 @@ server/npm-debug.log*
 server/yarn-debug.log*
 server/yarn-error.log*
 
-.env
 *.pem
 *.cer
 *.zip
