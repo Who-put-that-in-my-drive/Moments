@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
     res.send({message:'Server Online!'});
 });
 
-app.use('/api', require('./routes/index'));
+app.use('/api', require('./routes'));
 
 app.listen(port, () => {
     console.log(`Server started and bound to port ${port} successfully...🚀`);
