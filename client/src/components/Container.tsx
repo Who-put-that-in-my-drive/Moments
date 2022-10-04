@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container, Heading , Spinner } from '@chakra-ui/react';
-
 import axios from 'axios';
 
 const MainContainer: React.FC = () => {
@@ -12,17 +11,18 @@ const MainContainer: React.FC = () => {
         axios.get(`${URL}/api/test`)
             .then(res =>{
                 const message = res.data;
-                setMessage(message.data);
+                console.log(message);
+                setMessage(message.message);
                 setSpinnerDisplay(false);
             })
             .catch(error => console.log(error.message));
-    });
+    },[]);
 
     return(
         <Container>
             <div>
                 <Heading as='h1' size='xl' noOfLines={1}>
-    Hello from Moments team!
+                  Hello from Moments team!
                 </Heading >
                 <Heading size='md'>{message}
                     <Spinner size="md" hidden={!spinnerDisplay} /></Heading>
