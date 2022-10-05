@@ -1,0 +1,78 @@
+Resources:
+  #API Default Responses
+  GatewayResponseDefault4XX:
+    Type: AWS::ApiGateway::GatewayResponse
+    Properties:
+      ResponseParameters:
+        gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+        gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+      ResponseType: DEFAULT_4XX
+      RestApiId:
+        Ref: apiGateway
+
+  GatewayResponseDefault5XX:
+    Type: AWS::ApiGateway::GatewayResponse
+    Properties:
+      ResponseParameters:
+        gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+        gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+      ResponseType: DEFAULT_5XX
+      RestApiId:
+        Ref: apiGateway
+
+  ### Rest API Gateway ###
+  apiGateway:
+    Type: "AWS::ApiGateway::RestApi"
+    Properties:
+      Name: !Ref "apiGatewayName"
+      Description: !Ref "apiGatewayDescription"
+
+  ### Service Resources ###
+  apiGatewayLoginResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGateway.RootResourceId"
+      PathPart: 'login'
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayLoginMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "GET"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/login' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayTestResource"
+      RestApiId: !Ref "apiGateway"
+
+  ### Provided Default Data ###
+  apiGatewayModel:
+    Type: "AWS::ApiGateway::Model"
+    Properties:
+      ContentType: 'application/json'
+      RestApiId: !Ref "apiGateway"
+      Schema: { }
+
+  apiGatewayDeployment:
+    Type: "AWS::ApiGateway::Deployment"
+    DependsOn: "apiGatewayTestMethod"
+    Properties:
+      RestApiId: !Ref "apiGateway"
+
+Parameters:
+  domainHost:
+    Type: "String"
+    Default: "http://ec2-174-129-50-55.compute-1.amazonaws.com:5000/api"
