@@ -10,14 +10,16 @@ import {
     Link,
     Image,
     Box,
-    Center
+    Center,
+    Text
 } from '@chakra-ui/react';
 import logo from '../assets/images/logo.png';
+import { Link as ReactLink } from 'react-router-dom';
 
 export default function Login() {
     return (
         <Center height={'100vh'}>
-            <Box maxW={'90vw'} borderWidth='1px' borderRadius='lg' boxShadow='lg' >
+            <Box maxW={'90vw'} borderWidth='1px' borderRadius='lg' boxShadow='xl' >
                 <Stack justify={'center'} direction={{ base: 'column', md: 'row' }} >
                     <Flex flex={1}>
                         <Image
@@ -38,7 +40,7 @@ export default function Login() {
                                 <FormLabel>Password</FormLabel>
                                 <Input type="password" />
                             </FormControl>
-                            <Stack spacing={6}>
+                            <Stack spacing={10}>
                                 <Stack
                                     direction={{ base: 'column', sm: 'row' }}
                                     align={'start'}
@@ -46,10 +48,13 @@ export default function Login() {
                                     <Checkbox>Remember me</Checkbox>
                                     <Link color={'blue.500'}>Forgot password?</Link>
                                 </Stack>
-
                                 <Button type='submit' colorScheme={'blue'} variant={'solid'}>
                                     Sign in
                                 </Button>
+                                <Text
+                                    paddingBottom={'1rem'}
+                                    textAlign={'center'}
+                                    fontSize='md'>Don’t have an account? <Link color={'blue.500'} as={ReactLink} to='/register'>Sign Up</Link></Text>
                             </Stack>
                         </Stack>
                     </Flex>
