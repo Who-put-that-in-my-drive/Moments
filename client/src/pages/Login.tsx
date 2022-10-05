@@ -11,15 +11,17 @@ import {
     Image,
     Box,
     Center,
-    Text
+    Text,
+    useColorMode
 } from '@chakra-ui/react';
 import logo from '../assets/images/logo.png';
 import { Link as ReactLink } from 'react-router-dom';
 
 export default function Login() {
+    const { colorMode, toggleColorMode } = useColorMode();
     return (
         <Center height={'100vh'}>
-            <Box maxW={'90vw'} borderWidth='1px' borderRadius='lg' boxShadow='xl' >
+            <Box maxW={'90vw'} borderRadius='lg' boxShadow='2xl' >
                 <Stack justify={'center'} direction={{ base: 'column', md: 'row' }} >
                     <Flex flex={1}>
                         <Image
@@ -48,8 +50,9 @@ export default function Login() {
                                     <Checkbox>Remember me</Checkbox>
                                     <Link color={'blue.500'}>Forgot password?</Link>
                                 </Stack>
-                                <Button type='submit' colorScheme={'blue'} variant={'solid'}>
+                                <Button onClick={toggleColorMode} type='submit' colorScheme={'blue'} variant={'solid'}>
                                     Sign in
+                                    {colorMode}
                                 </Button>
                                 <Text
                                     paddingBottom={'1rem'}
