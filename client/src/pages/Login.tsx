@@ -53,7 +53,7 @@ export default function Login() {
                                 </Stack>
                                 <Center>
                                     <Button shadow={'xl'} width={'80%'} type='submit' colorScheme={'blue'} variant={'solid'}>
-                                        Create account
+                                        Sign in
                                     </Button>
                                 </Center>
                                 <Text
