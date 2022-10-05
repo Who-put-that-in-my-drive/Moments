@@ -11,7 +11,7 @@ function App() {
     const { colorMode, toggleColorMode } = useColorMode();
     return (
         <>
-            <Button onClick={toggleColorMode}>Toggle {colorMode}</Button>
+            <Button position={'absolute'} onClick={toggleColorMode}>Toggle {colorMode} theme</Button>
             <Router>
                 <Routes>
                     <Route path='/' element={<Navigate replace to='/login' />} />

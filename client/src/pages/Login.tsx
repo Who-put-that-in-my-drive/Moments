@@ -18,14 +18,14 @@ import logo from '../assets/images/logo_transparent.png';
 import { Link as ReactLink } from 'react-router-dom';
 
 export default function Login() {
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode } = useColorMode();
     return (
         <Center height={'100vh'}>
             <Box maxW={'90vw'} borderRadius='lg' boxShadow='2xl'  >
                 <Stack justify={'center'} direction={{ base: 'column', md: 'row' }} >
                     <Flex flex={1}>
                         <Image
-                            bg={colorMode === 'light' ? 'gray.900' : 'gray.100'}
+                            bg={colorMode === 'light' ? 'gray.700' : 'gray.100'}
                             borderLeftRadius='lg'
                             alt={'Login Image'}
                             objectFit={'cover'}
@@ -35,13 +35,13 @@ export default function Login() {
                     <Flex p={8} flex={1} align={'center'} justify={'center'}>
                         <Stack spacing={4} w={'full'} maxW={'md'}>
                             <Heading marginY={'2rem'} textAlign={'center'} fontSize={'4xl'}>Sign in to Moments</Heading>
-                            <FormControl margin={'1rem'} id="email">
+                            <FormControl margin={'1rem'} id="email" isRequired>
                                 <FormLabel>Email</FormLabel>
-                                <Input type="email" />
+                                <Input shadow={'md'} type="email" />
                             </FormControl>
-                            <FormControl id="password">
+                            <FormControl id="password" isRequired>
                                 <FormLabel>Password</FormLabel>
-                                <Input type="password" />
+                                <Input shadow={'md'} type="password" />
                             </FormControl>
                             <Stack spacing={10}>
                                 <Stack
@@ -51,10 +51,11 @@ export default function Login() {
                                     <Checkbox>Remember me</Checkbox>
                                     <Link color={'blue.500'}>Forgot password?</Link>
                                 </Stack>
-                                <Button onClick={toggleColorMode} type='submit' colorScheme={'blue'} variant={'solid'}>
-                                    Sign in
-                                    {colorMode}
-                                </Button>
+                                <Center>
+                                    <Button shadow={'xl'} width={'80%'} type='submit' colorScheme={'blue'} variant={'solid'}>
+                                        Create account
+                                    </Button>
+                                </Center>
                                 <Text
                                     paddingBottom={'1rem'}
                                     textAlign={'center'}
