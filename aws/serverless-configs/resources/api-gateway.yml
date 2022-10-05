@@ -28,14 +28,14 @@ Resources:
       Description: !Ref "apiGatewayDescription"
 
   ### Service Resources ###
-  apiGatewayTestResource:
+  apiGatewayLoginResource:
     Type: "AWS::ApiGateway::Resource"
     Properties:
       ParentId: !GetAtt "apiGateway.RootResourceId"
-      PathPart: 'test'
+      PathPart: 'login'
       RestApiId: !Ref "apiGateway"
 
-  apiGatewayTestMethod:
+  apiGatewayLoginMethod:
     Type: "AWS::ApiGateway::Method"
     Properties:
       ApiKeyRequired: false
@@ -53,7 +53,7 @@ Resources:
             {"statusCode": 200}
         Type: "HTTP_PROXY"
         IntegrationHttpMethod: "ANY"
-        Uri: !Join [ '', [ !Ref domainHost, '/test' ] ]
+        Uri: !Join [ '', [ !Ref domainHost, '/login' ] ]
         TimeoutInMillis: 29000
       ResourceId: !Ref "apiGatewayTestResource"
       RestApiId: !Ref "apiGateway"

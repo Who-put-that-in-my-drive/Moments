@@ -82,7 +82,7 @@ Example Resource:
       RestApiId: !Ref "apiGateway"
 ```
 The properties which are most commonly changed for methods are:
-- PathPart (eg. test, login, register,)
+- PathPart (eg. test, login, register, etc...)
 
 Also requires:
 ```
