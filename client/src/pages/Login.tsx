@@ -14,17 +14,18 @@ import {
     Text,
     useColorMode
 } from '@chakra-ui/react';
-import logo from '../assets/images/logo.png';
+import logo from '../assets/images/logo_transparent.png';
 import { Link as ReactLink } from 'react-router-dom';
 
 export default function Login() {
     const { colorMode, toggleColorMode } = useColorMode();
     return (
         <Center height={'100vh'}>
-            <Box maxW={'90vw'} borderRadius='lg' boxShadow='2xl' >
+            <Box maxW={'90vw'} borderRadius='lg' boxShadow='2xl'  >
                 <Stack justify={'center'} direction={{ base: 'column', md: 'row' }} >
                     <Flex flex={1}>
                         <Image
+                            bg={colorMode === 'light' ? 'gray.900' : 'gray.100'}
                             borderLeftRadius='lg'
                             alt={'Login Image'}
                             objectFit={'cover'}
