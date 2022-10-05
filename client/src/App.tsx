@@ -8,19 +8,17 @@ import Register from './pages/Register';
 
 
 function App() {
+
     return (
         <ChakraProvider>
             <Router>
                 <Routes>
+                    <Route path='/' element={<Navigate replace to='/login' />} />
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />
-                    <Route path='/' element={<Navigate replace to='/login' />} />
                 </Routes>
-                <div className="App">
-                    {/* <Container /> */}
-                </div>
             </Router>
-        </ChakraProvider>
+        </ChakraProvider >
     );
 }
 
