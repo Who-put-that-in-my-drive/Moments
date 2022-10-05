@@ -15,9 +15,34 @@ import {
 } from '@chakra-ui/react';
 import logo from '../assets/images/logo_transparent.png';
 import { Link as ReactLink } from 'react-router-dom';
+import { useState } from 'react';
+
+const initialFormData = Object.freeze({
+    email: '',
+    password: '',
+    username: ''
+});
 
 export default function Register() {
     const { colorMode } = useColorMode();
+
+    const [formData, updateFormData] = useState(initialFormData);
+
+    const handleFormChange = (e: any) => {
+        updateFormData({
+            ...formData,
+            // Trimming any whitespace
+            [e.target.id]: e.target.value.trim()
+        });
+    };
+
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        console.log(formData);
+        // ... submit to API or something
+    };
+
+
     return (
         <Center height={'100vh'}>
             <Box maxW={'90vw'} borderRadius='lg' boxShadow='2xl'  >
@@ -39,15 +64,15 @@ export default function Register() {
                                 fontSize='md'>Existing user? <Link color={'blue.500'} as={ReactLink} to='/login'>Log in!</Link></Text>
                             <FormControl margin={'1rem'} id="username" isRequired>
                                 <FormLabel>Username</FormLabel>
-                                <Input shadow={'md'} type="username" />
+                                <Input onChange={handleFormChange} shadow={'md'} type="username" />
                             </FormControl>
                             <FormControl margin={'1rem'} id="email" isRequired>
                                 <FormLabel>Email</FormLabel>
-                                <Input shadow={'md'} type="email" />
+                                <Input onChange={handleFormChange} shadow={'md'} type="email" />
                             </FormControl>
                             <FormControl id="password" isRequired>
                                 <FormLabel>Password</FormLabel>
-                                <Input shadow={'md'} type="password" />
+                                <Input onChange={handleFormChange} shadow={'md'} type="password" />
                             </FormControl>
                             <FormControl id="password-reenter" isRequired>
                                 <FormLabel>Re-enter Password</FormLabel>
@@ -55,7 +80,7 @@ export default function Register() {
                             </FormControl>
                             <Stack textAlign={'center'} paddingY={'2rem'} spacing={10}>
                                 <Center>
-                                    <Button shadow={'xl'} width={'80%'} type='submit' colorScheme={'blue'} variant={'solid'}>
+                                    <Button onClick={handleSubmit} shadow={'xl'} width={'80%'} type='submit' colorScheme={'blue'} variant={'solid'}>
                                         Create account
                                     </Button>
                                 </Center>
