@@ -31,7 +31,7 @@ In order to complete this step, please run the `prepare.sh` bash script in the `
 
 ## SSH into the ec2 instance
 ```
-ssh -i "TLGenesis.pem" ec2-user@ec2-174-129-50-55.compute-1.amazonaws.com
+ssh -i "TLGenesis.pem" ec2-user@ec2-54-235-34-39.compute-1.amazonaws.com
 ```
 
 ### Deploy the server

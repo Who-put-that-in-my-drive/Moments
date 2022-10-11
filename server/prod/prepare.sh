@@ -6,5 +6,5 @@ then
 else
   zip prod.zip "../dist"
 fi
-scp -i "TLGenesis.pem" -r "prod.zip" ec2-user@ec2-174-129-50-55.compute-1.amazonaws.com:/home/ec2-user
+scp -i "TLGenesis.pem" -r "prod.zip" ec2-user@ec2-54-235-34-39.compute-1.amazonaws.com:/home/ec2-user
 exec bash
