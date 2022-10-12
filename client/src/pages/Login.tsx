@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import logo from '../assets/images/logo_transparent.png';
 import { Link as ReactLink } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const initialFormData = Object.freeze({
     email: '',
@@ -26,14 +26,48 @@ const initialFormData = Object.freeze({
 export default function Login() {
     const { colorMode } = useColorMode();
 
-    const [formData, updateFormData] = useState(initialFormData);
+    const [isInvalidEmail, setIsInvalidEmail] = useState(true);
+    const [isInvalidPassword, setIsInvalidPassword] = useState(true);
+    const [isTouchedEmail, setIsTouchedEmail] = useState(false);
+    const [isTouchedPassword, setIsTouchedPassword] = useState(false);
+
+    const [formData, setFormData] = useState(initialFormData);
+
+    const passwordLength: number = 5;
+
+    useEffect(() => {
+        // console.log(isInvalidEmail, isInvalidPassword);
+    });
+
+
+    const emailValidate = (email: string): boolean => {
+        let re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    };
+
+    const passwordValidate = (password: string): boolean => {
+        if (password.length > passwordLength) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 
     const handleFormChange = (e: any) => {
-        updateFormData({
+
+        if (e.target.id === 'email') {
+            setIsInvalidEmail(!emailValidate(e.target.value));
+        }
+        if (e.target.id === 'password') {
+            setIsInvalidPassword(!passwordValidate(e.target.value));
+        }
+
+        setFormData({
             ...formData,
             // Trimming any whitespace
             [e.target.id]: e.target.value.trim()
         });
+
     };
 
     const handleSubmit = (e: any) => {
@@ -60,11 +94,11 @@ export default function Login() {
                             <Heading marginY={'2rem'} textAlign={'center'} fontSize={'4xl'}>Sign in to Moments</Heading>
                             <FormControl margin={'1rem'} id='email' isRequired>
                                 <FormLabel>Email</FormLabel>
-                                <Input onChange={handleFormChange} shadow={'md'} type='email' />
+                                <Input isInvalid={isInvalidEmail && isTouchedEmail} onClick={() => setIsTouchedEmail(true)} onChange={handleFormChange} shadow={'md'} type='email' />
                             </FormControl>
                             <FormControl id='password' isRequired>
                                 <FormLabel>Password</FormLabel>
-                                <Input onChange={handleFormChange} shadow={'md'} type='password' />
+                                <Input isInvalid={isInvalidPassword && isTouchedPassword} onClick={() => setIsTouchedPassword(true)} onChange={handleFormChange} shadow={'md'} type='password' />
                             </FormControl>
                             <Stack spacing={10}>
                                 <Stack
@@ -75,8 +109,8 @@ export default function Login() {
                                     <Link color={'blue.500'}>Forgot password?</Link>
                                 </Stack>
                                 <Center>
-                                    <Button shadow={'xl'} width={'80%'} type='submit' onClick={handleSubmit} colorScheme={'blue'} variant={'solid'}>
-                                        Sign in
+                                    <Button isDisabled={isInvalidEmail && isInvalidPassword} shadow={'xl'} width={'80%'} type='submit' onClick={handleSubmit} colorScheme={'blue'} variant={'solid'}>
+                                        Sign in {isInvalidEmail && isInvalidPassword}
                                     </Button>
                                 </Center>
                                 <Text

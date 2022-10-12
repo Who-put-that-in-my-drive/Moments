@@ -59,9 +59,6 @@ export default function Register() {
                     <Flex p={8} paddingY={'3rem'} flex={1} align={'center'} justify={'center'}>
                         <Stack spacing={4} w={'full'} maxW={'md'}>
                             <Heading textAlign={'center'} fontSize={'4xl'}>Sign Up</Heading>
-                            <Text
-                                textAlign={'center'}
-                                fontSize='md'>Existing user? <Link color={'blue.500'} as={ReactLink} to='/login'>Log in!</Link></Text>
                             <FormControl margin={'1rem'} id="username" isRequired>
                                 <FormLabel>Username</FormLabel>
                                 <Input onChange={handleFormChange} shadow={'md'} type="username" />
@@ -84,6 +81,9 @@ export default function Register() {
                                         Create account
                                     </Button>
                                 </Center>
+                                <Text
+                                    textAlign={'center'}
+                                    fontSize='md'>Existing user? <Link color={'blue.500'} as={ReactLink} to='/login'>Log in!</Link></Text>
                             </Stack>
                         </Stack>
                     </Flex>
