@@ -12,69 +12,32 @@ import {
     Box,
     Center,
     Text,
-    useColorMode
+    useColorMode,
+    FormErrorMessage
 } from '@chakra-ui/react';
 import logo from '../assets/images/logo_transparent.png';
 import { Link as ReactLink } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-const initialFormData = Object.freeze({
-    email: '',
-    password: ''
-});
+type FormValues = {
+    email: string
+    password: string
+};
 
 export default function Login() {
     const { colorMode } = useColorMode();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<FormValues>();
 
-    const [isInvalidEmail, setIsInvalidEmail] = useState(true);
-    const [isInvalidPassword, setIsInvalidPassword] = useState(true);
-    const [isTouchedEmail, setIsTouchedEmail] = useState(false);
-    const [isTouchedPassword, setIsTouchedPassword] = useState(false);
-
-    const [formData, setFormData] = useState(initialFormData);
-
-    const passwordLength: number = 5;
-
-    useEffect(() => {
-        // console.log(isInvalidEmail, isInvalidPassword);
-    });
-
-
-    const emailValidate = (email: string): boolean => {
-        let re = /\S+@\S+\.\S+/;
-        return re.test(email);
+    const handleSubmitForm = (data: {}) => {
+        console.log(data);
+        // ... submit data object to an endpoint or something
     };
 
-    const passwordValidate = (password: string): boolean => {
-        if (password.length > passwordLength) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-
-    const handleFormChange = (e: any) => {
-
-        if (e.target.id === 'email') {
-            setIsInvalidEmail(!emailValidate(e.target.value));
-        }
-        if (e.target.id === 'password') {
-            setIsInvalidPassword(!passwordValidate(e.target.value));
-        }
-
-        setFormData({
-            ...formData,
-            // Trimming any whitespace
-            [e.target.id]: e.target.value.trim()
-        });
-
-    };
-
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        console.log(formData);
-        // ... submit to API or something
-    };
+    const minPassLength: number = 5;
 
     return (
         <Center height={'100vh'}>
@@ -89,36 +52,57 @@ export default function Login() {
                             src={logo}
                         />
                     </Flex>
-                    <Flex p={8} flex={1} align={'center'} justify={'center'}>
-                        <Stack spacing={4} w={'full'} maxW={'md'}>
-                            <Heading marginY={'2rem'} textAlign={'center'} fontSize={'4xl'}>Sign in to Moments</Heading>
-                            <FormControl margin={'1rem'} id='email' isRequired>
-                                <FormLabel>Email</FormLabel>
-                                <Input isInvalid={isInvalidEmail && isTouchedEmail} onClick={() => setIsTouchedEmail(true)} onChange={handleFormChange} shadow={'md'} type='email' />
-                            </FormControl>
-                            <FormControl id='password' isRequired>
-                                <FormLabel>Password</FormLabel>
-                                <Input isInvalid={isInvalidPassword && isTouchedPassword} onClick={() => setIsTouchedPassword(true)} onChange={handleFormChange} shadow={'md'} type='password' />
-                            </FormControl>
-                            <Stack spacing={10}>
-                                <Stack
-                                    direction={{ base: 'column', sm: 'row' }}
-                                    align={'start'}
-                                    justify={'space-between'}>
-                                    <Checkbox>Remember me</Checkbox>
-                                    <Link color={'blue.500'}>Forgot password?</Link>
+                    <Flex p={5} flex={1} align={'center'} justify={'center'}>
+                        <form onSubmit={handleSubmit(handleSubmitForm)}>
+                            <Stack spacing={4} w={'full'} >
+                                <Heading marginY={'2rem'} textAlign={'center'} fontSize={'4xl'}>Sign in to Moments</Heading>
+                                <FormControl margin={'1rem'} isInvalid={Boolean(errors.email)}>
+                                    <FormLabel>Email</FormLabel>
+                                    <Input
+                                        {...register(
+                                            'email',
+                                            {
+                                                required: 'Please enter a valid email',
+                                            })
+                                        } shadow={'md'} type='email' />
+                                    <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+                                </FormControl>
+                                <FormControl isInvalid={Boolean(errors.password)}>
+                                    <FormLabel>Password</FormLabel>
+                                    <Input
+                                        {...register(
+                                            'password',
+                                            {
+                                                minLength: {
+                                                    message: `Minimum of ${minPassLength} characters required`,
+                                                    value: minPassLength,
+                                                },
+                                                required: 'Please enter a valid password',
+                                            })} shadow={'md'} type='password' />
+                                    <FormErrorMessage>
+                                        {errors.password && errors.password.message}
+                                    </FormErrorMessage>
+                                </FormControl>
+                                <Stack spacing={10}>
+                                    <Stack
+                                        direction={{ base: 'column', sm: 'row' }}
+                                        align={'start'}
+                                        justify={'space-between'}>
+                                        <Checkbox>Remember me</Checkbox>
+                                        <Link color={'blue.500'}>Forgot password?</Link>
+                                    </Stack>
+                                    <Center>
+                                        <Button shadow={'xl'} width={'80%'} type='submit' colorScheme={'blue'} variant={'solid'}>
+                                            Sign in
+                                        </Button>
+                                    </Center>
+                                    <Text
+                                        paddingBottom={'1rem'}
+                                        textAlign={'center'}
+                                        fontSize='md'>Don’t have an account? <Link color={'blue.500'} as={ReactLink} to='/register'>Sign Up</Link></Text>
                                 </Stack>
-                                <Center>
-                                    <Button isDisabled={isInvalidEmail && isInvalidPassword} shadow={'xl'} width={'80%'} type='submit' onClick={handleSubmit} colorScheme={'blue'} variant={'solid'}>
-                                        Sign in {isInvalidEmail && isInvalidPassword}
-                                    </Button>
-                                </Center>
-                                <Text
-                                    paddingBottom={'1rem'}
-                                    textAlign={'center'}
-                                    fontSize='md'>Don’t have an account? <Link color={'blue.500'} as={ReactLink} to='/register'>Sign Up</Link></Text>
                             </Stack>
-                        </Stack>
+                        </form>
                     </Flex>
                 </Stack>
             </Box >
