@@ -55,7 +55,7 @@ Resources:
         IntegrationHttpMethod: "ANY"
         Uri: !Join [ '', [ !Ref domainHost, '/login' ] ]
         TimeoutInMillis: 29000
-      ResourceId: !Ref "apiGatewayTestResource"
+      ResourceId: !Ref "apiGatewayLoginResource"
       RestApiId: !Ref "apiGateway"
 
   ### Provided Default Data ###
@@ -68,11 +68,11 @@ Resources:
 
   apiGatewayDeployment:
     Type: "AWS::ApiGateway::Deployment"
-    DependsOn: "apiGatewayTestMethod"
+    DependsOn: "apiGatewayLoginMethod"
     Properties:
       RestApiId: !Ref "apiGateway"
 
 Parameters:
   domainHost:
     Type: "String"
-    Default: "http://ec2-174-129-50-55.compute-1.amazonaws.com:5000/api"
+    Default: "http://ec2-54-235-34-39.compute-1.amazonaws.com:5000/api"
