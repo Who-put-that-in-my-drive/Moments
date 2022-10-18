@@ -40,8 +40,8 @@ export default function Login() {
     const minPassLength: number = 5;
 
     return (
-        <Center height={'100vh'}>
-            <Box maxW={'90vw'} borderRadius='lg' boxShadow='2xl'  >
+        <Center p={'1rem'} height={'100vh'}>
+            <Box w={'85rem'} borderRadius='lg' boxShadow='2xl'  >
                 <Stack justify={'center'} direction={{ base: 'column', md: 'row' }} >
                     <Flex flex={1}>
                         <Image
@@ -53,9 +53,10 @@ export default function Login() {
                         />
                     </Flex>
                     <Flex p={5} flex={1} align={'center'} justify={'center'}>
-                        <form onSubmit={handleSubmit(handleSubmitForm)}>
+                        <form style={{ width: '80%' }} onSubmit={handleSubmit(handleSubmitForm)}>
                             <Stack spacing={4} w={'full'} >
                                 <Heading marginY={'2rem'} textAlign={'center'} fontSize={'4xl'}>Sign in to Moments</Heading>
+
                                 <FormControl margin={'1rem'} isInvalid={Boolean(errors.email)}>
                                     <FormLabel>Email</FormLabel>
                                     <Input
@@ -67,6 +68,7 @@ export default function Login() {
                                         } shadow={'md'} type='email' />
                                     <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
                                 </FormControl>
+
                                 <FormControl isInvalid={Boolean(errors.password)}>
                                     <FormLabel>Password</FormLabel>
                                     <Input
@@ -97,7 +99,7 @@ export default function Login() {
                                         </Button>
                                     </Center>
                                     <Text
-                                        paddingBottom={'1rem'}
+                                        // paddingBottom={'1rem'}
                                         textAlign={'center'}
                                         fontSize='md'>Don’t have an account? <Link color={'blue.500'} as={ReactLink} to='/register'>Sign Up</Link></Text>
                                 </Stack>
