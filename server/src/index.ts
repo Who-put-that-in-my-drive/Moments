@@ -4,11 +4,12 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 
-dotenv.config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../dev.env') });
 
 const app = express();
 const port = process.env.PORT || 8000;
-const uri = process.env.MONGO_API || '';
+const uri = process.env.MONGO_API;
 
 mongoose.connect(uri).catch((err) => console.error(err));
 mongoose.connection.once('open', () => {
