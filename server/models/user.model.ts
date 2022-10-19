@@ -1,13 +1,5 @@
 import { Schema, model } from 'mongoose';
-
-interface IUser {
-  email: String;
-  password: String;
-  displayName: String;
-  images?: [String];
-  lastLoginDateTime?: Number;
-  createdDateTime?: Number;
-}
+import {IUser} from '../interfaces/IUser';
 
 const userSchema = new Schema(
     {
@@ -17,12 +9,14 @@ const userSchema = new Schema(
             unique: true,
             trim: true,
             minlength: 3,
+            maxLength: 32
         },
         password: {
             type: String,
             required: true,
             trim: true,
-            minlength: 10,
+            minlength: 7,
+            maxLength: 32
         },
         displayName: {
             type: String,
@@ -30,23 +24,23 @@ const userSchema = new Schema(
             unique: true,
             trim: true,
             minlength: 3,
+            maxLength: 18
         },
         images: {
             type: [String],
+            required: true
         },
-        lastLoginDate: {
+        lastLoginDateTime: {
             type: Number,
-            required: false,
+            required: true,
         },
         createdDateTime: {
             type: Number,
-            required: false,
+            required: true,
         },
-    },
-    {
-        timestamps: true,
     }
 );
 
 const User = model<IUser>('User', userSchema);
+
 export default User;

@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import { request } from 'http';
 import User from '../../../models/user.model';
 
 const router = express.Router();
@@ -7,20 +6,6 @@ const router = express.Router();
 router.route('/').get((req: Request, res: Response) => {
     User.find()
         .then((users) => res.json(users))
-        .catch((err) => res.status(400).json(err));
-});
-
-router.route('/').post((req: Request, res: Response) => {
-    const newUser = new User({
-        email: String(req.body.email),
-        password: String(req.body.password),
-        displayName: String(req.body.displayName),
-        images: req.body.images || [],
-    });
-
-    newUser
-        .save()
-        .then((user) => res.json(user))
         .catch((err) => res.status(400).json(err));
 });
 
