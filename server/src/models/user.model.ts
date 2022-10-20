@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import {IUser} from '../interfaces/IUser';
+import {IUser} from '../../interfaces/IUser';
 
 const userSchema = new Schema(
     {
@@ -11,12 +11,11 @@ const userSchema = new Schema(
             minlength: 3,
             maxLength: 32
         },
+        // Hashed Password Gets Stored Here
         password: {
             type: String,
             required: true,
             trim: true,
-            minlength: 7,
-            maxLength: 32
         },
         displayName: {
             type: String,

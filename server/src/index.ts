@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 5000;
 const uri = process.env.MONGO_API || '';
 
 mongoose.connect(uri).catch((err) => console.error(err));
