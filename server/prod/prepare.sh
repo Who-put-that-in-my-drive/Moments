@@ -1,5 +1,6 @@
 #!/bin/bash
 cp "../package.json" "../dist"
+cp "../.env" "../dist"
 if [[ "$OSTYPE" == "msys" ]]
 then
   tar.exe -a -c -f prod.zip "../dist"

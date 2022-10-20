@@ -39,14 +39,21 @@ Resources:
   apiGatewayLoginResource:
     Type: "AWS::ApiGateway::Resource"
     Properties:
-      ParentId: !GetAtt "apiGatewayAuthResource.RootResourceId"
+      ParentId: !GetAtt "apiGatewayAuthResource.ResourceId"
       PathPart: 'login'
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayLogoutResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGatewayAuthResource.ResourceId"
+      PathPart: 'logout'
       RestApiId: !Ref "apiGateway"
 
   apiGatewayRegisterResource:
     Type: "AWS::ApiGateway::Resource"
     Properties:
-      ParentId: !GetAtt "apiGateway.RootResourceId"
+      ParentId: !GetAtt "apiGatewayAuthResource.ResourceId"
       PathPart: 'register'
       RestApiId: !Ref "apiGateway"
 
@@ -63,7 +70,7 @@ Resources:
     Properties:
       ApiKeyRequired: false
       AuthorizationType: "NONE"
-      HttpMethod: "POST"
+      HttpMethod: "GET"
       MethodResponses:
         - ResponseModels:
             application/json: !Ref "apiGatewayModel"
@@ -102,6 +109,29 @@ Resources:
         Uri: !Join [ '', [ !Ref domainHost, '/login' ] ]
         TimeoutInMillis: 29000
       ResourceId: !Ref "apiGatewayLoginResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayLogoutMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "GET"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/logout' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayLogoutResource"
       RestApiId: !Ref "apiGateway"
 
   apiGatewayRegisterMethod:
