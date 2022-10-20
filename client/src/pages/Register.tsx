@@ -185,7 +185,7 @@ export default function Register() {
 
                                             <Center>
                                                 <Button shadow={'xl'} width={'80%'} type='submit' colorScheme={'blue'} variant={'solid'}>
-                                                    Sign in
+                                                    Sign up
                                                 </Button>
                                             </Center>
                                             <Text
