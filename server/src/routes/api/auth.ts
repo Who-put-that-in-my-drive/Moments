@@ -10,6 +10,13 @@ import Cookie from '../../utilities/cookie';
 
 const router = express.Router();
 
+/**
+ * Register API
+ *
+ * @route    POST auth/register
+ * @desc     Creates users
+ * @access   Public
+ */
 router.route('/register').post(async (req: Request, res: Response) => {
     try {
         const user: RegisterUserDTO = req.body;
@@ -53,6 +60,13 @@ router.route('/register').post(async (req: Request, res: Response) => {
     }
 });
 
+/**
+ * Login API
+ *
+ * @route    POST auth/login
+ * @desc     Authenticates User
+ * @access   Public
+ */
 router.route('/login').post(async (req: Request, res: Response) => {
     try {
         const user: LoginUserDTO = req.body;
@@ -72,6 +86,13 @@ router.route('/login').post(async (req: Request, res: Response) => {
     }
 });
 
+/**
+ * Logout API
+ *
+ * @route    POST auth/logout
+ * @desc     Expires the user's token
+ * @access   Public
+ */
 router.route('/logout').get(async (req: Request, res: Response) => {
     try {
         const cookieWithJwt = new Cookie(await Jwt.expireJwt()).generateCookie();
