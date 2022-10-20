@@ -5,7 +5,7 @@ import {LoginUserDTO} from '../../../interfaces/auth/LoginUserDTO';
 import {IUser} from '../../../interfaces/IUser';
 import User from '../../models/user.model';
 import {getHashedValue, validatePassword} from '../../utilities/bcrypt';
-import JwtUtils from '../../utilities/jwt';
+import Jwt from '../../utilities/jwt';
 import Cookie from '../../utilities/cookie';
 
 const router = express.Router();
@@ -60,7 +60,7 @@ router.route('/login').post(async (req: Request, res: Response) => {
         const userDb: IUser = await User.findOne({email: user.email});
 
         if (await validatePassword(user.password, userDb.password)) {
-            const cookieWithJwt = new Cookie(await JwtUtils.generateJwt(userDb.email)).generateCookie();
+            const cookieWithJwt = new Cookie(await Jwt.generateJwt(userDb.email)).generateCookie();
             return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json('Signed In');
         } else {
             return res.status(403).json('Incorrect Password');
@@ -73,7 +73,7 @@ router.route('/login').post(async (req: Request, res: Response) => {
 
 router.route('/logout').get(async (req: Request, res: Response) => {
     try {
-        const cookieWithJwt = new Cookie(await JwtUtils.expireJwt()).generateCookie();
+        const cookieWithJwt = new Cookie(await Jwt.expireJwt()).generateCookie();
         return res.setHeader('Set-Cookie', cookieWithJwt).status(200).json('Signed Out');
     } catch (e) {
         console.error(e);

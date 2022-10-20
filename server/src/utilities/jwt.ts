@@ -1,8 +1,9 @@
 import * as jwt from 'jsonwebtoken';
+import {Request} from 'express';
 
-const secret = String(process.env.JWT_SECRET);
+const secret = process.env.JWT_SECRET as string;
 
-export default class JwtUtils {
+export default class Jwt {
     /**
      * Generates JWT For Protected Routes
      *
@@ -28,6 +29,15 @@ export default class JwtUtils {
     static expireJwt(): Promise<string> {
         return new Promise(resolve => {
             resolve('');
+        });
+    }
+
+    /**
+     * Gets accessToken from Cookie
+     */
+    static getAccessTokenCookie(req: Request): Promise<string> {
+        return new Promise(resolve => {
+            resolve(req.cookies.accessToken);
         });
     }
 }

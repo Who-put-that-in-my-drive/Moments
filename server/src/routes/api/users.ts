@@ -1,9 +1,10 @@
 import express, { Request, Response } from 'express';
 import User from '../../models/user.model';
+import {authenticateToken} from '../../middlewares/auth';
 
 const router = express.Router();
 
-router.route('/').get((req: Request, res: Response) => {
+router.route('/').get(authenticateToken, (req: Request, res: Response) => {
     User.find()
         .then((users) => res.json(users))
         .catch((err) => res.status(400).json(err));

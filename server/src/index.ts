@@ -3,6 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ mongoose.connection.once('open', () => {
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(
     cors({
         credentials: true,
