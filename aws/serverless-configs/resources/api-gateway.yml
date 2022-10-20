@@ -28,11 +28,57 @@ Resources:
       Description: !Ref "apiGatewayDescription"
 
   ### Service Resources ###
-  apiGatewayLoginResource:
+  # Auth
+  apiGatewayAuthResource:
     Type: "AWS::ApiGateway::Resource"
     Properties:
       ParentId: !GetAtt "apiGateway.RootResourceId"
+      PathPart: 'auth'
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayLoginResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGatewayAuthResource.RootResourceId"
       PathPart: 'login'
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayRegisterResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGateway.RootResourceId"
+      PathPart: 'register'
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayHealthResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGateway.RootResourceId"
+      PathPart: 'health'
+      RestApiId: !Ref "apiGateway"
+
+  ### Service Methods ###
+  apiGatewayHealthMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "POST"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/health' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayHealthResource"
       RestApiId: !Ref "apiGateway"
 
   apiGatewayLoginMethod:
@@ -40,7 +86,7 @@ Resources:
     Properties:
       ApiKeyRequired: false
       AuthorizationType: "NONE"
-      HttpMethod: "GET"
+      HttpMethod: "POST"
       MethodResponses:
         - ResponseModels:
             application/json: !Ref "apiGatewayModel"
@@ -56,6 +102,29 @@ Resources:
         Uri: !Join [ '', [ !Ref domainHost, '/login' ] ]
         TimeoutInMillis: 29000
       ResourceId: !Ref "apiGatewayLoginResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayRegisterMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "POST"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/register' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayRegisterResource"
       RestApiId: !Ref "apiGateway"
 
   ### Provided Default Data ###
