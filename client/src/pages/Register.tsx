@@ -13,24 +13,35 @@ import {
     Text,
     useColorMode,
     FormErrorMessage,
-    ScaleFade
+    ScaleFade,
+    AlertDialog,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogCloseButton,
+    AlertDialogBody,
+    AlertDialogFooter,
+    useDisclosure
 } from '@chakra-ui/react';
 import logo from '../assets/images/logo_transparent.png';
-import { Link as ReactLink } from 'react-router-dom';
+import { Link as ReactLink, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-// import { useForm } from 'react-hook-form';
-
+import axios from 'axios';
+import React from 'react';
 
 type FormValues = {
     email: string,
     password: string,
     confirm_password: string,
-    username: string
+    displayName: string
 };
 
 export default function Register() {
     const { colorMode } = useColorMode();
 
+    const navigate = useNavigate();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const cancelRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
     const {
         register,
         handleSubmit,
@@ -38,13 +49,51 @@ export default function Register() {
         watch
     } = useForm<FormValues>();
 
-    const handleSubmitForm = (data: {}) => {
-        console.log(data);
-        // ... submit to API or something
+    const handleSubmitForm = (data: FormValues) => {
+        const userData: {} = {
+            displayName: data.displayName,
+            email: data.email,
+            password: data.password
+        };
+        const URL = process.env.REACT_APP_DEV_SERVER_URL;
+        axios.post(URL + '/api/auth/register', userData)
+            .then(res => {
+                console.log(res);
+                onOpen();
+
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
     };
 
-    const minPassLength: number = 5;
-    const minUsernameLength: number = 5;
+    const minPassLength: number = 7;
+    const minUsernameLength: number = 3;
+
+    // const successAlert = `<AlertDialog
+    //     motionPreset='slideInBottom'
+    //     leastDestructiveRef={cancelRef}
+    //     onClose={onClose}
+    //     isOpen={isOpen}
+    //     isCentered
+    //   >
+    //     <AlertDialogOverlay />
+
+    //     <AlertDialogContent>
+    //       <AlertDialogHeader>Success!</AlertDialogHeader>
+    //       <AlertDialogCloseButton />
+    //       <AlertDialogBody>
+    //         A user was registered successfully!
+    //       </AlertDialogBody>
+    //       <AlertDialogFooter>
+
+    //         <Button colorScheme='green' ml={3}>
+    //           Sign in!
+    //         </Button>
+    //       </AlertDialogFooter>
+    //     </AlertDialogContent>
+    //   </AlertDialog>`
 
 
 
@@ -70,11 +119,11 @@ export default function Register() {
                                     <Stack spacing={4} w={'full'} >
                                         <Heading textAlign={'center'} fontSize={'4xl'}>Sign Up</Heading>
 
-                                        <FormControl margin={'1rem'} isInvalid={Boolean(errors.username)}>
+                                        <FormControl margin={'1rem'} isInvalid={Boolean(errors.displayName)}>
                                             <FormLabel>Username</FormLabel>
                                             <Input
                                                 {...register(
-                                                    'username',
+                                                    'displayName',
                                                     {
                                                         minLength: {
                                                             message: `Minimum ${minUsernameLength}characters required`,
@@ -83,7 +132,7 @@ export default function Register() {
                                                         required: 'Please enter a valid username',
                                                     })
                                                 } shadow={'md'} type='string' />
-                                            <FormErrorMessage>{errors.username && errors.username.message}</FormErrorMessage>
+                                            <FormErrorMessage>{errors.displayName && errors.displayName.message}</FormErrorMessage>
                                         </FormControl>
 
                                         <FormControl margin={'1rem'} isInvalid={Boolean(errors.email)}>
@@ -150,6 +199,29 @@ export default function Register() {
                     </Box >
                 </ScaleFade>
             </Center>
+            <AlertDialog
+                motionPreset='slideInBottom'
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+                isOpen={isOpen}
+                isCentered
+            >
+                <AlertDialogOverlay />
+
+                <AlertDialogContent>
+                    <AlertDialogHeader>Success!</AlertDialogHeader>
+                    <AlertDialogCloseButton />
+                    <AlertDialogBody>
+                        A user was registered successfully!
+                    </AlertDialogBody>
+                    <AlertDialogFooter>
+
+                        <Button onClick={() => { navigate('/login'); }} colorScheme='green' ml={3}>
+                            Sign in!
+                        </Button>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </>
     );
 };
