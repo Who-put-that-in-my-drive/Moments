@@ -1,8 +1,8 @@
 import express, {Request, Response} from 'express';
 import validator from 'validator';
-import {RegisterUserDTO} from '../../../interfaces/auth/RegisterUserDTO';
-import {LoginUserDTO} from '../../../interfaces/auth/LoginUserDTO';
-import {IUser} from '../../../interfaces/IUser';
+import {RegisterUserDTO} from '../../interfaces/auth/RegisterUserDTO';
+import {LoginUserDTO} from '../../interfaces/auth/LoginUserDTO';
+import {IUser} from '../../interfaces/IUser';
 import User from '../../models/user.model';
 import {getHashedValue, validatePassword} from '../../utilities/bcrypt';
 import Jwt from '../../utilities/jwt';
