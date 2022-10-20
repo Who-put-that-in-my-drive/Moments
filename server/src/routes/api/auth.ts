@@ -18,6 +18,7 @@ router.route('/register').post(async (req: Request, res: Response) => {
         const displayName = user.displayName;
         const dateTime = Math.floor(new Date().getTime() / 1000.0); //Epoch in milliseconds
 
+        // Mongoose handles verifications and generates errors, although we want to handle this part
         if (!(validator.isEmail(email))) {
             return res.status(400).json('Invalid Email');
         }
