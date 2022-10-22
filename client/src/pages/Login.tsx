@@ -19,6 +19,9 @@ import {
 import logo from '../assets/images/logo_transparent.png';
 import { Link as ReactLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import useStore from '../store/store';
+import { useState } from 'react';
 
 type FormValues = {
     email: string
@@ -27,26 +30,61 @@ type FormValues = {
 
 export default function Login() {
 
-
+    const store = useStore();
+    const loggedIn = store.loggedIn;
     const { colorMode } = useColorMode();
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
+        setError,
+        reset
     } = useForm<FormValues>();
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmitForm = (data: {}) => {
-        console.log(data);
-        // ... submit data object to an endpoint or something
+    const handleSubmitForm = (data: FormValues) => {
+        login(data.email, data.password)
+            .then((res: any) => {
+                if (res.data === 'Signed In') {
+                    reset();
+                    store.setLoggedIn(true);
+                    setIsLoading(false);
+                    //Redirect to Dashboard page from here
+                }
+            })
+            .catch(err => {
+                setIsLoading(false);
+                if (err.response.data === 'Incorrect Password') {
+                    setError('password', {
+                        message: 'Wrong password!',
+                    });
+
+                } else {
+                    setError('email', {
+                        message: 'Please check your credentials!',
+                    });
+                    setError('password', {
+                        message: 'Please check your credentials!',
+                    });
+                }
+            });
     };
 
 
+    const login = (email: string, password: string): Promise<void> => {
+        setIsLoading(true);
+        const userData = { email: email, password: password };
+        const URL = process.env.REACT_APP_DEV_SERVER_URL;
+        return axios.post(URL + '/api/auth/login', userData);
+
+    };
 
     const minPassLength: number = 5;
 
     return (
         <Center p={'1rem'} height={'100vh'}>
             <ScaleFade initialScale={0.9} in>
+                <Text>Login Status: {loggedIn ? 'True => redirect to Dashboard' : 'False'}</Text>
                 <Box w={'85rem'} borderRadius='lg' boxShadow='2xl'  >
                     <Stack justify={'center'} direction={{ base: 'column', md: 'row' }} >
                         <Flex flex={1}>
@@ -100,7 +138,7 @@ export default function Login() {
                                             <Link color={'blue.500'}>Forgot password?</Link>
                                         </Stack>
                                         <Center>
-                                            <Button shadow={'xl'} width={'80%'} type='submit' colorScheme={'blue'} variant={'solid'}>
+                                            <Button isLoading={isLoading} loadingText='Logging in...' shadow={'xl'} width={'80%'} type='submit' colorScheme={'blue'} variant={'solid'}>
                                                 Sign in
                                             </Button>
                                         </Center>
