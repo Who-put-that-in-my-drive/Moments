@@ -53,27 +53,24 @@ export default function Register() {
     const minPassLength: number = 7;
     const minUsernameLength: number = 3;
 
-    const handleSubmitForm = (data: FormValues) => {
+    const handleSubmitForm = async (data: FormValues) => {
         setGeneralError(false);
-        registerUser(data)
-            .then(res => {
-                reset();
-                console.log(res);
-                onOpen();
-                setIsLoading(false);
-            })
-            .catch(err => {
-                console.log(err);
-                setGeneralError(true);
-                setIsLoading(false);
-            });
+        try {
+            await registerUser(data);
+            reset();
+            onOpen();
+            setIsLoading(false);
+        } catch (error) {
+            setGeneralError(true);
+            setIsLoading(false);
+        }
     };
 
-    const registerUser = (data: FormValues): Promise<void> => {
+    const registerUser = async (data: FormValues): Promise<void> => {
         setIsLoading(true);
         const userData = { displayName: data.displayName, email: data.email, password: data.password };
         const URL = process.env.REACT_APP_DEV_SERVER_URL;
-        return axios.post(URL + '/api/auth/register', userData);
+        return await axios.post(URL + '/api/auth/register', userData);
     };
 
 

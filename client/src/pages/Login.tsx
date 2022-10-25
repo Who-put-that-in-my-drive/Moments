@@ -42,41 +42,38 @@ export default function Login() {
     } = useForm<FormValues>();
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmitForm = (data: FormValues) => {
-        login(data.email, data.password)
-            .then((res: any) => {
-                if (res.data === 'Signed In') {
-                    reset();
-                    store.setLoggedIn(true);
-                    setIsLoading(false);
-                    //Redirect to Dashboard page from here
-                }
-            })
-            .catch(err => {
+    const handleSubmitForm = async (data: FormValues) => {
+        try {
+            const response: any = await login(data.email, data.password);
+            if (response.data === 'Signed In') {
+                reset();
+                store.setLoggedIn(true);
                 setIsLoading(false);
-                if (err.response.data === 'Incorrect Password') {
-                    setError('password', {
-                        message: 'Wrong password!',
-                    });
-
-                } else {
-                    setError('email', {
-                        message: 'Please check your credentials!',
-                    });
-                    setError('password', {
-                        message: 'Please check your credentials!',
-                    });
-                }
-            });
+                //Redirect to Dashboard page from here
+            }
+        } catch (error: any) {
+            setIsLoading(false);
+            if (error.response.data === 'Incorrect Password') {
+                setError('password', {
+                    message: 'Wrong password!',
+                });
+            } else {
+                setError('email', {
+                    message: 'Please check your credentials!',
+                });
+                setError('password', {
+                    message: 'Please check your credentials!',
+                });
+            }
+        }
     };
 
 
-    const login = (email: string, password: string): Promise<void> => {
+    const login = async (email: string, password: string): Promise<void> => {
         setIsLoading(true);
         const userData = { email: email, password: password };
         const URL = process.env.REACT_APP_DEV_SERVER_URL;
-        return axios.post(URL + '/api/auth/login', userData);
-
+        return await axios.post(URL + '/api/auth/login', userData);
     };
 
     const minPassLength: number = 5;
