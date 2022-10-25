@@ -27,7 +27,7 @@ import logo from '../assets/images/logo_transparent.png';
 import { Link as ReactLink, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 
 type FormValues = {
     email: string,
@@ -37,64 +37,41 @@ type FormValues = {
 };
 
 export default function Register() {
-    const { colorMode } = useColorMode();
-
     const navigate = useNavigate();
+    const { colorMode } = useColorMode();
+    const [isLoading, setIsLoading] = useState(false);
+    const [generalError, setGeneralError] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
     const {
         register,
         handleSubmit,
         formState: { errors },
-        watch
+        watch,
+        reset
     } = useForm<FormValues>();
-
-    const handleSubmitForm = (data: FormValues) => {
-        const userData: {} = {
-            displayName: data.displayName,
-            email: data.email,
-            password: data.password
-        };
-        const URL = process.env.REACT_APP_DEV_SERVER_URL;
-        axios.post(URL + '/api/auth/register', userData)
-            .then(res => {
-                console.log(res);
-                onOpen();
-
-            })
-            .catch(err => {
-                console.log(err);
-            });
-
-    };
-
     const minPassLength: number = 7;
     const minUsernameLength: number = 3;
 
-    // const successAlert = `<AlertDialog
-    //     motionPreset='slideInBottom'
-    //     leastDestructiveRef={cancelRef}
-    //     onClose={onClose}
-    //     isOpen={isOpen}
-    //     isCentered
-    //   >
-    //     <AlertDialogOverlay />
+    const handleSubmitForm = async (data: FormValues) => {
+        setGeneralError(false);
+        try {
+            await registerUser(data);
+            reset();
+            onOpen();
+            setIsLoading(false);
+        } catch (error) {
+            setGeneralError(true);
+            setIsLoading(false);
+        }
+    };
 
-    //     <AlertDialogContent>
-    //       <AlertDialogHeader>Success!</AlertDialogHeader>
-    //       <AlertDialogCloseButton />
-    //       <AlertDialogBody>
-    //         A user was registered successfully!
-    //       </AlertDialogBody>
-    //       <AlertDialogFooter>
-
-    //         <Button colorScheme='green' ml={3}>
-    //           Sign in!
-    //         </Button>
-    //       </AlertDialogFooter>
-    //     </AlertDialogContent>
-    //   </AlertDialog>`
-
+    const registerUser = async (data: FormValues): Promise<void> => {
+        setIsLoading(true);
+        const userData = { displayName: data.displayName, email: data.email, password: data.password };
+        const URL = process.env.REACT_APP_DEV_SERVER_URL;
+        return await axios.post(URL + '/api/auth/register', userData);
+    };
 
 
     return (
@@ -180,13 +157,17 @@ export default function Register() {
                                             <FormErrorMessage>
                                                 {errors.confirm_password && errors.confirm_password.message}
                                             </FormErrorMessage>
+                                            <Text textAlign='center' color='tomato'>
+                                                {generalError ? 'Something went wrong please try again!' : null}
+                                            </Text>
                                         </FormControl>
                                         <Stack paddingTop={'1rem'} spacing={10}>
 
                                             <Center>
-                                                <Button shadow={'xl'} width={'80%'} type='submit' colorScheme={'blue'} variant={'solid'}>
+                                                <Button isLoading={isLoading} loadingText={'Registering user...'} shadow={'xl'} width={'80%'} type='submit' colorScheme={'blue'} variant={'solid'}>
                                                     Sign up
                                                 </Button>
+
                                             </Center>
                                             <Text
                                                 textAlign={'center'}
@@ -207,7 +188,6 @@ export default function Register() {
                 isCentered
             >
                 <AlertDialogOverlay />
-
                 <AlertDialogContent>
                     <AlertDialogHeader>Success!</AlertDialogHeader>
                     <AlertDialogCloseButton />
@@ -215,7 +195,6 @@ export default function Register() {
                         A user was registered successfully!
                     </AlertDialogBody>
                     <AlertDialogFooter>
-
                         <Button onClick={() => { navigate('/login'); }} colorScheme='green' ml={3}>
                             Sign in!
                         </Button>
