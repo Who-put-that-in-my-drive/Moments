@@ -25,6 +25,13 @@ const userSchema = new Schema(
             minlength: 3,
             maxLength: 18
         },
+        firstName: {
+            type: String,
+            required: false,
+            trim: true,
+            minlength: 1,
+            maxLength: 18
+        },
         images: {
             type: [String],
             required: true
@@ -32,6 +39,13 @@ const userSchema = new Schema(
         lastLoginDateTime: {
             type: Number,
             required: true,
+        },
+        lastName: {
+            type: String,
+            required: false,
+            trim: true,
+            minlength: 1,
+            maxLength: 18
         },
         createdDateTime: {
             type: Number,

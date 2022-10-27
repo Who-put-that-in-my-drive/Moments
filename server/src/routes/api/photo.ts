@@ -1,6 +1,5 @@
 import express, {Request, Response} from 'express';
 import {authenticateToken} from '../../middlewares/auth';
-import User from '../../models/user.model';
 
 const router = express.Router();
 
@@ -13,5 +12,6 @@ router
     .put(authenticateToken, (req: Request, res: Response) => {
     })
     .delete(authenticateToken, (req: Request, res: Response) => {
-    })
-;
+    });
+
+module.exports = router;
