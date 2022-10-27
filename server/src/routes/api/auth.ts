@@ -79,7 +79,7 @@ router.route('/login').post(async (req: Request, res: Response) => {
             const cookieWithJwt = new Cookie(await Jwt.generateJwt(userDb.email)).generateCookie();
             return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(new ServerResponse('Signed In'));
         } else {
-            return res.status(403).json(new ServerResponse('Incorrect Password'));
+            return res.status(403).json(new ServerResponse('Incorrect Email/Password'));
         }
     } catch (e) {
         console.error(e);
