@@ -7,6 +7,7 @@ import User from '../../models/user.model';
 import {getHashedValue, validatePassword} from '../../utilities/bcrypt';
 import Jwt from '../../utilities/jwt';
 import Cookie from '../../utilities/cookie';
+import ServerResponse from '../../utilities/serverResponse';
 
 const router = express.Router();
 
@@ -27,15 +28,15 @@ router.route('/register').post(async (req: Request, res: Response) => {
 
         // Mongoose handles verifications and generates errors, although we want to handle this part
         if (!(validator.isEmail(email))) {
-            return res.status(400).json('Invalid Email');
+            return res.status(400).json(new ServerResponse('Invalid Email'));
         }
 
         if (!(password.length >= 7 && password.length <= 32)) {
-            return res.status(400).json('Invalid Password Length');
+            return res.status(400).json(new ServerResponse('Invalid Password Length'));
         }
 
         if (!(displayName.length >= 3 && displayName.length <= 18)) {
-            return res.status(400).json('Invalid Display Length');
+            return res.status(400).json(new ServerResponse('Invalid Display Length'));
         }
 
         const hashedPassword = await getHashedValue(user.password);
@@ -50,13 +51,13 @@ router.route('/register').post(async (req: Request, res: Response) => {
         });
 
         if (await newUser.save()) {
-            return res.status(201).json('Registered User');
+            return res.status(201).json(new ServerResponse('Registered User'));
         } else {
-            return res.status(400).json('Failed To Register User');
+            return res.status(400).json(new ServerResponse('Failed To Register User'));
         }
     } catch (e) {
         console.error(e);
-        return res.status(500).json(e);
+        return res.status(500).json(new ServerResponse(String(e)));
     }
 });
 
@@ -76,9 +77,9 @@ router.route('/login').post(async (req: Request, res: Response) => {
 
         if (await validatePassword(user.password, userDb.password)) {
             const cookieWithJwt = new Cookie(await Jwt.generateJwt(userDb.email)).generateCookie();
-            return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json('Signed In');
+            return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(new ServerResponse('Signed In'));
         } else {
-            return res.status(403).json('Incorrect Password');
+            return res.status(403).json(new ServerResponse('Incorrect Password'));
         }
     } catch (e) {
         console.error(e);
@@ -96,7 +97,7 @@ router.route('/login').post(async (req: Request, res: Response) => {
 router.route('/logout').get(async (req: Request, res: Response) => {
     try {
         const cookieWithJwt = new Cookie(await Jwt.expireJwt()).generateCookie();
-        return res.setHeader('Set-Cookie', cookieWithJwt).status(200).json('Signed Out');
+        return res.setHeader('Set-Cookie', cookieWithJwt).status(200).json(new ServerResponse('Signed Out'));
     } catch (e) {
         console.error(e);
         res.status(500).json(e);
