@@ -57,6 +57,15 @@ Resources:
       PathPart: 'register'
       RestApiId: !Ref "apiGateway"
 
+  # Image
+  apiGatewayImageResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGateway.RootResourceId"
+      PathPart: 'image'
+      RestApiId: !Ref "apiGateway"
+
+  # General
   apiGatewayHealthResource:
     Type: "AWS::ApiGateway::Resource"
     Properties:
@@ -65,6 +74,7 @@ Resources:
       RestApiId: !Ref "apiGateway"
 
   ### Service Methods ###
+  # General
   apiGatewayHealthMethod:
     Type: "AWS::ApiGateway::Method"
     Properties:
@@ -88,6 +98,7 @@ Resources:
       ResourceId: !Ref "apiGatewayHealthResource"
       RestApiId: !Ref "apiGateway"
 
+  # Auth
   apiGatewayLoginMethod:
     Type: "AWS::ApiGateway::Method"
     Properties:
@@ -155,6 +166,99 @@ Resources:
         Uri: !Join [ '', [ !Ref domainHost, '/auth/register' ] ]
         TimeoutInMillis: 29000
       ResourceId: !Ref "apiGatewayRegisterResource"
+      RestApiId: !Ref "apiGateway"
+
+  # Image
+  apiGatewayGetImageMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "GET"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/image' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayImageResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayUploadImageMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "POST"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/image' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayImageResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayUpdateImageMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "PUT"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/image' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayImageResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayDeleteImageMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "DELETE"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/image' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayImageResource"
       RestApiId: !Ref "apiGateway"
 
   ### Provided Default Data ###

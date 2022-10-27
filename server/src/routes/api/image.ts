@@ -4,7 +4,7 @@ import {authenticateToken} from '../../middlewares/auth';
 const router = express.Router();
 
 router
-    .route('/photo')
+    .route('/image')
     .get(authenticateToken, (req: Request, res: Response) => {
     })
     .post(authenticateToken, (req: Request, res: Response) => {
