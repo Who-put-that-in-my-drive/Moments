@@ -106,7 +106,7 @@ Resources:
             {"statusCode": 200}
         Type: "HTTP_PROXY"
         IntegrationHttpMethod: "ANY"
-        Uri: !Join [ '', [ !Ref domainHost, '/login' ] ]
+        Uri: !Join [ '', [ !Ref domainHost, '/auth/login' ] ]
         TimeoutInMillis: 29000
       ResourceId: !Ref "apiGatewayLoginResource"
       RestApiId: !Ref "apiGateway"
@@ -129,7 +129,7 @@ Resources:
             {"statusCode": 200}
         Type: "HTTP_PROXY"
         IntegrationHttpMethod: "ANY"
-        Uri: !Join [ '', [ !Ref domainHost, '/logout' ] ]
+        Uri: !Join [ '', [ !Ref domainHost, '/auth/logout' ] ]
         TimeoutInMillis: 29000
       ResourceId: !Ref "apiGatewayLogoutResource"
       RestApiId: !Ref "apiGateway"
@@ -152,7 +152,7 @@ Resources:
             {"statusCode": 200}
         Type: "HTTP_PROXY"
         IntegrationHttpMethod: "ANY"
-        Uri: !Join [ '', [ !Ref domainHost, '/register' ] ]
+        Uri: !Join [ '', [ !Ref domainHost, '/auth/register' ] ]
         TimeoutInMillis: 29000
       ResourceId: !Ref "apiGatewayRegisterResource"
       RestApiId: !Ref "apiGateway"
