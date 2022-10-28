@@ -17,7 +17,7 @@ import {
     ScaleFade
 } from '@chakra-ui/react';
 import logo from '../assets/images/logo_transparent.png';
-import { Link as ReactLink } from 'react-router-dom';
+import { Link as ReactLink, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import useStore from '../store/store';
@@ -29,7 +29,7 @@ type FormValues = {
 };
 
 export default function Login() {
-
+    const navigate = useNavigate();
     const store = useStore();
     const loggedIn = store.loggedIn;
     const { colorMode } = useColorMode();
@@ -49,7 +49,7 @@ export default function Login() {
                 reset();
                 store.setLoggedIn(true);
                 setIsLoading(false);
-                //Redirect to Dashboard page from here
+                navigate('/dashboard');
             }
         } catch (error: any) {
             setIsLoading(false);
@@ -79,15 +79,15 @@ export default function Login() {
     const minPassLength: number = 5;
 
     return (
-        <Center p={'1rem'} height={'100vh'}>
+        <Center marginTop={['5rem', '7rem', '0', '0']} h={'100vh'} padding={['0rem', '0.5rem', '3rem', '5rem']}>
             <ScaleFade initialScale={0.9} in>
                 <Text>Login Status: {loggedIn ? 'True => redirect to Dashboard' : 'False'}</Text>
-                <Box w={'85rem'} borderRadius='lg' boxShadow='2xl'  >
-                    <Stack justify={'center'} direction={{ base: 'column', md: 'row' }} >
+                <Box borderRadius='lg' boxShadow='2xl' >
+                    <Flex direction={{ base: 'column', sm: 'row' }} >
                         <Flex flex={1}>
                             <Image
+                                w={'100%'}
                                 bg={colorMode === 'light' ? 'gray.700' : 'gray.100'}
-                                borderLeftRadius='lg'
                                 alt={'Login Image'}
                                 objectFit={'cover'}
                                 src={logo}
@@ -147,7 +147,7 @@ export default function Login() {
                                 </Stack>
                             </form>
                         </Flex>
-                    </Stack>
+                    </Flex>
                 </Box >
             </ScaleFade>
         </Center>

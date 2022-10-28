@@ -76,19 +76,17 @@ export default function Register() {
 
     return (
         <>
-            <Center p={'1rem'} height={'100vh'}>
+            <Center marginTop={['5rem', '7rem', '0', '0']} h={'100vh'} padding={['0rem', '0.5rem', '3rem', '5rem']}>
                 <ScaleFade initialScale={0.9} in>
-                    <Box width={'85rem'} height={'auto'} borderRadius='lg' boxShadow='2xl'  >
-                        <Stack justify={'center'} direction={{ base: 'column', md: 'row' }} >
+                    <Box borderRadius='lg' boxShadow='2xl'  >
+                        <Flex direction={{ base: 'column', md: 'row' }} >
                             <Flex flex={1}>
                                 <Image
+                                    w={'100%'}
                                     bg={colorMode === 'light' ? 'gray.700' : 'gray.100'}
-                                    borderLeftRadius='lg'
                                     alt={'Login Image'}
-                                    objectFit={'contain'}
+                                    objectFit={'cover'}
                                     src={logo}
-                                    width={'100%'}
-
                                 />
                             </Flex>
                             <Flex p={5} flex={1} align={'center'} justify={'center'}>
@@ -176,7 +174,7 @@ export default function Register() {
                                     </Stack>
                                 </form>
                             </Flex>
-                        </Stack>
+                        </Flex>
                     </Box >
                 </ScaleFade>
             </Center>
