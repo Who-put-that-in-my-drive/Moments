@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express';
+import Jwt from '../../utilities/jwt';
 
 const router = express.Router();
 
-router.get('/health', (req: Request, res: Response) => {
+router.get('/health', async (req: Request, res: Response) => {
     res.json('Server is up & running...');
 });
 

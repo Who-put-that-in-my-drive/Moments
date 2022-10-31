@@ -1,4 +1,4 @@
-import {MomentsResponse} from '../interfaces/MomentsResponse';
+import {MomentsResponse} from '../interfaces/general/MomentsResponse';
 
 export default class ServerResponse {
     private data?: object;
