@@ -1,33 +1,38 @@
 import {
-    Box,
+    Button,
     Container,
-    Flex,
-    FormLabel,
     Image,
-    useColorMode
+    useDisclosure,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalBody,
+    ModalHeader,
+    ModalCloseButton,
 } from '@chakra-ui/react';
 import Beach from '../assets/images/Beach.jpg';
 
 
-export default function Dashboard() {
-    const { colorMode } = useColorMode();
-
+export default function Post() {
+    const { isOpen, onOpen, onClose } = useDisclosure();
     return (
-        <Flex minWidth='sm'>
-            <Box p='0'>
-                <Image src={Beach} borderLeftRadius='2xl'/>
-            </Box>
-            <Container  paddingBlock='2' 
-                bg={colorMode === 'light' ? 'gray.700' : 'gray.100'} 
-                borderRightRadius='2xl'>
-                <FormLabel>Test</FormLabel>
-                <div>
-                    <p style={{ color:'black' }}>
-                        Testing
-                    </p>
-                </div>
-            </Container>
-        </Flex>
-        
+
+        <>
+            <Button onClick={onOpen}>Open Modal</Button>
+
+            <Modal isOpen={isOpen} onClose={onClose} size='full'>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Modal Title</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <Container>
+                            <Image src={Beach}/>
+                            This is the container.
+                        </Container>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>    
+        </>
     );
 }
