@@ -17,19 +17,22 @@ import {
     AlertDialog,
     AlertDialogOverlay,
     AlertDialogContent,
-    AlertDialogHeader,
+
     AlertDialogCloseButton,
     AlertDialogBody,
     AlertDialogFooter,
-    useDisclosure
+    useDisclosure,
+    Icon,
+    VStack
 } from '@chakra-ui/react';
 import logo from '../assets/images/logo_transparent.png';
 import { Link as ReactLink, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import React, { useState } from 'react';
+import { ArrowForwardIcon, CheckCircleIcon } from '@chakra-ui/icons';
 
-type FormValues = {
+type RegisterFormValues = {
     email: string,
     password: string,
     confirm_password: string,
@@ -49,11 +52,11 @@ export default function Register() {
         formState: { errors },
         watch,
         reset
-    } = useForm<FormValues>();
+    } = useForm<RegisterFormValues>();
     const minPassLength: number = 7;
     const minUsernameLength: number = 3;
 
-    const handleSubmitForm = async (data: FormValues) => {
+    const handleSubmitForm = async (data: RegisterFormValues) => {
         setGeneralError(false);
         try {
             await registerUser(data);
@@ -66,7 +69,7 @@ export default function Register() {
         }
     };
 
-    const registerUser = async (data: FormValues): Promise<void> => {
+    const registerUser = async (data: RegisterFormValues): Promise<void> => {
         setIsLoading(true);
         const userData = { displayName: data.displayName, email: data.email, password: data.password };
         const URL = process.env.REACT_APP_DEV_SERVER_URL;
@@ -78,7 +81,7 @@ export default function Register() {
         <>
             <Center marginTop={['5rem', '7rem', '0', '0']} h={'100vh'} padding={['0rem', '0.5rem', '3rem', '5rem']}>
                 <ScaleFade initialScale={0.9} in>
-                    <Box borderRadius='lg' boxShadow='2xl'  >
+                    <Box boxShadow='2xl'>
                         <Flex direction={{ base: 'column', md: 'row' }} >
                             <Flex flex={1}>
                                 <Image
@@ -93,7 +96,6 @@ export default function Register() {
                                 <form style={{ width: '80%' }} onSubmit={handleSubmit(handleSubmitForm)}>
                                     <Stack spacing={4} w={'full'} >
                                         <Heading textAlign={'center'} fontSize={'4xl'}>Sign Up</Heading>
-
                                         <FormControl margin={'1rem'} isInvalid={Boolean(errors.displayName)}>
                                             <FormLabel>Username</FormLabel>
                                             <Input
@@ -187,14 +189,23 @@ export default function Register() {
             >
                 <AlertDialogOverlay />
                 <AlertDialogContent>
-                    <AlertDialogHeader>Success!</AlertDialogHeader>
                     <AlertDialogCloseButton />
+                    <Center borderTopRadius={'md'} w='100%' h='12rem' bg='green.400' color='white'>
+                        <Icon as={CheckCircleIcon} w={24} h={24} />
+                    </Center>
                     <AlertDialogBody>
-                        A user was registered successfully!
+                        <VStack spacing={4}>
+                            <Center>
+                                <Text as='b' fontSize='4xl'> Great! </Text>
+                            </Center>
+                            <Center>
+                                <Text fontSize='lg'> Your account has been created successfully. </Text>
+                            </Center>
+                        </VStack>
                     </AlertDialogBody>
                     <AlertDialogFooter>
-                        <Button onClick={() => { navigate('/login'); }} colorScheme='green' ml={3}>
-                            Sign in!
+                        <Button onClick={() => { navigate('/login'); }} rightIcon={<ArrowForwardIcon />} colorScheme='gray' variant='outline'>
+                            Sign In
                         </Button>
                     </AlertDialogFooter>
                 </AlertDialogContent>

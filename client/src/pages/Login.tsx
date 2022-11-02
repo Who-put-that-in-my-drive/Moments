@@ -23,7 +23,7 @@ import axios from 'axios';
 import useStore from '../store/store';
 import { useState } from 'react';
 
-type FormValues = {
+type LoginFormValues = {
     email: string
     password: string
 };
@@ -31,7 +31,6 @@ type FormValues = {
 export default function Login() {
     const navigate = useNavigate();
     const store = useStore();
-    const loggedIn = store.loggedIn;
     const { colorMode } = useColorMode();
     const {
         register,
@@ -39,10 +38,11 @@ export default function Login() {
         formState: { errors },
         setError,
         reset
-    } = useForm<FormValues>();
+    } = useForm<LoginFormValues>();
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmitForm = async (data: FormValues) => {
+    const handleSubmitForm = async (data: LoginFormValues) => {
+        console.log(data);
         try {
             const response: any = await login(data.email, data.password);
             if (response.data === 'Signed In') {
@@ -81,7 +81,6 @@ export default function Login() {
     return (
         <Center marginTop={['5rem', '7rem', '0', '0']} h={'100vh'} padding={['0rem', '0.5rem', '3rem', '5rem']}>
             <ScaleFade initialScale={0.9} in>
-                <Text>Login Status: {loggedIn ? 'True => redirect to Dashboard' : 'False'}</Text>
                 <Box borderRadius='lg' boxShadow='2xl' >
                     <Flex direction={{ base: 'column', sm: 'row' }} >
                         <Flex flex={1}>
