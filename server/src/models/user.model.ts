@@ -33,7 +33,7 @@ const userSchema = new Schema(
             maxLength: 18
         },
         images: {
-            type: [String],
+            type: Map,
             required: true
         },
         lastLoginDateTime: {

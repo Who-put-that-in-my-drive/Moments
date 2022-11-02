@@ -54,7 +54,7 @@ router.route('/register').post(async (req: Request, res: Response) => {
             email,
             password: hashedPassword,
             displayName,
-            images: [],
+            images: {},
             lastLoginDateTime: dateTime,
             createdDateTime: dateTime
         });

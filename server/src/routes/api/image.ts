@@ -7,6 +7,7 @@ import User from '../../models/user.model';
 import Image from '../../models/image.model';
 import {getCurrentDateTime} from '../../utilities/server';
 import AWS from 'aws-sdk';
+import {ImageModel} from '../../interfaces/image/Image';
 
 const s3: AWS.S3 = new AWS.S3();
 AWS.config.update({accessKeyId: process.env.ACCESS_KEY_ID, secretAccessKey: process.env.SECRET_ACCESS_KEY});
@@ -18,8 +19,37 @@ const router = express.Router();
 
 router
     .route('/')
-    .get(authenticateToken, (req: Request, res: Response) => {
+    .get(authenticateToken, async (req: Request, res: Response) => {
         try {
+            const imageId = req.query.imageId;
+            if (imageId  == null) {
+                return res.status(400).json(new ServerResponse('Bad Request'));
+            }
+
+            // @ts-ignore
+            const email = req.email;
+            // @ts-ignore
+            const user: UserModel = await User.findOne({email});
+
+            // @ts-ignore
+            if (user.images.get(imageId) == null) {
+                return res.status(400).json(new ServerResponse('Bad Request'));
+            }
+
+            // @ts-ignore
+            const image: ImageModel = await Image.findOne({_id: imageId});
+
+            if (image) {
+                const presignedUrl = s3.getSignedUrl('getObject', {
+                    Bucket: myBucket,
+                    Key: `${email}/${imageId}`,
+                    Expires: signedUrlExpireSeconds
+                });
+
+                return res.status(200).json(new ServerResponse('Image Data Retrieved').setData({presignedUrl}));
+            } else {
+                return res.status(400).json(new ServerResponse('Bad Request'));
+            }
         } catch (e) {
             console.error(e);
             return res.status(500).json(new ServerResponse(String(e)));
@@ -45,16 +75,16 @@ router
 
             if (await newImage.save()) {
                 // @ts-ignore
-                const user: UserModel = await User.findOneAndUpdate({email}, { $push: { images: newImage._id } } );
+                const user: UserModel = await User.findOneAndUpdate({email}, { '$set': { images: {[newImage._id]: newImage._id } } });
 
-                const presignedUrl = s3.getSignedUrl('getObject', {
+                const presignedUrl = s3.getSignedUrl('putObject', {
                     Bucket: myBucket,
                     Key: `${email}/${newImage._id}`,
                     Expires: signedUrlExpireSeconds
                 });
 
                 if (user) {
-                    return res.status(201).json(new ServerResponse('Image Uploaded Successfully').setData({presignedUrl: presignedUrl}));
+                    return res.status(201).json(new ServerResponse('Image Uploaded Successfully').setData({presignedUrl}));
                 } else {
                     return res.status(502).json(new ServerResponse('Uh oh something went wrong :('));
                 }

@@ -18,6 +18,11 @@ export default class ServerResponse {
         return this.getResponse();
     }
 
+    addData(data: object): MomentsResponse {
+        this.data = {...this.data, ...data};
+        return this.getResponse();
+    }
+
     setData(data: object): MomentsResponse {
         this.data = data;
         return this.getResponse();
