@@ -46,7 +46,7 @@ router
                     Expires: signedUrlExpireSeconds
                 });
 
-                return res.status(200).json(new ServerResponse('Image Data Retrieved').setData({presignedUrl}));
+                return res.status(200).json(new ServerResponse('Image Data Retrieved').setData({presignedUrl}).addData({image}));
             } else {
                 return res.status(400).json(new ServerResponse('Bad Request'));
             }

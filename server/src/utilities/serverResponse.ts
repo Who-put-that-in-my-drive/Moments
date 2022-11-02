@@ -1,30 +1,26 @@
-import {MomentsResponse} from '../interfaces/general/MomentsResponse';
-
 export default class ServerResponse {
     private data?: object;
     private msg!: string;
 
     constructor(msg: string, data?: object) {
         this.msg = msg;
-        this.data = data;
+        if (data) {
+            this.data = data;
+        }
     }
 
-    getResponse(): MomentsResponse {
-        return this.data ? {data: this.data, msg: this.msg} : {msg: this.msg};
-    }
-
-    setMsg(msg: string): MomentsResponse {
+    setMsg(msg: string): ServerResponse {
         this.msg = msg;
-        return this.getResponse();
+        return this;
     }
 
-    addData(data: object): MomentsResponse {
+    addData(data: object): ServerResponse {
         this.data = {...this.data, ...data};
-        return this.getResponse();
+        return this;
     }
 
-    setData(data: object): MomentsResponse {
+    setData(data: object): ServerResponse {
         this.data = data;
-        return this.getResponse();
+        return this;
     }
 }
