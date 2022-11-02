@@ -30,11 +30,6 @@ const imageSchema = new Schema(
             type: [String],
             required: true
         },
-        owner: {
-            type: String,
-            required: true,
-            trim: true,
-        },
         location: {
             type: String,
             required: true,

@@ -6,7 +6,13 @@ import {UserModel} from '../../interfaces/auth/User';
 import User from '../../models/user.model';
 import Image from '../../models/image.model';
 import {getCurrentDateTime} from '../../utilities/server';
-import Jwt from '../../utilities/jwt';
+import AWS from 'aws-sdk';
+
+const s3: AWS.S3 = new AWS.S3();
+AWS.config.update({accessKeyId: process.env.ACCESS_KEY_ID, secretAccessKey: process.env.SECRET_ACCESS_KEY});
+
+const myBucket = 'moments-gallery'; // Moments Bucket
+const signedUrlExpireSeconds = 60 * 5; // 5 Minutes
 
 const router = express.Router();
 
@@ -32,18 +38,23 @@ router
                 caption: uploadImageDTO.caption,
                 tags: uploadImageDTO.tags,
                 categories: uploadImageDTO.categories,
-                owner: email,
-                location: uploadImageDTO.location,
+                location: uploadImageDTO.location || 'N/A',
                 lastModifiedDateTime: dateTime,
                 uploadedDateTime: dateTime,
             });
 
             if (await newImage.save()) {
-                //@ts-ignore
+                // @ts-ignore
                 const user: UserModel = await User.findOneAndUpdate({email}, { $push: { images: newImage._id } } );
 
+                const presignedUrl = s3.getSignedUrl('getObject', {
+                    Bucket: myBucket,
+                    Key: `${email}/${newImage._id}`,
+                    Expires: signedUrlExpireSeconds
+                });
+
                 if (user) {
-                    return res.status(201).json(new ServerResponse('Image Uploaded Successfully'));
+                    return res.status(201).json(new ServerResponse('Image Uploaded Successfully').setData({presignedUrl: presignedUrl}));
                 } else {
                     return res.status(502).json(new ServerResponse('Uh oh something went wrong :('));
                 }
