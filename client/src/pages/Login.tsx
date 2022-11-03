@@ -42,10 +42,9 @@ export default function Login() {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmitForm = async (data: LoginFormValues) => {
-        console.log(data);
         try {
             const response: any = await login(data.email, data.password);
-            if (response.data === 'Signed In') {
+            if (response.data.msg === 'Signed In') {
                 reset();
                 store.setLoggedIn(true);
                 setIsLoading(false);
@@ -53,7 +52,7 @@ export default function Login() {
             }
         } catch (error: any) {
             setIsLoading(false);
-            if (error.response.data === 'Incorrect Password') {
+            if (error.response.data.msg === 'Incorrect Password') {
                 setError('password', {
                     message: 'Wrong password!',
                 });
