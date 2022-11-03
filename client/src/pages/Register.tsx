@@ -31,6 +31,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { ArrowForwardIcon, CheckCircleIcon } from '@chakra-ui/icons';
+import {getServerUrl} from '../utils/WebsiteUtils';
 
 type RegisterFormValues = {
     email: string,
@@ -72,7 +73,7 @@ export default function Register() {
     const registerUser = async (data: RegisterFormValues): Promise<void> => {
         setIsLoading(true);
         const userData = { displayName: data.displayName, email: data.email, password: data.password };
-        const URL = process.env.REACT_APP_DEV_SERVER_URL;
+        const URL = getServerUrl();
         return await axios.post(URL + '/api/auth/register', userData);
     };
 

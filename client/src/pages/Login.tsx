@@ -22,6 +22,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import useStore from '../store/store';
 import { useState } from 'react';
+import {getServerUrl} from '../utils/WebsiteUtils';
 
 type LoginFormValues = {
     email: string
@@ -71,7 +72,7 @@ export default function Login() {
     const login = async (email: string, password: string): Promise<void> => {
         setIsLoading(true);
         const userData = { email: email, password: password };
-        const URL = process.env.REACT_APP_DEV_SERVER_URL;
+        const URL = getServerUrl();
         return await axios.post(URL + '/api/auth/login', userData);
     };
 
