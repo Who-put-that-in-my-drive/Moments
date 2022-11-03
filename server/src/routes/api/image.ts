@@ -8,12 +8,23 @@ import Image from '../../models/image.model';
 import {getCurrentDateTime} from '../../utilities/server';
 import AWS from 'aws-sdk';
 import {ImageModel} from '../../interfaces/image/Image';
+import { s3Client } from '../../utilities/s3Client';
+import {
+    CreateBucketCommand,
+    DeleteObjectCommand,
+    PutObjectCommand,
+    DeleteBucketCommand, GetObjectCommand
+}
+    from '@aws-sdk/client-s3';
+// @ts-ignore
+import {getSignedUrl} from '@aws-sdk/s3-request-presigner';
 
-const s3: AWS.S3 = new AWS.S3();
 AWS.config.update({accessKeyId: process.env.ACCESS_KEY_ID, secretAccessKey: process.env.SECRET_ACCESS_KEY});
+AWS.config.update({region: 'us-east-1'});
+const s3: AWS.S3 = new AWS.S3();
 
 const myBucket = 'moments-gallery'; // Moments Bucket
-const signedUrlExpireSeconds = 60 * 5; // 5 Minutes
+const signedUrlExpireSeconds = 3600; // 1 hour
 
 const router = express.Router();
 
@@ -40,10 +51,15 @@ router
             const image: ImageModel = await Image.findOne({_id: imageId});
 
             if (image) {
-                const presignedUrl = s3.getSignedUrl('getObject', {
+                // Create the command.
+                const command = new GetObjectCommand({
                     Bucket: myBucket,
-                    Key: `${email}/${imageId}`,
-                    Expires: signedUrlExpireSeconds
+                    Key: `${email}/${imageId}.${image.format}`,
+                });
+
+                // Create the presigned URL.
+                const presignedUrl = await getSignedUrl(s3Client, command, {
+                    expiresIn: signedUrlExpireSeconds,
                 });
 
                 return res.status(200).json(new ServerResponse('Image Data Retrieved').setData({presignedUrl}).addData({image}));
@@ -64,6 +80,7 @@ router
 
             const newImage = new Image({
                 title: uploadImageDTO.title,
+                format: uploadImageDTO.format,
                 size: uploadImageDTO.size,
                 caption: uploadImageDTO.caption,
                 tags: uploadImageDTO.tags,
@@ -73,14 +90,19 @@ router
                 uploadedDateTime: dateTime,
             });
 
+            const imageId = newImage._id.toString();
+
             if (await newImage.save()) {
                 // @ts-ignore
-                const user: UserModel = await User.findOneAndUpdate({email}, { '$set': { images: {[newImage._id]: newImage._id } } });
+                const user: UserModel = await User.findOneAndUpdate({email}, { '$set': { images: {[imageId]: imageId } } });
 
-                const presignedUrl = s3.getSignedUrl('putObject', {
+                const command = new PutObjectCommand({
                     Bucket: myBucket,
-                    Key: `${email}/${newImage._id}`,
-                    Expires: signedUrlExpireSeconds
+                    Key: `${email}/${imageId}.${uploadImageDTO.format}`,
+                });
+
+                const presignedUrl = await getSignedUrl(s3Client, command, {
+                    expiresIn: signedUrlExpireSeconds
                 });
 
                 if (user) {

@@ -10,6 +10,12 @@ const imageSchema = new Schema(
             minlength: 1,
             maxLength: 32
         },
+        format: {
+            type: String,
+            required: true,
+            minlength: 3,
+            maxLength: 4
+        },
         size: {
             type: String,
             required: true,
