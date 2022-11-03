@@ -1,4 +1,4 @@
-import {genSalt, hash, compare} from 'bcryptjs';
+import {compare,genSalt, hash} from 'bcryptjs';
 
 export const getHashedValue = async (secret: string): Promise<string> => {
     return hash(secret, await genSalt(12));

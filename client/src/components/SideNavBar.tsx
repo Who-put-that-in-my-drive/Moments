@@ -1,25 +1,26 @@
 import {
+    Avatar,
     Box,
     Button,
-    Drawer,
-    DrawerOverlay,
-    DrawerCloseButton,
-    DrawerHeader,
-    DrawerBody,
-    DrawerContent,
-    VStack,
-    Link,
-    Flex,
     Divider,
-    Avatar,
+    Drawer,
+    DrawerBody,
+    DrawerCloseButton,
+    DrawerContent,
+    DrawerHeader,
+    DrawerOverlay,
+    Flex,
     Heading,
-    Text,
     Image,
+    Link,
+    Text,
+    VStack,
 } from '@chakra-ui/react';
 import { MouseEventHandler } from 'react';
 import { Link as ReactLink } from 'react-router-dom';
-import useStore from '../store/store';
+
 import logo from '../assets/images/logo_transparent.png';
+import useStore from '../store/store';
 
 
 

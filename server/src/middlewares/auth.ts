@@ -1,5 +1,6 @@
-import * as jwt from 'jsonwebtoken';
 import {NextFunction, Request, Response} from 'express';
+import * as jwt from 'jsonwebtoken';
+
 import Jwt from '../utilities/jwt';
 import ServerResponse from '../utilities/serverResponse';
 

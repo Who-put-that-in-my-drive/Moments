@@ -1,27 +1,27 @@
 import {
+    Box,
     Button,
+    Center,
     Checkbox,
     Flex,
     FormControl,
+    FormErrorMessage,
     FormLabel,
     Heading,
-    Input,
-    Stack,
-    Link,
     Image,
-    Box,
-    Center,
+    Input,
+    Link,
+    ScaleFade,
+    Stack,
     Text,
-    useColorMode,
-    FormErrorMessage,
-    ScaleFade
-} from '@chakra-ui/react';
-import logo from '../assets/images/logo_transparent.png';
-import { Link as ReactLink, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+    useColorMode} from '@chakra-ui/react';
 import axios from 'axios';
-import useStore from '../store/store';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link as ReactLink, useNavigate } from 'react-router-dom';
+
+import logo from '../assets/images/logo_transparent.png';
+import useStore from '../store/store';
 import {getServerUrl} from '../utils/WebsiteUtils';
 
 type LoginFormValues = {

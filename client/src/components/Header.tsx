@@ -1,5 +1,5 @@
-import { Box, Center, IconButton, Text, Flex } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
+import { Box, Center, Flex,IconButton, Text } from '@chakra-ui/react';
 import { MouseEventHandler } from 'react';
 
 interface Props {

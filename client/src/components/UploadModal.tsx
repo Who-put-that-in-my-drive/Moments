@@ -1,25 +1,24 @@
-import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    Button,
-    useDisclosure,
-    Input,
-    FormLabel,
-    FormControl,
-} from '@chakra-ui/react';
-
-import Uppy from '@uppy/core';
-import { Dashboard } from '@uppy/react';
-import AwsS3 from '@uppy/aws-s3';
-import React from 'react';
-
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
+
+import {
+    Button,
+    FormControl,
+    FormLabel,
+    Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    useDisclosure,
+} from '@chakra-ui/react';
+import AwsS3 from '@uppy/aws-s3';
+import Uppy from '@uppy/core';
+import { Dashboard } from '@uppy/react';
+import React from 'react';
 
 export const UploadModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();

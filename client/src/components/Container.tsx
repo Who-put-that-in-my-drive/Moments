@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
 import { Container, Heading, Spinner } from '@chakra-ui/react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+
 import {getServerUrl} from '../utils/WebsiteUtils';
 
 const MainContainer: React.FC = () => {

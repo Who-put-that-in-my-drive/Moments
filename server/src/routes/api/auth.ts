@@ -1,14 +1,15 @@
 import express, {Request, Response} from 'express';
 import validator from 'validator';
-import {RegisterUserDTO} from '../../interfaces/auth/RegisterUserDTO';
+
 import {LoginUserDTO} from '../../interfaces/auth/LoginUserDTO';
+import {RegisterUserDTO} from '../../interfaces/auth/RegisterUserDTO';
 import {UserModel} from '../../interfaces/auth/User';
 import User from '../../models/user.model';
 import {getHashedValue, validatePassword} from '../../utilities/bcrypt';
-import Jwt from '../../utilities/jwt';
 import Cookie from '../../utilities/cookie';
-import ServerResponse from '../../utilities/serverResponse';
+import Jwt from '../../utilities/jwt';
 import {getCurrentDateTime} from '../../utilities/server';
+import ServerResponse from '../../utilities/serverResponse';
 
 const router = express.Router();
 
@@ -79,15 +80,17 @@ router.route('/register').post(async (req: Request, res: Response) => {
  */
 router.route('/login').post(async (req: Request, res: Response) => {
     try {
-        const user: LoginUserDTO = req.body;
-        //@ts-ignore
-        const userDb: UserModel = await User.findOne({email: user.email});
+        const loginUserDTO: LoginUserDTO = req.body;
+
+        const userDb = await User.findOne({email: loginUserDTO.email});
         if (userDb) {
-            if (await validatePassword(user.password, userDb.password)) {
+            //@ts-ignore
+            const user: UserModel = userDb._doc;
+            if (await validatePassword(loginUserDTO.password, user.password)) {
                 // @ts-ignore
-                delete userDb.password;
-                const cookieWithJwt = new Cookie(await Jwt.generateJwt(userDb.email)).generateCookie();
-                return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(new ServerResponse('Signed In').addData(userDb));
+                delete user.password;
+                const cookieWithJwt = new Cookie(await Jwt.generateJwt(user.email)).generateCookie();
+                return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(new ServerResponse('Signed In').addData({user}));
             } else {
                 return res.status(403).json(new ServerResponse('Incorrect Email/Password'));
             }
