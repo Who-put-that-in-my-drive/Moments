@@ -31,7 +31,7 @@
     "import/no-mutable-exports": 0,
     "import/named": 0,
     "indent": [
-      "error",
+      "warn",
       4
     ],
     "linebreak-style": [
@@ -39,17 +39,17 @@
       "unix"
     ],
     "no-mixed-spaces-and-tabs": [
-      "error",
+      "warn",
       "smart-tabs"
     ],
     "no-tabs": 0,
     "no-unused-vars": "warn",
     "quotes": [
-      "error",
+      "warn",
       "single"
     ],
     "semi": [
-      "error",
+      "warn",
       "always"
     ],
     "@typescript-eslint/no-unused-vars": 0

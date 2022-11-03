@@ -1,158 +1,25 @@
-import {
-    Button,
-    Checkbox,
-    Flex,
-    FormControl,
-    FormLabel,
-    Heading,
-    Input,
-    Stack,
-    Link,
-    Image,
-    Box,
-    Center,
-    Text,
-    useColorMode,
-    FormErrorMessage,
-    ScaleFade
-} from '@chakra-ui/react';
-import logo from '../assets/images/logo_transparent.png';
-import { Link as ReactLink } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
-import useStore from '../store/store';
-import { useState } from 'react';
+import Uppy from '@uppy/core';
+import {Dashboard} from '@uppy/react';
 
-import UploadModal from '../components/UploadModal';
-
-type FormValues = {
-    email: string
-    password: string
-};
+import '@uppy/core/dist/style.css';
+import '@uppy/dashboard/dist/style.css';
+import AwsS3 from '@uppy/aws-s3';
 
 export default function Login() {
-
-    const store = useStore();
-    const loggedIn = store.loggedIn;
-    const { colorMode } = useColorMode();
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        setError,
-        reset
-    } = useForm<FormValues>();
-    const [isLoading, setIsLoading] = useState(false);
-
-    const handleSubmitForm = async (data: FormValues) => {
-        try {
-            const response: any = await login(data.email, data.password);
-            if (response.data === 'Signed In') {
-                reset();
-                store.setLoggedIn(true);
-                setIsLoading(false);
-                //Redirect to Dashboard page from here
-            }
-        } catch (error: any) {
-            setIsLoading(false);
-            if (error.response.data === 'Incorrect Password') {
-                setError('password', {
-                    message: 'Wrong password!',
-                });
-            } else {
-                setError('email', {
-                    message: 'Please check your credentials!',
-                });
-                setError('password', {
-                    message: 'Please check your credentials!',
-                });
-            }
-        }
-    };
-
-
-    const login = async (email: string, password: string): Promise<void> => {
-        setIsLoading(true);
-        const userData = { email: email, password: password };
-        const URL = process.env.REACT_APP_DEV_SERVER_URL;
-        return await axios.post(URL + '/api/auth/login', userData);
-    };
-
-    const minPassLength: number = 5;
+    //@ts-ignore
+    const uppy = new Uppy({ autoProceed: false, debug: true, id: 'uppy1' });
+    uppy.use(AwsS3, {
+        companionUrl: 'https://moments-gallery.s3.us-east-1.amazonaws.com/mwpereira07%40gmail.com/63631b1f638c94cccebecaf3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA355WHX4HNB6Y352O%2F20221103%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221103T013631Z&X-Amz-Expires=3600&X-Amz-Signature=a01cf5b3fb2755e35aa2fa445c5f24472f265450d6b51d4f963919695db5a6b5&X-Amz-SignedHeaders=host&x-id=PutObject',
+        limit: 1,
+        timeout: 300000,
+    });
 
     return (
-        <Center p={'1rem'} height={'100vh'}>
-            <UploadModal></UploadModal>
-            <ScaleFade initialScale={0.9} in>
-                <Text>Login Status: {loggedIn ? 'True => redirect to Dashboard' : 'False'}</Text>
-                <Box w={'85rem'} borderRadius='lg' boxShadow='2xl'  >
-                    <Stack justify={'center'} direction={{ base: 'column', md: 'row' }} >
-                        <Flex flex={1}>
-                            <Image
-                                bg={colorMode === 'light' ? 'gray.700' : 'gray.100'}
-                                borderLeftRadius='lg'
-                                alt={'Login Image'}
-                                objectFit={'cover'}
-                                src={logo}
-                            />
-                        </Flex>
-                        <Flex p={5} flex={1} align={'center'} justify={'center'}>
-                            <form style={{ width: '80%' }} onSubmit={handleSubmit(handleSubmitForm)}>
-                                <Stack spacing={4} w={'full'} >
-                                    <Heading marginY={'2rem'} textAlign={'center'} fontSize={'4xl'}>Sign in</Heading>
-
-                                    <FormControl margin={'1rem'} isInvalid={Boolean(errors.email)}>
-                                        <FormLabel>Email</FormLabel>
-                                        <Input
-                                            {...register(
-                                                'email',
-                                                {
-                                                    required: 'Please enter a valid email',
-                                                })
-                                            } shadow={'md'} type='email' />
-                                        <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
-                                    </FormControl>
-
-                                    <FormControl isInvalid={Boolean(errors.password)}>
-                                        <FormLabel>Password</FormLabel>
-                                        <Input
-                                            {...register(
-                                                'password',
-                                                {
-                                                    minLength: {
-                                                        message: `Minimum of ${minPassLength} characters required`,
-                                                        value: minPassLength,
-                                                    },
-                                                    required: 'Please enter a valid password',
-                                                })} shadow={'md'} type='password' />
-                                        <FormErrorMessage>
-                                            {errors.password && errors.password.message}
-                                        </FormErrorMessage>
-                                    </FormControl>
-                                    <Stack spacing={10}>
-                                        <Stack
-                                            direction={{ base: 'column', sm: 'row' }}
-                                            align={'start'}
-                                            justify={'space-between'}>
-                                            <Checkbox>Remember me</Checkbox>
-                                            <Link color={'blue.500'}>Forgot password?</Link>
-                                        </Stack>
-                                        <Center>
-                                            <Button isLoading={isLoading} loadingText='Logging in...' shadow={'xl'} width={'80%'} type='submit' colorScheme={'blue'} variant={'solid'}>
-                                                Sign in
-                                            </Button>
-                                        </Center>
-                                        <Text
-                                            // paddingBottom={'1rem'}
-                                            textAlign={'center'}
-                                            fontSize='md'>Don’t have an account? <Link color={'blue.500'} as={ReactLink} to='/register'>Sign Up</Link></Text>
-                                    </Stack>
-                                </Stack>
-                            </form>
-                        </Flex>
-                    </Stack>
-                </Box >
-            </ScaleFade>
-        </Center>
+        <Dashboard
+            // @ts-ignore
+            autoProceed="true"
+            uppy={uppy}
+            metaFields={[{ id: 'name', name: 'Name', placeholder: 'File name' }]}
+        />
     );
 };
