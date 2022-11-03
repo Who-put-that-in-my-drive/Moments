@@ -16,7 +16,10 @@ export default class Jwt {
                 {
                     sub: email
                 },
-                secret
+                secret,
+                {
+                    expiresIn: '1h'
+                }
             ));
         });
     }

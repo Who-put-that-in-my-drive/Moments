@@ -103,7 +103,7 @@ export default function Register() {
                                                     'displayName',
                                                     {
                                                         minLength: {
-                                                            message: `Minimum ${minUsernameLength}characters required`,
+                                                            message: `Minimum ${minUsernameLength} characters required`,
                                                             value: minUsernameLength,
                                                         },
                                                         required: 'Please enter a valid username',

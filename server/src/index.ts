@@ -27,6 +27,7 @@ app.use(
 );
 
 app.get('/', (req: Request, res: Response) => {
+    console.log('Cookies: ', req.cookies);
     res.send({ message: 'Server Online!' });
 });
 
