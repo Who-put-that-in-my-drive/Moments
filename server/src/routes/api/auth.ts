@@ -84,8 +84,10 @@ router.route('/login').post(async (req: Request, res: Response) => {
         const userDb: UserModel = await User.findOne({email: user.email});
         if (userDb) {
             if (await validatePassword(user.password, userDb.password)) {
+                // @ts-ignore
+                delete userDb.password;
                 const cookieWithJwt = new Cookie(await Jwt.generateJwt(userDb.email)).generateCookie();
-                return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(new ServerResponse('Signed In'));
+                return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(new ServerResponse('Signed In').addData(userDb));
             } else {
                 return res.status(403).json(new ServerResponse('Incorrect Email/Password'));
             }
