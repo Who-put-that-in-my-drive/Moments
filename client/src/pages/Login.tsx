@@ -23,6 +23,8 @@ import axios from 'axios';
 import useStore from '../store/store';
 import { useState } from 'react';
 
+import UploadModal from '../components/UploadModal';
+
 type FormValues = {
     email: string
     password: string
@@ -80,6 +82,7 @@ export default function Login() {
 
     return (
         <Center p={'1rem'} height={'100vh'}>
+            <UploadModal></UploadModal>
             <ScaleFade initialScale={0.9} in>
                 <Text>Login Status: {loggedIn ? 'True => redirect to Dashboard' : 'False'}</Text>
                 <Box w={'85rem'} borderRadius='lg' boxShadow='2xl'  >
