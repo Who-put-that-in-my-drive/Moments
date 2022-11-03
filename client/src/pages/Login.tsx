@@ -42,14 +42,14 @@ export default function Login() {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmitForm = async (data: LoginFormValues) => {
-        console.log(data);
+        // console.log(data);
         try {
             const response: any = await login(data.email, data.password);
-            if (response.data === 'Signed In') {
+            if (response) {
                 reset();
                 store.setLoggedIn(true);
                 setIsLoading(false);
-                navigate('/dashboard');
+                navigate('/dashboard/home');
             }
         } catch (error: any) {
             setIsLoading(false);
