@@ -17,20 +17,22 @@ const Dashboard = () => {
     return (
         <>
             <Flex direction={['column', 'column', 'row', 'row']}>
-                <Box height={'100vh'}>
+                <Box height={['72px', '72px', '100vh']}>
                     <SideNavBar
                         variant={variants?.navigation}
                         isOpen={isSidebarOpen}
                         onClose={toggleSidebar}
                     />
-                    <Box marginLeft={!variants?.navigationButton ? '200px' : ''}>
+                    <Box zIndex={1000} marginLeft={!variants?.navigationButton ? '200px' : ''}>
                         <Header
                             showSidebarButton={variants?.navigationButton}
                             onShowSidebar={toggleSidebar}
                         />
                     </Box>
                 </Box>
-                <Outlet />
+                <Box zIndex={100} maxH='100vh' w='100%' overflowY='scroll'>
+                    <Outlet />
+                </Box>
             </Flex>
             <Flex>
 
