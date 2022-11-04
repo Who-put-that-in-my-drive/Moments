@@ -3,10 +3,10 @@ import {
     Container,
     FormControl,
     FormLabel,
-    HStack,
-    Stack,
-    Input,
     Heading,
+    HStack,
+    Input,
+    Stack,
 } from '@chakra-ui/react';
 
 export const Profile = () => {
