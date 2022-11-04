@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
 import { Container, Heading, Spinner } from '@chakra-ui/react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+
+import {getServerUrl} from '../utils/WebsiteUtils';
 
 const MainContainer: React.FC = () => {
 
     const [message, setMessage] = useState('Connecting to server...');
     const [spinnerDisplay, setSpinnerDisplay] = useState(true);
-    const URL = process.env.REACT_APP_DEV_SERVER_URL || '';
+    const URL = getServerUrl();
     useEffect(() => {
         axios.get(`${URL}/api/test`)
             .then(res => {

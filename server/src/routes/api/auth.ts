@@ -1,12 +1,14 @@
 import express, {Request, Response} from 'express';
 import validator from 'validator';
-import {RegisterUserDTO} from '../../interfaces/auth/RegisterUserDTO';
+
 import {LoginUserDTO} from '../../interfaces/auth/LoginUserDTO';
-import {IUser} from '../../interfaces/IUser';
+import {RegisterUserDTO} from '../../interfaces/auth/RegisterUserDTO';
+import {UserModel} from '../../interfaces/auth/User';
 import User from '../../models/user.model';
 import {getHashedValue, validatePassword} from '../../utilities/bcrypt';
-import Jwt from '../../utilities/jwt';
 import Cookie from '../../utilities/cookie';
+import Jwt from '../../utilities/jwt';
+import {getCurrentDateTime} from '../../utilities/server';
 import ServerResponse from '../../utilities/serverResponse';
 
 const router = express.Router();
@@ -24,7 +26,7 @@ router.route('/register').post(async (req: Request, res: Response) => {
         const email = user.email;
         const password = user.password;
         const displayName = user.displayName;
-        const dateTime = Math.floor(new Date().getTime() / 1000.0); //Epoch in milliseconds
+        const dateTime = getCurrentDateTime();
 
         // Mongoose handles verifications and generates errors, although we want to handle this part
         if (!(validator.isEmail(email))) {
@@ -39,13 +41,21 @@ router.route('/register').post(async (req: Request, res: Response) => {
             return res.status(400).json(new ServerResponse('Invalid Display Length'));
         }
 
+        if (await User.findOne({email})) {
+            return res.status(400).json(new ServerResponse('Email Already In Use'));
+        }
+
+        if (await User.findOne({displayName})) {
+            return res.status(400).json(new ServerResponse('Display Name Already In Use'));
+        }
+
         const hashedPassword = await getHashedValue(user.password);
 
         const newUser = new User({
             email,
             password: hashedPassword,
             displayName,
-            images: [],
+            images: {},
             lastLoginDateTime: dateTime,
             createdDateTime: dateTime
         });
@@ -70,20 +80,27 @@ router.route('/register').post(async (req: Request, res: Response) => {
  */
 router.route('/login').post(async (req: Request, res: Response) => {
     try {
-        const user: LoginUserDTO = req.body;
+        const loginUserDTO: LoginUserDTO = req.body;
 
-        //@ts-ignore
-        const userDb: IUser = await User.findOne({email: user.email});
-
-        if (await validatePassword(user.password, userDb.password)) {
-            const cookieWithJwt = new Cookie(await Jwt.generateJwt(userDb.email)).generateCookie();
-            return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(new ServerResponse('Signed In'));
+        const userDb = await User.findOneAndUpdate({email: loginUserDTO.email}, {$set: {lastLoginDateTime: getCurrentDateTime()}});
+        if (userDb) {
+            //@ts-ignore
+            const user: UserModel = userDb._doc;
+            if (await validatePassword(loginUserDTO.password, user.password)) {
+                // @ts-ignore
+                delete user.password;
+                const cookieWithJwt = new Cookie(await Jwt.generateJwt(user.email)).generateCookie();
+                return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(new ServerResponse('Signed In').addData({user}));
+            } else {
+                return res.status(403).json(new ServerResponse('Incorrect Email/Password'));
+            }
         } else {
+            // User not found
             return res.status(403).json(new ServerResponse('Incorrect Email/Password'));
         }
     } catch (e) {
         console.error(e);
-        res.status(500).json(e);
+        res.status(500).json(new ServerResponse(String(e)));
     }
 });
 
@@ -100,7 +117,7 @@ router.route('/logout').get(async (req: Request, res: Response) => {
         return res.setHeader('Set-Cookie', cookieWithJwt).status(200).json(new ServerResponse('Signed Out'));
     } catch (e) {
         console.error(e);
-        res.status(500).json(e);
+        res.status(500).json(new ServerResponse(String(e)));
     }
 });
 

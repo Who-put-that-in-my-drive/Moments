@@ -37,16 +37,16 @@
   "rules": {
     "no-unused-vars": "warn",
     "react/display-name": "warn",
-    "react/jsx-no-bind": ["error", {
+    "react/jsx-no-bind": ["warn", {
       "allowArrowFunctions": true,
       "allowBind": false,
       "ignoreRefs": true
     }],
     "react/jsx-uses-vars": "warn",
-    "react/no-did-update-set-state": "error",
-    "react/no-unknown-property": "error",
-    "react/no-unused-prop-types": "error",
-    "react/prop-types": "error",
+    "react/no-did-update-set-state": "warn",
+    "react/no-unknown-property": "warn",
+    "react/no-unused-prop-types": "warn",
+    "react/prop-types": "warn",
     "react/react-in-jsx-scope": "off",
     "sort-keys-fix/sort-keys-fix": "warn"
   }

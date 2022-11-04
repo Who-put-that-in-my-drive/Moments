@@ -1,48 +1,48 @@
 {
-  "name": "moments",
-  "version": "1.0.0",
-  "description": "",
-  "private": true,
-  "author": "",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Who-put-that-in-my-drive/Moments.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Who-put-that-in-my-drive/Moments/issues"
-  },
-  "homepage": "https://github.com/Who-put-that-in-my-drive/Moments#readme",
-  "workspaces": [
-    "aws",
-    "client",
-    "server"
-  ],
-  "scripts": {
-    "aws-deploy": "npm run deploy -w aws",
-    "aws-remove": "npm run remove -w aws",
-    "build-server": "npm run build -w server",
-    "install-git-hooks": "npx simple-git-hooks",
-    "lint": "npm run lint-client && npm run lint-server",
-    "lint-client": "npm run lint:fix -w client",
-    "lint-server": "npm run lint:fix -w server",
-    "start-all": "concurrently \"npm start -w server\" \"npm start -w client\"",
-    "start-aws": "npm start -w aws",
-    "start-client": "npm start -w client",
-    "start-server": "npm start -w server",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "devDependencies": {
-    "@babel/preset-env": "^7.19.3",
-    "@types/node": "^18.8.1",
-    "concurrently": "^7.4.0",
-    "eslint": "^8.24.0",
-    "eslint-import-resolver-typescript": "^3.5.1",
-    "eslint-plugin-import": "^2.26.0",
-    "lint-staged": "^13.0.3",
-    "simple-git-hooks": "^2.8.0"
-  },
-  "engines": {
-    "node": ">=16"
-  }
+	"name": "moments",
+	"version": "1.0.0",
+	"description": "",
+	"private": true,
+	"author": "",
+	"license": "ISC",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Who-put-that-in-my-drive/Moments.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Who-put-that-in-my-drive/Moments/issues"
+	},
+	"homepage": "https://github.com/Who-put-that-in-my-drive/Moments#readme",
+	"workspaces": [
+		"aws",
+		"client",
+		"server"
+	],
+	"scripts": {
+		"aws-deploy": "npm run deploy -w aws",
+		"aws-remove": "npm run remove -w aws",
+		"build-server": "npm run build -w server",
+		"install-git-hooks": "npx simple-git-hooks",
+		"lint": "npm run lint-client && npm run lint-server",
+		"lint-client": "npm run lint:fix -w client",
+		"lint-server": "npm run lint:fix -w server",
+		"start-all": "concurrently \"npm start -w server\" \"npm start -w client\"",
+		"start-aws": "npm start -w aws",
+		"start-client": "npm start -w client",
+		"start-server": "npm start -w server",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"devDependencies": {
+		"@babel/preset-env": "^7.19.3",
+		"@types/node": "^18.8.1",
+		"concurrently": "^7.4.0",
+		"eslint": "^8.24.0",
+		"eslint-import-resolver-typescript": "^3.5.1",
+		"eslint-plugin-import": "^2.26.0",
+		"lint-staged": "^13.0.3",
+		"simple-git-hooks": "^2.8.0"
+	},
+	"engines": {
+		"node": ">=16"
+	}
 }

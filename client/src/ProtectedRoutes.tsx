@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
+
 import useStore from './store/store';
 
 const store = useStore();
