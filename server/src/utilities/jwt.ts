@@ -1,5 +1,5 @@
-import * as jwt from 'jsonwebtoken';
 import {Request} from 'express';
+import * as jwt from 'jsonwebtoken';
 
 const secret = process.env.JWT_SECRET as string;
 

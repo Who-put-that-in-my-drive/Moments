@@ -1,27 +1,28 @@
 import {
+    Box,
     Button,
+    Center,
     Checkbox,
     Flex,
     FormControl,
+    FormErrorMessage,
     FormLabel,
     Heading,
-    Input,
-    Stack,
-    Link,
     Image,
-    Box,
-    Center,
+    Input,
+    Link,
+    ScaleFade,
+    Stack,
     Text,
-    useColorMode,
-    FormErrorMessage,
-    ScaleFade
-} from '@chakra-ui/react';
-import logo from '../assets/images/logo_transparent.png';
-import { Link as ReactLink, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+    useColorMode} from '@chakra-ui/react';
 import axios from 'axios';
-import useStore from '../store/store';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link as ReactLink, useNavigate } from 'react-router-dom';
+
+import logo from '../assets/images/logo_transparent.png';
+import useStore from '../store/store';
+import {getServerUrl} from '../utils/WebsiteUtils';
 
 type LoginFormValues = {
     email: string
@@ -42,10 +43,9 @@ export default function Login() {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmitForm = async (data: LoginFormValues) => {
-        console.log(data);
         try {
             const response: any = await login(data.email, data.password);
-            if (response.data === 'Signed In') {
+            if (response.data.msg === 'Signed In') {
                 reset();
                 store.setLoggedIn(true);
                 setIsLoading(false);
@@ -53,7 +53,7 @@ export default function Login() {
             }
         } catch (error: any) {
             setIsLoading(false);
-            if (error.response.data === 'Incorrect Password') {
+            if (error.response.data.msg === 'Incorrect Password') {
                 setError('password', {
                     message: 'Wrong password!',
                 });
@@ -72,7 +72,7 @@ export default function Login() {
     const login = async (email: string, password: string): Promise<void> => {
         setIsLoading(true);
         const userData = { email: email, password: password };
-        const URL = process.env.REACT_APP_DEV_SERVER_URL;
+        const URL = getServerUrl();
         return await axios.post(URL + '/api/auth/login', userData);
     };
 

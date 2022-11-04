@@ -1,23 +1,22 @@
-import express, {Request, Response} from 'express';
-import {authenticateToken} from '../../middlewares/auth';
-import ServerResponse from '../../utilities/serverResponse';
-import {UploadImageDTO} from '../../interfaces/image/UploadImageDTO';
-import {UserModel} from '../../interfaces/auth/User';
-import User from '../../models/user.model';
-import Image from '../../models/image.model';
-import {getCurrentDateTime} from '../../utilities/server';
-import AWS from 'aws-sdk';
-import {ImageModel} from '../../interfaces/image/Image';
-import { s3Client } from '../../utilities/s3Client';
 import {
     CreateBucketCommand,
-    DeleteObjectCommand,
-    PutObjectCommand,
-    DeleteBucketCommand, GetObjectCommand
-}
+    DeleteBucketCommand,     DeleteObjectCommand,
+    GetObjectCommand,
+    PutObjectCommand}
     from '@aws-sdk/client-s3';
-// @ts-ignore
 import {getSignedUrl} from '@aws-sdk/s3-request-presigner';
+import AWS from 'aws-sdk';
+import express, {Request, Response} from 'express';
+
+import {UserModel} from '../../interfaces/auth/User';
+import {ImageModel} from '../../interfaces/image/Image';
+import {UploadImageDTO} from '../../interfaces/image/UploadImageDTO';
+import {authenticateToken} from '../../middlewares/auth';
+import Image from '../../models/image.model';
+import User from '../../models/user.model';
+import { s3Client } from '../../utilities/s3Client';
+import {getCurrentDateTime} from '../../utilities/server';
+import ServerResponse from '../../utilities/serverResponse';
 
 AWS.config.update({accessKeyId: process.env.ACCESS_KEY_ID, secretAccessKey: process.env.SECRET_ACCESS_KEY});
 AWS.config.update({region: 'us-east-1'});

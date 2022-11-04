@@ -9,6 +9,7 @@
     "plugin:import/typescript"
   ],
   "plugins": [
+    "simple-import-sort",
     "sort-keys-fix"
   ],
   "settings": {
@@ -31,25 +32,27 @@
     "import/no-mutable-exports": 0,
     "import/named": 0,
     "indent": [
-      "error",
+      "warn",
       4
     ],
     "linebreak-style": [
-      "error",
+      "warn",
       "unix"
     ],
     "no-mixed-spaces-and-tabs": [
-      "error",
+      "warn",
       "smart-tabs"
     ],
     "no-tabs": 0,
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
+    "simple-import-sort/imports": "warn",
+    "simple-import-sort/exports": "warn",
     "quotes": [
-      "error",
+      "warn",
       "single"
     ],
     "semi": [
-      "error",
+      "warn",
       "always"
     ],
     "@typescript-eslint/no-unused-vars": 0

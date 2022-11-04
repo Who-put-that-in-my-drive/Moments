@@ -1,4 +1,5 @@
-import {Schema, model} from 'mongoose';
+import {model,Schema} from 'mongoose';
+
 import {ImageModel} from '../interfaces/image/Image';
 
 const imageSchema = new Schema(

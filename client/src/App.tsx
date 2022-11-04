@@ -1,18 +1,14 @@
 import './App.css';
-import {
-    BrowserRouter as Router,
-    Route,
-    Routes,
-    Navigate,
-} from 'react-router-dom';
 
+import { Button, useColorMode } from '@chakra-ui/react';
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
+
+import Dashboard from './pages/Dashboard';
 // import Container from './components/Container';
 import Login from './pages/Login';
-import Register from './pages/Register';
-import { Button, useColorMode } from '@chakra-ui/react';
-import Dashboard from './pages/Dashboard';
-import { Uploads } from './pages/Uploads';
 import { Profile } from './pages/Profile';
+import Register from './pages/Register';
+import { Uploads } from './pages/Uploads';
 // import ProtectedRoutes from './ProtectedRoutes';
 
 

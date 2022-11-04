@@ -1,36 +1,37 @@
+import { ArrowForwardIcon, CheckCircleIcon } from '@chakra-ui/icons';
 import {
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogCloseButton,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogOverlay,
+    Box,
     Button,
+    Center,
     Flex,
     FormControl,
+    FormErrorMessage,
     FormLabel,
     Heading,
-    Input,
-    Stack,
-    Link,
+    Icon,
     Image,
-    Box,
-    Center,
+    Input,
+    Link,
+    ScaleFade,
+    Stack,
     Text,
     useColorMode,
-    FormErrorMessage,
-    ScaleFade,
-    AlertDialog,
-    AlertDialogOverlay,
-    AlertDialogContent,
-
-    AlertDialogCloseButton,
-    AlertDialogBody,
-    AlertDialogFooter,
     useDisclosure,
-    Icon,
     VStack
 } from '@chakra-ui/react';
-import logo from '../assets/images/logo_transparent.png';
-import { Link as ReactLink, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { ArrowForwardIcon, CheckCircleIcon } from '@chakra-ui/icons';
+import { useForm } from 'react-hook-form';
+import { Link as ReactLink, useNavigate } from 'react-router-dom';
+
+import logo from '../assets/images/logo_transparent.png';
+import {getServerUrl} from '../utils/WebsiteUtils';
 
 type RegisterFormValues = {
     email: string,
@@ -72,7 +73,7 @@ export default function Register() {
     const registerUser = async (data: RegisterFormValues): Promise<void> => {
         setIsLoading(true);
         const userData = { displayName: data.displayName, email: data.email, password: data.password };
-        const URL = process.env.REACT_APP_DEV_SERVER_URL;
+        const URL = getServerUrl();
         return await axios.post(URL + '/api/auth/register', userData);
     };
 
