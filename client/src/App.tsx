@@ -10,22 +10,28 @@ import {
 import Login from './pages/Login';
 import Register from './pages/Register';
 import { Button, useColorMode } from '@chakra-ui/react';
-import UserProfile from './pages/UserProfile';
+import Dashboard from './pages/Dashboard';
+import { Uploads } from './pages/Uploads';
+import { Profile } from './pages/Profile';
+// import ProtectedRoutes from './ProtectedRoutes';
+
 
 function App() {
     const { colorMode, toggleColorMode } = useColorMode();
     return (
         <>
-            <Button position={'relative'} onClick={toggleColorMode}>
-                Toggle {colorMode} theme
-            </Button>
+            <Button display={'none'} position={'absolute'} onClick={toggleColorMode}>Toggle {colorMode} theme</Button>
             <Router>
                 <Routes>
-                    <Route path="/" element={<Navigate replace to="/login" />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    {/* TODO: Make profile dynamic with UID */}
-                    <Route path="/profile" element={<UserProfile />} />
+                    <Route path='/' element={<Navigate replace to='/login' />} />
+                    <Route path='login' element={<Login />} />
+                    <Route path='register' element={<Register />} />
+
+                    <Route path='dashboard' element={<Dashboard />} >
+                        <Route path='home' element={<Uploads />} />
+                        <Route path='profile' element={<Profile />} />
+                    </Route>
+
                 </Routes>
             </Router>
         </>

@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import {IUser} from '../interfaces/IUser';
+import {UserModel} from '../interfaces/auth/User';
 
 const userSchema = new Schema(
     {
@@ -33,7 +33,7 @@ const userSchema = new Schema(
             maxLength: 18
         },
         images: {
-            type: [String],
+            type: Map,
             required: true
         },
         lastLoginDateTime: {
@@ -54,6 +54,6 @@ const userSchema = new Schema(
     }
 );
 
-const User = model<IUser>('User', userSchema);
+const User = model<UserModel>('User', userSchema);
 
 export default User;
