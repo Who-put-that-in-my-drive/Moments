@@ -12,7 +12,7 @@ const Header = ({ showSidebarButton = true, onShowSidebar }: Props) => {
         <>
 
             {showSidebarButton && (
-                <Flex bg="gray.200" p={4} color="white" justifyContent="center">
+                <Flex shadow='md' zIndex={'10000'} bg="gray.200" p={4} color="white" justifyContent="center">
                     <Box flex="1">
                         <IconButton
                             aria-label='button'

@@ -82,7 +82,7 @@ router.route('/login').post(async (req: Request, res: Response) => {
     try {
         const loginUserDTO: LoginUserDTO = req.body;
 
-        const userDb = await User.findOne({email: loginUserDTO.email});
+        const userDb = await User.findOneAndUpdate({email: loginUserDTO.email}, {$set: {lastLoginDateTime: getCurrentDateTime()}});
         if (userDb) {
             //@ts-ignore
             const user: UserModel = userDb._doc;

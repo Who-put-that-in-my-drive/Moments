@@ -14,7 +14,8 @@ import {
     ScaleFade,
     Stack,
     Text,
-    useColorMode} from '@chakra-ui/react';
+    useColorMode
+} from '@chakra-ui/react';
 import axios from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -22,7 +23,7 @@ import { Link as ReactLink, useNavigate } from 'react-router-dom';
 
 import logo from '../assets/images/logo_transparent.png';
 import useStore from '../store/store';
-import {getServerUrl} from '../utils/WebsiteUtils';
+import { getServerUrl } from '../utils/WebsiteUtils';
 
 type LoginFormValues = {
     email: string
@@ -43,13 +44,15 @@ export default function Login() {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmitForm = async (data: LoginFormValues) => {
+        // console.log(data);
         try {
             const response: any = await login(data.email, data.password);
-            if (response.data.msg === 'Signed In') {
+            if (response) {
                 reset();
+                store.setUser(response.data.data.user);
                 store.setLoggedIn(true);
                 setIsLoading(false);
-                navigate('/dashboard');
+                navigate('/dashboard/home');
             }
         } catch (error: any) {
             setIsLoading(false);

@@ -1,7 +1,7 @@
 import create from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 
-import user from './tempData';
+// import user from './tempData';
 
 interface Store {
     user: User,
@@ -24,17 +24,22 @@ export interface User {
 
 const useStore = create<Store>()(
     devtools(
-        (set) => ({
-            loggedIn: false,
-            removeUser: () => set((state) => ({ ...state, loggedIn: false, user: { displayName: '', email: '', images: [] } })),
-            setLoggedIn: (val: boolean) => set((state) => ({ ...state, loggedIn: val })),
-            setUser: (user) => set((state) => ({ ...state, user: user })),
-            user: {
-                displayName: user.displayName || '',
-                email: user.email || '',
-                images: user.images || []
+        persist(
+            (set) => ({
+                loggedIn: false,
+                removeUser: () => set((state) => ({ ...state, loggedIn: false, user: { displayName: '', email: '', images: [] } })),
+                setLoggedIn: (val: boolean) => set((state) => ({ ...state, loggedIn: val })),
+                setUser: (user) => set((state) => ({ ...state, user: user })),
+                user: {
+                    displayName: '',
+                    email: '',
+                    images: []
+                }
+            }),
+            {
+                name: 'Moments-store'
             }
-        })
+        )
     )
 );
 
