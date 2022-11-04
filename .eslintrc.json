@@ -9,7 +9,6 @@
     "plugin:import/typescript"
   ],
   "plugins": [
-    "simple-import-sort",
     "sort-keys-fix"
   ],
   "settings": {
@@ -45,8 +44,6 @@
     ],
     "no-tabs": 0,
     "no-unused-vars": "off",
-    "simple-import-sort/imports": "warn",
-    "simple-import-sort/exports": "warn",
     "quotes": [
       "warn",
       "single"
