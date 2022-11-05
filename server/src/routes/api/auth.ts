@@ -10,6 +10,7 @@ import Cookie from '../../utilities/cookie';
 import Jwt from '../../utilities/jwt';
 import {getCurrentDateTime} from '../../utilities/server';
 import ServerResponse from '../../utilities/serverResponse';
+import {SanitizedUser} from '../../interfaces/auth/SanitizedUser';
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ const router = express.Router();
 router.route('/register').post(async (req: Request, res: Response) => {
     try {
         const user: RegisterUserDTO = req.body;
-        const email = user.email;
+        const email = user.email.toString();
         const password = user.password;
         const displayName = user.displayName;
         const dateTime = getCurrentDateTime();
@@ -37,15 +38,15 @@ router.route('/register').post(async (req: Request, res: Response) => {
             return res.status(400).json(new ServerResponse('Invalid Password Length'));
         }
 
+        if (await User.exists({email})) {
+            return res.status(400).json(new ServerResponse('Email Already In Use'));
+        }
+
         if (!(displayName.length >= 3 && displayName.length <= 18)) {
             return res.status(400).json(new ServerResponse('Invalid Display Length'));
         }
 
-        if (await User.findOne({email})) {
-            return res.status(400).json(new ServerResponse('Email Already In Use'));
-        }
-
-        if (await User.findOne({displayName})) {
+        if (await User.exists({displayName})) {
             return res.status(400).json(new ServerResponse('Display Name Already In Use'));
         }
 
@@ -82,15 +83,15 @@ router.route('/login').post(async (req: Request, res: Response) => {
     try {
         const loginUserDTO: LoginUserDTO = req.body;
 
-        const userDb = await User.findOneAndUpdate({email: loginUserDTO.email}, {$set: {lastLoginDateTime: getCurrentDateTime()}});
+        const userDb = await User.findOneAndUpdate({email: loginUserDTO.email.toString()}, {$set: {lastLoginDateTime: getCurrentDateTime()}});
         if (userDb) {
             //@ts-ignore
             const user: UserModel = userDb._doc;
             if (await validatePassword(loginUserDTO.password, user.password)) {
-                // @ts-ignore
-                delete user.password;
+                const sanitizedUser: SanitizedUser = {...user};
+                delete sanitizedUser.password;
                 const cookieWithJwt = new Cookie(await Jwt.generateJwt(user.email)).generateCookie();
-                return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(new ServerResponse('Signed In').addData({user}));
+                return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(new ServerResponse('Signed In').addData({user: sanitizedUser}));
             } else {
                 return res.status(403).json(new ServerResponse('Incorrect Email/Password'));
             }

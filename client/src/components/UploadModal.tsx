@@ -22,15 +22,15 @@ import React from 'react';
 
 export const UploadModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-  
+
     //@ts-ignore
     const uppy = new Uppy({restrictions: {
         allowedFileTypes: ['image/*'],
-        maxFileSize: 100000000,
+        maxFileSize: 100000000, // 100 Megabytes
         maxNumberOfFiles: 1,
         minNumberOfFiles: 1
     }});
-    
+
     // @ts-ignore
     uppy.use(AwsS3, {
         // @ts-ignore
@@ -47,7 +47,7 @@ export const UploadModal = () => {
             };
         }
     });
-    
+
     React.useEffect(() => {
         return () => uppy.close({ reason: 'unmount' });
     }, [uppy]);
@@ -56,9 +56,9 @@ export const UploadModal = () => {
         <>
             <Button onClick={onOpen}>Open Modal</Button>
 
-            <Modal isOpen={isOpen} onClose={onClose} size="2xl"> 
+            <Modal isOpen={isOpen} onClose={onClose} size="2xl">
                 <ModalOverlay />
-                
+
                 <ModalContent>
                     <ModalHeader>Upload Image</ModalHeader>
                     <ModalCloseButton />
@@ -69,14 +69,14 @@ export const UploadModal = () => {
                                 <Dashboard
                                     // @ts-ignore
                                     autoProceed="true"
-                                    uppy={uppy}
                                     metaFields={[{ id: 'name', name: 'Name', placeholder: 'File name' }]}
+                                    uppy={uppy}
                                     height="400px"
                                     // @ts-ignore
                                     theme={localStorage.getItem('chakra-ui-color-mode').toString()}
                                 />
                             </FormControl>
-                            
+
                             <FormControl isRequired my={3}>
                                 <FormLabel>Title</FormLabel>
                                 <Input></Input>
