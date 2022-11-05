@@ -5,6 +5,8 @@ export interface UserModel {
     password: string;
     displayName: string;
     images: ImagesMap;
+    firstName: string;
+    lastName: string;
     lastLoginDateTime: number;
     createdDateTime: number;
 }

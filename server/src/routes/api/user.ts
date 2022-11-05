@@ -42,6 +42,8 @@ router
                 const updateUserDTO: UpdateUserDTO = req.body;
                 const updatedEmail = updateUserDTO.email.toString();
                 const updatedDisplayName = updateUserDTO.displayName.toString();
+                const firstName = updateUserDTO.firstName;
+                const lastName = updateUserDTO.lastName;
 
                 if (user.email !== updatedEmail) {
                     if (!(validator.isEmail(updatedEmail))) {
@@ -59,6 +61,18 @@ router
 
                     if (await User.exists({display: updatedDisplayName})) {
                         return res.status(400).json(new ServerResponse('Display Name Already In Use'));
+                    }
+                }
+
+                if (user.firstName !== firstName) {
+                    if (!(firstName.length >= 1 && firstName.length <= 18)) {
+                        return res.status(400).json(new ServerResponse('Under/Exceeds Character Length'));
+                    }
+                }
+
+                if (user.lastName !== lastName) {
+                    if (!(lastName.length >= 1 && lastName.length <= 18)) {
+                        return res.status(400).json(new ServerResponse('Under/Exceeds Character Length'));
                     }
                 }
 
