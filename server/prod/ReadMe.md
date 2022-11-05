@@ -35,9 +35,12 @@ ssh -i "TLGenesis.pem" ec2-user@ec2-54-235-34-39.compute-1.amazonaws.com
 ```
 
 ### Deploy the server
-Now ssh into the ec2 instance by using your IDE's console and run the following one-liner:
+Now ssh into the ec2 instance by using your IDE's console and run the following:
 ```
 rm -r *
+```
+Run `prepare.sh` then:
+
 7z x prod.zip
 cd dist
 ```
