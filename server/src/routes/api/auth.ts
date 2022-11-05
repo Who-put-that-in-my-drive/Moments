@@ -114,7 +114,7 @@ router.route('/login').post(async (req: Request, res: Response) => {
  */
 router.route('/logout').get(async (req: Request, res: Response) => {
     try {
-        const cookieWithJwt = new Cookie(await Jwt.expireJwt()).generateCookie();
+        const cookieWithJwt = new Cookie(Jwt.expireJwt()).generateCookie();
         return res.setHeader('Set-Cookie', cookieWithJwt).status(200).json(new ServerResponse('Signed Out'));
     } catch (e) {
         console.error(e);

@@ -8,6 +8,8 @@ import {SanitizedUser} from '../../interfaces/auth/SanitizedUser';
 import ServerResponse from '../../utilities/serverResponse';
 import {UpdateUserDTO} from '../../interfaces/user/UpdateUserDTO';
 import validator from 'validator';
+import Jwt from '../../utilities/jwt';
+import Cookie from '../../utilities/cookie';
 
 const router = express.Router();
 
@@ -21,9 +23,9 @@ router
                 const user: UserModel = userDb._doc;
                 const sanitizedUser: SanitizedUser = {...user};
                 delete sanitizedUser.password;
-                return  res.status(200).json(new ServerResponse('User Retrieved').setData({user: sanitizedUser}));
+                return res.status(200).json(new ServerResponse('User Retrieved').setData({user: sanitizedUser}));
             } else {
-                return  res.status(404).json(new ServerResponse('User Not Found'));
+                return res.status(404).json(new ServerResponse('User Not Found'));
             }
         } catch (e) {
             console.error(e);
@@ -61,13 +63,13 @@ router
                 }
 
                 if (await User.findOneAndUpdate({email: getEmail(req)}, {...updateUserDTO})) {
-                    return  res.status(200).json(new ServerResponse('User Updated'));
+                    const cookieWithJwt = new Cookie(await Jwt.generateJwt(updatedEmail)).generateCookie();
+                    return res.setHeader('Set-Cookie', cookieWithJwt).status(200).json(new ServerResponse('User Updated'));
                 } else {
-                    return  res.status(500).json(new ServerResponse('Server Error'));
+                    return res.status(500).json(new ServerResponse('Server Error'));
                 }
-
             } else {
-                return  res.status(404).json(new ServerResponse('User Not Found'));
+                return res.status(404).json(new ServerResponse('User Not Found'));
             }
         } catch (e) {
             console.error(e);
@@ -76,9 +78,10 @@ router
     }).delete(authenticateToken, async (req: Request, res: Response) => {
         try {
             if (await User.findOneAndDelete({email: getEmail(req)})) {
-                return  res.status(200).json(new ServerResponse('User Deleted'));
+                const cookieWithJwt = new Cookie(Jwt.expireJwt()).generateCookie();
+                return res.setHeader('Set-Cookie', cookieWithJwt).status(200).json(new ServerResponse('User Deleted'));
             } else {
-                return  res.status(404).json(new ServerResponse('User Not Found'));
+                return res.status(404).json(new ServerResponse('User Not Found'));
             }
         } catch (e) {
             console.error(e);
