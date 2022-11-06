@@ -49,12 +49,13 @@ export default function Post() {
                             h='500px'
                             templateRows='repeat(2, 1fr)'
                             templateColumns='repeat(5, 1fr)'
-                            gap={4}
+                            gap={1}
                         >
-                            <GridItem colSpan={2} bg='papayawhip'>
+                            <GridItem colSpan={3}>
                                 <Image src={Beach} />
                             </GridItem>
                             <Flex 
+                                direction={'column'}
                                 height={'100%'}
                                 bg={colorMode === 'light' ? 'gray.700' : 'gray.100'} 
                                 borderRadius={'lg'}
@@ -68,157 +69,134 @@ export default function Post() {
                                         >
                                             @jameskibi12
                                         </StatLabel>
-                                        <Spacer />
-                                        <Spacer />
-                                        <HStack>
-                                            <CalendarIcon color={colorMode === 'light' ? 'white' : 'black'}/>
-                                            <Text color={colorMode === 'light' ? 'white' : 'black'}>
-                                                Date and Time Taken
-                                            </Text>
-                                        </HStack>
-                                        <StatLabel
-                                            color={colorMode === 'light' ? 'white' : 'black'}
-                                            fontSize={'sm'}
-                                        >
-                                            11:34 AM; Tuesday, May 4th, 2019
-                                        </StatLabel>
-                                        <Spacer />
-                                        <HStack>
-                                            <ChatIcon color={colorMode === 'light' ? 'white' : 'black'} />
-                                            <Text color={colorMode === 'light' ? 'white' : 'black'}>
-                                                Caption
-                                            </Text>
-                                        </HStack>
-                                        <StatLabel
-                                            color={colorMode === 'light' ? 'white' : 'black'}
-                                            fontSize={'sm'}
-                                        >
-                                            This is the caption!
-                                        </StatLabel>
-                                        <HStack>
-                                            <InfoIcon color={colorMode === 'light' ? 'white' : 'black'} />
-                                            <Text color={colorMode === 'light' ? 'white' : 'black'}>
-                                                Picture Info
-                                            </Text>
-                                        </HStack>
-                                        <StatLabel
-                                            color={colorMode === 'light' ? 'white' : 'black'}
-                                            fontSize={'sm'}
-                                        >
-                                            Size: 30.69 MB
-                                        </StatLabel>
-                                        <StatLabel
-                                            color={colorMode === 'light' ? 'white' : 'black'}
-                                            fontSize={'sm'}
-                                        >
-                                            Posted: Sunday, May 9th, 2019
-                                        </StatLabel>
-                                        <HStack>
-                                            <SunIcon color={colorMode === 'light' ? 'white' : 'black'} />
-                                            <Text color={colorMode === 'light' ? 'white' : 'black'}>
-                                                Tags
-                                            </Text>
-                                        </HStack>
-                                        <StatLabel
-                                            color={colorMode === 'light' ? 'white' : 'black'}
-                                            fontSize={'sm'}
-                                        >
-                                            Theme
-                                        </StatLabel>
-                                        <HStack spacing={2}>
-                                            <Tag 
-                                                size={'sm'}
-                                                key={'sm'}
-                                                variant={'solid'}
-                                                colorScheme={'teal'}
-                                            >
-                                                Beach
-                                            </Tag>
-                                            <Tag 
-                                                size={'sm'}
-                                                key={'sm'}
-                                                variant={'solid'}
-                                                colorScheme={'teal'}
-                                            >
-                                                Clouds
-                                            </Tag>
-                                            <Tag 
-                                                size={'sm'}
-                                                key={'sm'}
-                                                variant={'solid'}
-                                                colorScheme={'teal'}
-                                            >
-                                                Nature
-                                            </Tag>
-                                            <Tag 
-                                                size={'sm'}
-                                                key={'sm'}
-                                                variant={'solid'}
-                                                colorScheme={'teal'}
-                                            >
-                                                Dark
-                                            </Tag>
-                                        </HStack>
-                                        <HStack />
-                                        <HStack spacing={2}>
-                                            <Tag 
-                                                size={'sm'}
-                                                key={'sm'}
-                                                variant={'solid'}
-                                                colorScheme={'teal'}
-                                            >
-                                                Mountain
-                                            </Tag>
-                                            <Tag 
-                                                size={'sm'}
-                                                key={'sm'}
-                                                variant={'solid'}
-                                                colorScheme={'teal'}
-                                            >
-                                                Natural
-                                            </Tag>
-                                            <Tag 
-                                                size={'sm'}
-                                                key={'sm'}
-                                                variant={'solid'}
-                                                colorScheme={'teal'}
-                                            >
-                                                Waves
-                                            </Tag>
-                                        </HStack>
-                                        <StatLabel
-                                            color={colorMode === 'light' ? 'white' : 'black'}
-                                            fontSize={'sm'}
-                                        >
-                                            Categories
-                                        </StatLabel>
-                                        <HStack spacing={2}>
-                                            <Tag 
-                                                size={'sm'}
-                                                key={'sm'}
-                                                variant={'solid'}
-                                                colorScheme={'orange'}
-                                            >
-                                                Scenery
-                                            </Tag>
-                                            <Tag 
-                                                size={'sm'}
-                                                key={'sm'}
-                                                variant={'solid'}
-                                                colorScheme={'orange'}
-                                            >
-                                                Outdoors
-                                            </Tag>
-                                            <Tag 
-                                                size={'sm'}
-                                                key={'sm'}
-                                                variant={'solid'}
-                                                colorScheme={'orange'}
-                                            >
-                                                Landscape
-                                            </Tag>
-                                        </HStack>
                                     </Stat>
+                                    <HStack padding={'-5'}>
+                                        <CalendarIcon color={colorMode === 'light' ? 'white' : 'black'}/>
+                                        <Text color={colorMode === 'light' ? 'white' : 'black'} as={'b'}>
+                                            Date and Time Taken
+                                        </Text> 
+                                    </HStack>
+                                    <Text color={colorMode === 'light' ? 'white' : 'black'}>
+                                        11:34 AM; Tuesday, May 4th, 2019
+                                    </Text> 
+                                    <HStack>
+                                        <ChatIcon color={colorMode === 'light' ? 'white' : 'black'} />
+                                        <Text color={colorMode === 'light' ? 'white' : 'black'} as={'b'}>
+                                            Caption
+                                        </Text>
+                                    </HStack>
+                                    <Text color={colorMode === 'light' ? 'white' : 'black'}>
+                                        This is a beach I visited a few years ago!
+                                    </Text> 
+                                    <HStack>
+                                        <InfoIcon color={colorMode === 'light' ? 'white' : 'black'} />
+                                        <Text color={colorMode === 'light' ? 'white' : 'black'} as={'b'}>
+                                            Picture Info
+                                        </Text>
+                                    </HStack>
+                                    <Text color={colorMode === 'light' ? 'white' : 'black'}>
+                                        Size: 30.69 MB
+                                        Posted: May 9th, 2019
+                                    </Text>
+                                    <HStack>
+                                        <SunIcon color={colorMode === 'light' ? 'white' : 'black'} />
+                                        <Text color={colorMode === 'light' ? 'white' : 'black'} as={'b'}>
+                                            Tags
+                                        </Text>
+                                    </HStack>
+                                    <Text color={colorMode === 'light' ? 'white' : 'black'} as={'u'}>
+                                            Theme
+                                    </Text>
+                                    <HStack spacing={2}>
+                                        <Tag 
+                                            size={'sm'}
+                                            key={'sm'}
+                                            variant={'solid'}
+                                            colorScheme={'teal'}
+                                        >
+                                            Beach
+                                        </Tag>
+                                        <Tag 
+                                            size={'sm'}
+                                            key={'sm'}
+                                            variant={'solid'}
+                                            colorScheme={'teal'}
+                                        >
+                                            Clouds
+                                        </Tag>
+                                        <Tag 
+                                            size={'sm'}
+                                            key={'sm'}
+                                            variant={'solid'}
+                                            colorScheme={'teal'}
+                                        >
+                                            Nature
+                                        </Tag>
+                                        <Tag 
+                                            size={'sm'}
+                                            key={'sm'}
+                                            variant={'solid'}
+                                            colorScheme={'teal'}
+                                        >
+                                            Dark
+                                        </Tag>
+                                    </HStack>
+                                    <HStack spacing={2}>
+                                        <Tag 
+                                            size={'sm'}
+                                            key={'sm'}
+                                            variant={'solid'}
+                                            colorScheme={'teal'}
+                                        >
+                                            Mountain
+                                        </Tag>
+                                        <Tag 
+                                            size={'sm'}
+                                            key={'sm'}
+                                            variant={'solid'}
+                                            colorScheme={'teal'}
+                                        >
+                                            Natural
+                                        </Tag>
+                                        <Tag 
+                                            size={'sm'}
+                                            key={'sm'}
+                                            variant={'solid'}
+                                            colorScheme={'teal'}
+                                        >
+                                            Waves
+                                        </Tag>
+                                    </HStack>
+                                    <Spacer />
+                                    <Text color={colorMode === 'light' ? 'white' : 'black'} as={'u'}>
+                                            Categories
+                                    </Text>
+                                    <HStack spacing={2}>
+                                        <Tag 
+                                            size={'sm'}
+                                            key={'sm'}
+                                            variant={'solid'}
+                                            colorScheme={'orange'}
+                                        >
+                                            Scenery
+                                        </Tag>
+                                        <Tag 
+                                            size={'sm'}
+                                            key={'sm'}
+                                            variant={'solid'}
+                                            colorScheme={'orange'}
+                                        >
+                                            Outdoors
+                                        </Tag>
+                                        <Tag 
+                                            size={'sm'}
+                                            key={'sm'}
+                                            variant={'solid'}
+                                            colorScheme={'orange'}
+                                        >
+                                            Landscape
+                                        </Tag>
+                                    </HStack>
                                 </VStack>
                             </Flex>
                         </Grid>
