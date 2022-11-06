@@ -34,24 +34,24 @@ interface Props {
     onClose: () => void
     isOpen: boolean
     variant: 'drawer' | 'sidebar' | any
-};
+}
 
 const SideNavBar = ({ isOpen, variant, onClose }: Props) => {
 
     return variant === 'sidebar' ? (
         <Box
-            shadow='lg'
+            bg='blackAlpha.300'
+            h='100%'
             left={0}
             p={5}
-            w='18rem'
+            shadow='lg'
             top={0}
-            h='100%'
-            bg='blackAlpha.300'
+            w='18rem'
         >
             <SidebarContent onClick={onClose} />
         </Box>
     ) : (
-        <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+        <Drawer isOpen={isOpen} onClose={onClose} placement="left">
             <DrawerOverlay>
                 <DrawerContent backgroundColor={'gray.100'}>
                     <DrawerCloseButton />
@@ -90,63 +90,63 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
 
     return (
         <Flex
-            left='0'
-            h='100%'
             flexDir='column'
+            h='100%'
             justifyContent='space-between'
+            left='0'
             transition={'.2s'}
         >
 
             <Flex
+                as='nav'
                 flexDir='column'
                 w='100%'
-                as='nav'
             >
                 <Image
-                    w={'100%'}
                     alt={'Login Image'}
                     src={logo}
+                    w={'100%'}
                 />
-                <VStack paddingTop={'3rem'}
-                    spacing={9}
+                <VStack _activeLink={{ background: 'black' }}
                     align='center'
-                    width={'100%'}
                     as={'nav'}
-                    _activeLink={{ background: 'black' }}
+                    paddingTop={'3rem'}
+                    spacing={9}
+                    width={'100%'}
                 >
                     <IconButton
-                        disabled={true}
-                        onClick={toggleColorMode}
                         aria-label='Theme changer'
+                        disabled={true}
                         icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                        onClick={toggleColorMode}
                     />
 
-                    <Button _activeLink={{ background: 'gray.300' }} as={ReactLink} to='/dashboard/home' onClick={onClick} w="100%" size='md'>
+                    <Button _activeLink={{ background: 'gray.300' }} as={ReactLink} onClick={onClick} size='md' to='/dashboard/home' w="100%">
                         Home
                     </Button>
-                    <Button _activeLink={{ background: 'gray.300' }} as={ReactLink} to='/dashboard/profile' onClick={onClick} w="100%" size='md'>
+                    <Button _activeLink={{ background: 'gray.300' }} as={ReactLink} onClick={onClick} size='md' to='/dashboard/profile' w="100%">
                         Profile
                     </Button>
-                    <Button disabled={true} _activeLink={{ background: 'gray.300' }} as={ReactLink} to='/dashboard/plans' onClick={onClick} w="100%" size='md'>
+                    <Button _activeLink={{ background: 'gray.300' }} as={ReactLink} disabled={true} onClick={onClick} size='md' to='/dashboard/plans' w="100%">
                         Membership Plan
                     </Button>
                 </VStack>
             </Flex>
 
             <Flex
-                p='5%'
                 flexDir='column'
-                w='100%'
                 mb={2}
+                p='5%'
+                w='100%'
             >
                 {/* <Divider p={'1rem'} display={'flex'} /> */}
 
                 <Menu>
-                    <MenuButton paddingBottom={'3rem'} paddingTop='2rem' as={Button} rightIcon={<ChevronDownIcon />}>
-                        <Flex justifyContent={'center'} alignContent='center' mt={4} align='center'>
+                    <MenuButton as={Button} paddingBottom={'3rem'} paddingTop='2rem' rightIcon={<ChevronDownIcon />}>
+                        <Flex align='center' alignContent='center' justifyContent={'center'} mt={4}>
 
                             <Avatar size='md' src='avatar-1.jpg' />
-                            <Flex flexDir='column' ml={4} display={'flex'}>
+                            <Flex display={'flex'} flexDir='column' ml={4}>
                                 <Heading as='h3' size='sm'>{user.displayName || 'No user found'}</Heading>
                                 <Text color='gray'>{user.email || 'No user found'}</Text>
                             </Flex>

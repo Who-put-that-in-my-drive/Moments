@@ -12,17 +12,17 @@ export const SuccessAlert = (props: any) => {
     onOpen();
     return (
         <AlertDialog
-            motionPreset='slideInBottom'
-            leastDestructiveRef={cancelRef}
-            onClose={onClose}
-            isOpen={isOpen}
             isCentered
+            isOpen={isOpen}
+            leastDestructiveRef={cancelRef}
+            motionPreset='slideInBottom'
+            onClose={onClose}
         >
             <AlertDialogOverlay />
             <AlertDialogContent>
                 <AlertDialogCloseButton />
-                <Center borderTopRadius={'md'} w='100%' h='12rem' bg='#6FCF97' color='white'>
-                    <Icon as={CheckCircleIcon} w={24} h={24} />
+                <Center bg='#6FCF97' borderTopRadius={'md'} color='white' h='12rem' w='100%'>
+                    <Icon as={CheckCircleIcon} h={24} w={24} />
                 </Center>
                 <AlertDialogBody>
                     <VStack spacing={4}>
@@ -39,7 +39,7 @@ export const SuccessAlert = (props: any) => {
                     </VStack>
                 </AlertDialogBody>
                 <AlertDialogFooter>
-                    <Button onClick={() => { navigate('/login'); }} rightIcon={<ArrowForwardIcon />} colorScheme='gray' variant='outline'>
+                    <Button colorScheme='gray' onClick={() => { navigate('/login'); }} rightIcon={<ArrowForwardIcon />} variant='outline'>
                         Sign In
                     </Button>
                 </AlertDialogFooter>

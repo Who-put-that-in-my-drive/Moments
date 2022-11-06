@@ -23,11 +23,11 @@ const MainContainer: React.FC = () => {
     return (
         <Container>
             <div>
-                <Heading as='h1' size='xl' noOfLines={1}>
+                <Heading as='h1' noOfLines={1} size='xl'>
                     Hello from Moments team!
                 </Heading >
                 <Heading size='md'>{message}
-                    <Spinner size="md" hidden={!spinnerDisplay} /></Heading>
+                    <Spinner hidden={!spinnerDisplay} size="md" /></Heading>
             </div>
         </Container>
     );

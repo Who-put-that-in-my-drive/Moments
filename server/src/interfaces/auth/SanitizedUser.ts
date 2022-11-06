@@ -1,12 +1,10 @@
 import {ImagesMap} from '../image/ImagesMap';
 
-export interface UserModel {
+export interface SanitizedUser {
     email: string;
-    password: string;
+    password?: string;
     displayName: string;
     images: ImagesMap;
-    firstName: string;
-    lastName: string;
     lastLoginDateTime: number;
     createdDateTime: number;
 }
