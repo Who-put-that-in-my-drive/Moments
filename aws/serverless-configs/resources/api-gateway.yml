@@ -65,6 +65,14 @@ Resources:
       PathPart: 'image'
       RestApiId: !Ref "apiGateway"
 
+  # User
+  apiGatewayUserResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGateway.RootResourceId"
+      PathPart: 'user'
+      RestApiId: !Ref "apiGateway"
+
   # General
   apiGatewayHealthResource:
     Type: "AWS::ApiGateway::Resource"
@@ -259,6 +267,76 @@ Resources:
         Uri: !Join [ '', [ !Ref domainHost, '/image' ] ]
         TimeoutInMillis: 29000
       ResourceId: !Ref "apiGatewayImageResource"
+      RestApiId: !Ref "apiGateway"
+
+  # User
+  apiGatewayGetUserMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "GET"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/user' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayUserResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayUpdateUserMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "PUT"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/user' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayUserResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayDeleteUserMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "DELETE"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/user' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayUserResource"
       RestApiId: !Ref "apiGateway"
 
   ### Provided Default Data ###
