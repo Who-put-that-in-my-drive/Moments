@@ -12,17 +12,16 @@ function App() {
     const { colorMode, toggleColorMode } = useColorMode();
     return (
         <>
-            <Button display={'none'} position={'absolute'} onClick={toggleColorMode}>Toggle {colorMode} theme</Button>
+            <Button display={'none'} onClick={toggleColorMode} position={'absolute'}>Toggle {colorMode} theme</Button>
             <Router>
                 <Routes>
-                    <Route path='/' element={<Navigate replace to='/login' />} />
-                    <Route path='login' element={<Login />} />
-                    <Route path='register' element={<Register />} />
-                    <Route path='dashboard' element={<Dashboard />} >
-                        <Route path='home' element={<Uploads />} />
-                        <Route path='profile' element={<Profile />} />
+                    <Route element={<Navigate replace to='/login' />} path='/' />
+                    <Route element={<Login />} path='login' />
+                    <Route element={<Register />} path='register' />
+                    <Route element={<Dashboard />} path='dashboard' >
+                        <Route element={<Uploads />} path='home' />
+                        <Route element={<Profile />} path='profile' />
                     </Route>
-
                 </Routes>
             </Router>
 

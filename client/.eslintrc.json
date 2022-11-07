@@ -1,5 +1,8 @@
 {
-  "extends": ["../.eslintrc.json"],
+  "extends": [
+    "../.eslintrc.json",
+    "plugin:react/recommended"
+  ],
 
   "parser": "@babel/eslint-parser",
   "parserOptions": {
@@ -41,6 +44,9 @@
       "allowArrowFunctions": true,
       "allowBind": false,
       "ignoreRefs": true
+    }],
+    "react/jsx-sort-props": ["warn", {
+      "ignoreCase": true
     }],
     "react/jsx-uses-vars": "warn",
     "react/no-did-update-set-state": "warn",

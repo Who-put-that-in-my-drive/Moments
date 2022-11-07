@@ -1,6 +1,4 @@
 import {
-    CreateBucketCommand,
-    DeleteBucketCommand,     DeleteObjectCommand,
     GetObjectCommand,
     PutObjectCommand}
     from '@aws-sdk/client-s3';
@@ -15,7 +13,7 @@ import {authenticateToken} from '../../middlewares/auth';
 import Image from '../../models/image.model';
 import User from '../../models/user.model';
 import { s3Client } from '../../utilities/s3Client';
-import {getCurrentDateTime} from '../../utilities/server';
+import {getCurrentDateTime, getEmail} from '../../utilities/server';
 import ServerResponse from '../../utilities/serverResponse';
 
 AWS.config.update({accessKeyId: process.env.ACCESS_KEY_ID, secretAccessKey: process.env.SECRET_ACCESS_KEY});
@@ -36,8 +34,7 @@ router
                 return res.status(400).json(new ServerResponse('Bad Request'));
             }
 
-            // @ts-ignore
-            const email = req.email;
+            const email = getEmail(req);
             // @ts-ignore
             const user: UserModel = await User.findOne({email});
 
@@ -73,8 +70,7 @@ router
     .post(authenticateToken, async (req: Request, res: Response) => {
         try {
             const uploadImageDTO: UploadImageDTO = req.body;
-            // @ts-ignore
-            const email = req.email;
+            const email = getEmail(req);
             const dateTime = getCurrentDateTime();
 
             const newImage = new Image({

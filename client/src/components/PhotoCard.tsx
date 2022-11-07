@@ -1,4 +1,3 @@
-
 import {
     AspectRatio,
     Box,
@@ -25,21 +24,21 @@ export const PhotoCard = (props: PhotoCardProps) => {
     props.size, props.format;
     return (
         <>
-            <Flex _hover={{ cursor: 'pointer' }} direction={'column'} w="full" justifyContent="center" onClick={onOpen}>
-                <AspectRatio w='15rem' ratio={16 / 9}>
+            <Flex _hover={{ cursor: 'pointer' }} direction={'column'} justifyContent="center" onClick={onOpen} w="full">
+                <AspectRatio ratio={16 / 9} w='15rem'>
                     <Image
-                        src={props.imageURL}
                         alt={`Picture of ${props.name}`}
-                        rounded="lg"
                         objectFit={'cover'}
+                        rounded="lg"
+                        src={props.imageURL}
                     />
                 </AspectRatio>
                 <Box>
-                    <Text fontSize='xl' as='b' textAlign='left'>{props.name}</Text>
+                    <Text as='b' fontSize='xl' textAlign='left'>{props.name}</Text>
                     <Text fontSize='sm' textAlign='left'>{props.date}</Text>
                 </Box>
             </Flex>
-            <DrawerImageInfo onOpen={onOpen} isOpen={isOpen} onClose={onClose} imageInfo={props} />
+            <DrawerImageInfo imageInfo={props} isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
         </>
     );
 };
@@ -51,25 +50,25 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
     return (
         <Drawer
             isOpen={props.isOpen}
-            placement='right'
             onClose={props.onClose}
+            placement='right'
             size='md'
         >
             <DrawerOverlay />
             <DrawerContent background='gray.100'>
                 <DrawerCloseButton />
-                <Flex paddingX={'1.5rem'} align='center' paddingTop='5rem' direction={'column'} w="full" alignContent='center' justifyContent='space-between'>
-                    <AspectRatio w='100%' ratio={16 / 9}>
+                <Flex align='center' alignContent='center' direction={'column'} justifyContent='space-between' paddingTop='5rem' paddingX={'1.5rem'} w="full">
+                    <AspectRatio ratio={16 / 9} w='100%'>
                         <Image
-                            src={props.imageInfo.imageURL}
                             alt={`Picture of ${props.imageInfo.name}`}
                             rounded="lg"
+                            src={props.imageInfo.imageURL}
                         />
                     </AspectRatio>
                     <Box>
-                        <Text fontSize='2xl' as='b' textAlign='left'>{props.imageInfo.name}</Text>
+                        <Text as='b' fontSize='2xl' textAlign='left'>{props.imageInfo.name}</Text>
                     </Box>
-                    <TableContainer width='100%' marginTop='2rem' background={'white'}>
+                    <TableContainer background={'white'} marginTop='2rem' width='100%'>
                         <Table variant='simple'>
                             <Thead>
                                 <Tr>

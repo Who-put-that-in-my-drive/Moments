@@ -74,25 +74,25 @@ export default function Login() {
     const minPassLength: number = 7;
 
     return (
-        <Center marginTop={['5rem', '7rem', '0', '0']} h={'100vh'} padding={['0rem', '0.5rem', '3rem', '5rem']}>
-            <ScaleFade initialScale={0.9} in>
+        <Center h={'100vh'} marginTop={['5rem', '7rem', '0', '0']} padding={['0rem', '0.5rem', '3rem', '5rem']}>
+            <ScaleFade in initialScale={0.9}>
                 <Box borderRadius='lg' boxShadow='2xl' >
                     <Flex direction={{ base: 'column', sm: 'row' }} >
                         <Flex flex={1}>
                             <Image
-                                w={'100%'}
-                                bg={colorMode === 'light' ? 'gray.700' : 'gray.100'}
                                 alt={'Login Image'}
+                                bg={colorMode === 'light' ? 'gray.700' : 'gray.100'}
                                 objectFit={'cover'}
                                 src={logo}
+                                w={'100%'}
                             />
                         </Flex>
-                        <Flex p={5} flex={1} align={'center'} justify={'center'}>
-                            <form style={{ width: '80%' }} onSubmit={handleSubmit(handleSubmitForm)}>
+                        <Flex align={'center'} flex={1} justify={'center'} p={5}>
+                            <form onSubmit={handleSubmit(handleSubmitForm)} style={{ width: '80%' }}>
                                 <Stack spacing={4} w={'full'} >
-                                    <Heading marginY={'2rem'} textAlign={'center'} fontSize={'4xl'}>Sign in</Heading>
+                                    <Heading fontSize={'4xl'} marginY={'2rem'} textAlign={'center'}>Sign in</Heading>
 
-                                    <FormControl margin={'1rem'} isInvalid={Boolean(errors.email)}>
+                                    <FormControl isInvalid={Boolean(errors.email)} margin={'1rem'}>
                                         <FormLabel>Email</FormLabel>
                                         <Input
                                             {...register(
@@ -122,21 +122,21 @@ export default function Login() {
                                     </FormControl>
                                     <Stack spacing={10}>
                                         <Stack
-                                            direction={{ base: 'column', sm: 'row' }}
                                             align={'start'}
+                                            direction={{ base: 'column', sm: 'row' }}
                                             justify={'space-between'}>
                                             <Checkbox>Remember me</Checkbox>
                                             <Link color={'blue.500'}>Forgot password?</Link>
                                         </Stack>
                                         <Center>
-                                            <Button isLoading={isLoading} loadingText='Logging in...' shadow={'xl'} width={'80%'} type='submit' colorScheme={'blue'} variant={'solid'}>
+                                            <Button colorScheme={'blue'} isLoading={isLoading} loadingText='Logging in...' shadow={'xl'} type='submit' variant={'solid'} width={'80%'}>
                                                 Sign in
                                             </Button>
                                         </Center>
                                         <Text
                                             // paddingBottom={'1rem'}
-                                            textAlign={'center'}
-                                            fontSize='md'>Don’t have an account? <Link color={'blue.500'} as={ReactLink} to='/register'>Sign Up</Link></Text>
+                                            fontSize='md'
+                                            textAlign={'center'}>Don’t have an account? <Link as={ReactLink} color={'blue.500'} to='/register'>Sign Up</Link></Text>
                                     </Stack>
                                 </Stack>
                             </form>
@@ -146,4 +146,4 @@ export default function Login() {
             </ScaleFade>
         </Center>
     );
-};
+}
