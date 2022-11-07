@@ -16,23 +16,23 @@ import {
     Text,
     useColorMode
 } from '@chakra-ui/react';
-import axios from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as ReactLink, useNavigate } from 'react-router-dom';
 
 import logo from '../assets/images/logo_transparent.png';
+import { login } from '../services/api.service';
 import useStore from '../store/store';
-import { getServerUrl } from '../utils/WebsiteUtils';
+import { Store } from '../utils/Interfaces';
 
-type LoginFormValues = {
+export type LoginFormValues = {
     email: string
     password: string
 };
 
 export default function Login() {
     const navigate = useNavigate();
-    const store = useStore();
+    const store: Store = useStore();
     const { colorMode } = useColorMode();
     const {
         register,
@@ -44,9 +44,9 @@ export default function Login() {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmitForm = async (data: LoginFormValues) => {
-        // console.log(data);
         try {
-            const response: any = await login(data.email, data.password);
+            setIsLoading(true);
+            const response: any = await login(data);
             if (response) {
                 reset();
                 store.setUser(response.data.data.user);
@@ -71,15 +71,7 @@ export default function Login() {
         }
     };
 
-
-    const login = async (email: string, password: string): Promise<void> => {
-        setIsLoading(true);
-        const userData = { email: email, password: password };
-        const URL = getServerUrl();
-        return await axios.post(URL + '/api/auth/login', userData);
-    };
-
-    const minPassLength: number = 5;
+    const minPassLength: number = 7;
 
     return (
         <Center h={'100vh'} marginTop={['5rem', '7rem', '0', '0']} padding={['0rem', '0.5rem', '3rem', '5rem']}>

@@ -24,19 +24,17 @@ import {
 import axios from 'axios';
 // eslint-disable-next-line 
 import { MouseEventHandler } from 'react';
+import { getServerUrl } from '../utils/WebsiteUtils';
 import { NavLink as ReactLink, useNavigate } from 'react-router-dom';
 
 import logo from '../assets/images/logo_transparent.png';
 import useStore from '../store/store';
-import { getServerUrl } from '../utils/WebsiteUtils';
+import { SideNavBarProps } from '../utils/ComponentPropTypes';
+import { Store } from '../utils/Interfaces';
 
-interface Props {
-    onClose: () => void
-    isOpen: boolean
-    variant: 'drawer' | 'sidebar' | any
-}
 
-const SideNavBar = ({ isOpen, variant, onClose }: Props) => {
+
+const SideNavBar = ({ isOpen, variant, onClose }: SideNavBarProps) => {
 
     return variant === 'sidebar' ? (
         <Box
@@ -68,7 +66,7 @@ const SideNavBar = ({ isOpen, variant, onClose }: Props) => {
 
 const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
     const { colorMode, toggleColorMode } = useColorMode();
-    const store = useStore();
+    const store: Store = useStore();
     const user = store.user;
     const navigate = useNavigate();
     const onLogoutClick = async () => {

@@ -25,15 +25,13 @@ import {
     useDisclosure,
     VStack
 } from '@chakra-ui/react';
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as ReactLink, useNavigate } from 'react-router-dom';
-
 import logo from '../assets/images/logo_transparent.png';
-import {getServerUrl} from '../utils/WebsiteUtils';
+import { registerUser } from '../services/api.service';
 
-type RegisterFormValues = {
+export type RegisterFormValues = {
     email: string,
     password: string,
     confirm_password: string,
@@ -59,6 +57,7 @@ export default function Register() {
 
     const handleSubmitForm = async (data: RegisterFormValues) => {
         setGeneralError(false);
+        setIsLoading(true);
         try {
             await registerUser(data);
             reset();
@@ -69,14 +68,6 @@ export default function Register() {
             setIsLoading(false);
         }
     };
-
-    const registerUser = async (data: RegisterFormValues): Promise<void> => {
-        setIsLoading(true);
-        const userData = { displayName: data.displayName, email: data.email, password: data.password };
-        const URL = getServerUrl();
-        return await axios.post(URL + '/api/auth/register', userData);
-    };
-
 
     return (
         <>

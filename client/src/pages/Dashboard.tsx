@@ -35,12 +35,7 @@ const Dashboard = () => {
                 </Box>
             </Flex>
             <Flex>
-
             </Flex>
-
-
-
-
         </>
     );
 };

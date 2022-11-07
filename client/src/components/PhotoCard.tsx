@@ -1,10 +1,3 @@
-interface PhotoCardProps {
-    imageURL: string
-    name: string
-    date: string
-    size: string
-    format: string
-}
 import {
     AspectRatio,
     Box,
@@ -23,6 +16,8 @@ import {
     Tr,
     useDisclosure
 } from '@chakra-ui/react';
+// eslint-disable-next-line
+import { DrawerImageInfoProps, PhotoCardProps } from '../utils/ComponentPropTypes';
 
 export const PhotoCard = (props: PhotoCardProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,12 +43,7 @@ export const PhotoCard = (props: PhotoCardProps) => {
     );
 };
 
-interface DrawerImageInfoProps {
-    isOpen: boolean
-    onClose: () => void
-    onOpen: () => void
-    imageInfo: PhotoCardProps
-}
+
 
 const DrawerImageInfo = (props: DrawerImageInfoProps) => {
     props.onOpen;
