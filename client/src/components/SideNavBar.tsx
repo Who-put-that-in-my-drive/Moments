@@ -123,8 +123,8 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
                     <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} onClick={onClick} size='md' to='/dashboard/profile' w="100%">
                         Profile
                     </Button>
-                    <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} disabled={true} onClick={onClick} size='md' to='/dashboard/plans' w="100%">
-                        Membership Plan
+                    <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} disabled={true} onClick={onClick} size='md' to='/dashboard/explore' w="100%">
+                        Explore
                     </Button>
                 </VStack>
             </Flex>
