@@ -82,7 +82,7 @@ export const Profile = () => {
                                 />
                             </HStack>
                             <Center>
-                                <HStack mt="5rem" spacing="2.5rem">
+                                <HStack mt="3.5rem" spacing="2.5rem">
                                     <Button colorScheme="gray" size="sm">
                                         Cancel
                                     </Button>
