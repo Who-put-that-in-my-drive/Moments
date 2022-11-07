@@ -23,7 +23,8 @@ import { Link as ReactLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo_transparent.png';
 import { login } from '../services/api.service';
 import useStore from '../store/store';
-import { Store } from '../utils/Interfaces';
+import { Store, User } from '../utils/Interfaces';
+
 
 export type LoginFormValues = {
     email: string
@@ -49,7 +50,8 @@ export default function Login() {
             const response: any = await login(data);
             if (response) {
                 reset();
-                store.setUser(response.data.data.user);
+                const user: User = response.data.data.user;
+                store.setUser(user);
                 store.setLoggedIn(true);
                 setIsLoading(false);
                 navigate('/dashboard/home');
