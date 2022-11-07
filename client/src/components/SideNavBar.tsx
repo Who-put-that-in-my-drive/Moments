@@ -105,7 +105,7 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
                     src={logo}
                     w={'100%'}
                 />
-                <VStack _activeLink={{ background: 'black' }}
+                <VStack
                     align='center'
                     as={'nav'}
                     paddingTop={'3rem'}
@@ -114,19 +114,17 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
                 >
                     <IconButton
                         aria-label='Theme changer'
-                        disabled={true}
                         icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
                         onClick={toggleColorMode}
                     />
-
-                    <Button _activeLink={{ background: 'gray.300' }} as={ReactLink} onClick={onClick} size='md' to='/dashboard/home' w="100%">
+                    <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} onClick={onClick} size='md' to='/dashboard/home' w="100%">
                         Home
                     </Button>
-                    <Button _activeLink={{ background: 'gray.300' }} as={ReactLink} onClick={onClick} size='md' to='/dashboard/profile' w="100%">
+                    <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} onClick={onClick} size='md' to='/dashboard/profile' w="100%">
                         Profile
                     </Button>
-                    <Button _activeLink={{ background: 'gray.300' }} as={ReactLink} disabled={true} onClick={onClick} size='md' to='/dashboard/plans' w="100%">
-                        Membership Plan
+                    <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} disabled={true} onClick={onClick} size='md' to='/dashboard/explore' w="100%">
+                        Explore
                     </Button>
                 </VStack>
             </Flex>
@@ -137,8 +135,6 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
                 p='5%'
                 w='100%'
             >
-                {/* <Divider p={'1rem'} display={'flex'} /> */}
-
                 <Menu>
                     <MenuButton as={Button} paddingBottom={'3rem'} paddingTop='2rem' rightIcon={<ChevronDownIcon />}>
                         <Flex align='center' alignContent='center' justifyContent={'center'} mt={4}>

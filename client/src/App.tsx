@@ -2,6 +2,7 @@ import { Button, useColorMode } from '@chakra-ui/react';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 
 import Dashboard from './pages/Dashboard';
+import { Explore } from './pages/Explore';
 import Login from './pages/Login';
 import { Profile } from './pages/Profile';
 import Register from './pages/Register';
@@ -21,6 +22,7 @@ function App() {
                     <Route element={<Dashboard />} path='dashboard' >
                         <Route element={<Uploads />} path='home' />
                         <Route element={<Profile />} path='profile' />
+                        <Route element={<Explore />} path='explore' />
                     </Route>
                 </Routes>
             </Router>

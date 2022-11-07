@@ -24,7 +24,7 @@ export const PhotoCard = (props: PhotoCardProps) => {
     props.size, props.format;
     return (
         <>
-            <Flex _hover={{ cursor: 'pointer' }} direction={'column'} justifyContent="center" onClick={onOpen} w="full">
+            <Flex _hover={{ cursor: 'pointer' }} direction={'column'} justifyContent="center" minW='15rem' onClick={onOpen} w="full">
                 <AspectRatio ratio={16 / 9} w='15rem'>
                     <Image
                         alt={`Picture of ${props.name}`}
