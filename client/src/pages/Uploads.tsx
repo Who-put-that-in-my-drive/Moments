@@ -1,9 +1,10 @@
 import { Box, Flex, Heading, SimpleGrid, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
-
 import { PhotoCard } from '../components/PhotoCard';
 import useStore from '../store/store';
-export const Uploads = () => {
-    const store = useStore();
+import { Store } from '../utils/Interfaces';
+
+const Uploads = () => {
+    const store: Store = useStore();
     const user = store.user;
     const images = user.images;
     return (
@@ -35,7 +36,8 @@ export const Uploads = () => {
                     No images found. Please upload images.
                 </Text>}
             </SimpleGrid>
-
         </Flex>
     );
 };
+
+export default Uploads;

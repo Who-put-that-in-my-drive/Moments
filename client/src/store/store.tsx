@@ -1,24 +1,7 @@
 import create from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-
-// import user from './tempData';
-
-interface Store {
-    user: User,
-    setUser: (user: User) => void
-    removeUser: () => void
-    loggedIn: boolean
-    setLoggedIn: (val: boolean) => void
-
-}
-
-
-export interface User {
-    displayName: string
-    email: string
-    images: any[]
-}
-
+// eslint-disable-next-line
+import { Store, User } from '../utils/Interfaces';
 
 
 
@@ -29,7 +12,7 @@ const useStore = create<Store>()(
                 loggedIn: false,
                 removeUser: () => set((state) => ({ ...state, loggedIn: false, user: { displayName: '', email: '', images: [] } })),
                 setLoggedIn: (val: boolean) => set((state) => ({ ...state, loggedIn: val })),
-                setUser: (user) => set((state) => ({ ...state, user: user })),
+                setUser: (user: User) => set((state) => ({ ...state, user: user })),
                 user: {
                     displayName: '',
                     email: '',

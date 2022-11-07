@@ -1,8 +1,9 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
 import useStore from './store/store';
+import { Store } from './utils/Interfaces';
 
-const store = useStore();
+const store: Store = useStore();
 
 const useAuth = () => {
     const loggedInStatus = store.loggedIn;
