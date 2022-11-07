@@ -29,10 +29,8 @@ export default class Jwt {
      *
      * @return JWT
      */
-    static expireJwt(): Promise<string> {
-        return new Promise(resolve => {
-            resolve('');
-        });
+    static expireJwt(): string {
+        return '';
     }
 
     /**

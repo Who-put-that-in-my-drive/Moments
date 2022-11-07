@@ -12,14 +12,14 @@ const Header = ({ showSidebarButton = true, onShowSidebar }: Props) => {
         <>
 
             {showSidebarButton && (
-                <Flex bg="gray.200" p={4} color="white" justifyContent="center">
+                <Flex bg="gray.200" color="white" justifyContent="center" p={4} shadow='md' zIndex={'10000'}>
                     <Box flex="1">
                         <IconButton
                             aria-label='button'
-                            icon={<ChevronRightIcon w={8} h={8} />}
                             colorScheme="blackAlpha"
-                            variant="outline"
+                            icon={<ChevronRightIcon h={8} w={8} />}
                             onClick={onShowSidebar}
+                            variant="outline"
                         />
                     </Box>
                     <Center flex="1" h="40px">

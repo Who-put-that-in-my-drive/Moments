@@ -1,8 +1,8 @@
+import { ChevronDownIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import {
     Avatar,
     Box,
     Button,
-    Divider,
     Drawer,
     DrawerBody,
     DrawerCloseButton,
@@ -11,42 +11,47 @@ import {
     DrawerOverlay,
     Flex,
     Heading,
+    IconButton,
     Image,
-    Link,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuList,
     Text,
+    useColorMode,
     VStack,
 } from '@chakra-ui/react';
+import axios from 'axios';
+// eslint-disable-next-line 
 import { MouseEventHandler } from 'react';
-import { Link as ReactLink } from 'react-router-dom';
+import { NavLink as ReactLink, useNavigate } from 'react-router-dom';
 
 import logo from '../assets/images/logo_transparent.png';
 import useStore from '../store/store';
-
-
-
+import { getServerUrl } from '../utils/WebsiteUtils';
 
 interface Props {
     onClose: () => void
     isOpen: boolean
     variant: 'drawer' | 'sidebar' | any
-};
+}
 
 const SideNavBar = ({ isOpen, variant, onClose }: Props) => {
 
     return variant === 'sidebar' ? (
         <Box
-
+            bg='blackAlpha.300'
+            h='100%'
             left={0}
             p={5}
-            w="18rem"
+            shadow='lg'
             top={0}
-            h="100%"
-            bg="gray.100"
+            w='18rem'
         >
             <SidebarContent onClick={onClose} />
         </Box>
     ) : (
-        <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+        <Drawer isOpen={isOpen} onClose={onClose} placement="left">
             <DrawerOverlay>
                 <DrawerContent backgroundColor={'gray.100'}>
                     <DrawerCloseButton />
@@ -62,61 +67,97 @@ const SideNavBar = ({ isOpen, variant, onClose }: Props) => {
 
 
 const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
+    const { colorMode, toggleColorMode } = useColorMode();
     const store = useStore();
     const user = store.user;
+    const navigate = useNavigate();
+    const onLogoutClick = async () => {
+        try {
+            const response: any = await logout();
+            console.log(response.data);
+            store.removeUser();
+            navigate('/login');
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+    const logout = async (): Promise<void> => {
+        const URL = getServerUrl();
+        return await axios.get(URL + '/api/auth/logout');
+    };
+
     return (
         <Flex
-            left='0'
-            h='100%'
             flexDir='column'
+            h='100%'
             justifyContent='space-between'
+            left='0'
             transition={'.2s'}
         >
 
             <Flex
+                as='nav'
                 flexDir='column'
                 w='100%'
-                as='nav'
             >
                 <Image
-                    w={'100%'}
                     alt={'Login Image'}
                     src={logo}
+                    w={'100%'}
                 />
-                <VStack paddingTop={'3rem'}
-                    spacing={9}
+                <VStack _activeLink={{ background: 'black' }}
                     align='center'
-                    width={'100%'}
                     as={'nav'}
+                    paddingTop={'3rem'}
+                    spacing={9}
+                    width={'100%'}
                 >
-                    <Button onClick={onClick} w="100%" size='md'>
-                        <Link as={ReactLink} to='/dashboard/home'> Home </Link>
+                    <IconButton
+                        aria-label='Theme changer'
+                        disabled={true}
+                        icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                        onClick={toggleColorMode}
+                    />
+
+                    <Button _activeLink={{ background: 'gray.300' }} as={ReactLink} onClick={onClick} size='md' to='/dashboard/home' w="100%">
+                        Home
                     </Button>
-                    <Button onClick={onClick} w="100%" size='md'>
-                        <Link as={ReactLink} to='/dashboard/profile'>Profile</Link>
+                    <Button _activeLink={{ background: 'gray.300' }} as={ReactLink} onClick={onClick} size='md' to='/dashboard/profile' w="100%">
+                        Profile
                     </Button>
-                    <Button onClick={onClick} w="100%" size='md'>
-                        <Link as={ReactLink} to='/dashboard'>Membership Plan</Link>
+                    <Button _activeLink={{ background: 'gray.300' }} as={ReactLink} disabled={true} onClick={onClick} size='md' to='/dashboard/plans' w="100%">
+                        Membership Plan
                     </Button>
                 </VStack>
             </Flex>
 
             <Flex
-                p='5%'
                 flexDir='column'
-                w='100%'
                 mb={2}
+                p='5%'
+                w='100%'
             >
-                <Divider display={'flex'} />
-                <Flex mt={4} align='center'>
-                    <Avatar size='sm' src='avatar-1.jpg' />
-                    <Flex flexDir='column' ml={4} display={'flex'}>
-                        <Heading as='h3' size='sm'>{user.displayName}</Heading>
-                        <Text color='gray'>{user.email}</Text>
-                    </Flex>
-                </Flex>
+                {/* <Divider p={'1rem'} display={'flex'} /> */}
+
+                <Menu>
+                    <MenuButton as={Button} paddingBottom={'3rem'} paddingTop='2rem' rightIcon={<ChevronDownIcon />}>
+                        <Flex align='center' alignContent='center' justifyContent={'center'} mt={4}>
+
+                            <Avatar size='md' src='avatar-1.jpg' />
+                            <Flex display={'flex'} flexDir='column' ml={4}>
+                                <Heading as='h3' size='sm'>{user.displayName || 'No user found'}</Heading>
+                                <Text color='gray'>{user.email || 'No user found'}</Text>
+                            </Flex>
+                        </Flex>
+                    </MenuButton>
+                    <MenuList>
+                        <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
+                    </MenuList>
+                </Menu>
             </Flex>
-        </Flex>
+        </Flex >
     );
 };
 

@@ -80,24 +80,24 @@ export default function Register() {
 
     return (
         <>
-            <Center marginTop={['5rem', '7rem', '0', '0']} h={'100vh'} padding={['0rem', '0.5rem', '3rem', '5rem']}>
-                <ScaleFade initialScale={0.9} in>
+            <Center h={'100vh'} marginTop={['5rem', '7rem', '0', '0']} padding={['0rem', '0.5rem', '3rem', '5rem']}>
+                <ScaleFade in initialScale={0.9}>
                     <Box boxShadow='2xl'>
                         <Flex direction={{ base: 'column', md: 'row' }} >
                             <Flex flex={1}>
                                 <Image
-                                    w={'100%'}
-                                    bg={colorMode === 'light' ? 'gray.700' : 'gray.100'}
                                     alt={'Login Image'}
+                                    bg={colorMode === 'light' ? 'gray.700' : 'gray.100'}
                                     objectFit={'cover'}
                                     src={logo}
+                                    w={'100%'}
                                 />
                             </Flex>
-                            <Flex p={5} flex={1} align={'center'} justify={'center'}>
-                                <form style={{ width: '80%' }} onSubmit={handleSubmit(handleSubmitForm)}>
+                            <Flex align={'center'} flex={1} justify={'center'} p={5}>
+                                <form onSubmit={handleSubmit(handleSubmitForm)} style={{ width: '80%' }}>
                                     <Stack spacing={4} w={'full'} >
-                                        <Heading textAlign={'center'} fontSize={'4xl'}>Sign Up</Heading>
-                                        <FormControl margin={'1rem'} isInvalid={Boolean(errors.displayName)}>
+                                        <Heading fontSize={'4xl'} textAlign={'center'}>Sign Up</Heading>
+                                        <FormControl isInvalid={Boolean(errors.displayName)} margin={'1rem'}>
                                             <FormLabel>Username</FormLabel>
                                             <Input
                                                 {...register(
@@ -113,7 +113,7 @@ export default function Register() {
                                             <FormErrorMessage>{errors.displayName && errors.displayName.message}</FormErrorMessage>
                                         </FormControl>
 
-                                        <FormControl margin={'1rem'} isInvalid={Boolean(errors.email)}>
+                                        <FormControl isInvalid={Boolean(errors.email)} margin={'1rem'}>
                                             <FormLabel>Email</FormLabel>
                                             <Input
                                                 {...register(
@@ -158,21 +158,21 @@ export default function Register() {
                                             <FormErrorMessage>
                                                 {errors.confirm_password && errors.confirm_password.message}
                                             </FormErrorMessage>
-                                            <Text textAlign='center' color='tomato'>
+                                            <Text color='tomato' textAlign='center'>
                                                 {generalError ? 'Something went wrong please try again!' : null}
                                             </Text>
                                         </FormControl>
                                         <Stack paddingTop={'1rem'} spacing={10}>
 
                                             <Center>
-                                                <Button isLoading={isLoading} loadingText={'Registering user...'} shadow={'xl'} width={'80%'} type='submit' colorScheme={'blue'} variant={'solid'}>
+                                                <Button colorScheme={'blue'} isLoading={isLoading} loadingText={'Registering user...'} shadow={'xl'} type='submit' variant={'solid'} width={'80%'}>
                                                     Sign up
                                                 </Button>
 
                                             </Center>
                                             <Text
-                                                textAlign={'center'}
-                                                fontSize='md'>Existing user? <Link color={'blue.500'} as={ReactLink} to='/login'>Log in!</Link></Text>
+                                                fontSize='md'
+                                                textAlign={'center'}>Existing user? <Link as={ReactLink} color={'blue.500'} to='/login'>Log in!</Link></Text>
                                         </Stack>
                                     </Stack>
                                 </form>
@@ -182,17 +182,17 @@ export default function Register() {
                 </ScaleFade>
             </Center>
             <AlertDialog
-                motionPreset='slideInBottom'
-                leastDestructiveRef={cancelRef}
-                onClose={onClose}
-                isOpen={isOpen}
                 isCentered
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                motionPreset='slideInBottom'
+                onClose={onClose}
             >
                 <AlertDialogOverlay />
                 <AlertDialogContent>
                     <AlertDialogCloseButton />
-                    <Center borderTopRadius={'md'} w='100%' h='12rem' bg='green.400' color='white'>
-                        <Icon as={CheckCircleIcon} w={24} h={24} />
+                    <Center bg='green.400' borderTopRadius={'md'} color='white' h='12rem' w='100%'>
+                        <Icon as={CheckCircleIcon} h={24} w={24} />
                     </Center>
                     <AlertDialogBody>
                         <VStack spacing={4}>
@@ -205,7 +205,7 @@ export default function Register() {
                         </VStack>
                     </AlertDialogBody>
                     <AlertDialogFooter>
-                        <Button onClick={() => { navigate('/login'); }} rightIcon={<ArrowForwardIcon />} colorScheme='gray' variant='outline'>
+                        <Button colorScheme='gray' onClick={() => { navigate('/login'); }} rightIcon={<ArrowForwardIcon />} variant='outline'>
                             Sign In
                         </Button>
                     </AlertDialogFooter>
@@ -213,4 +213,4 @@ export default function Register() {
             </AlertDialog>
         </>
     );
-};
+}
