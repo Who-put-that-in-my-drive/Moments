@@ -21,19 +21,20 @@ import { useForm } from 'react-hook-form';
 import { Link as ReactLink, useNavigate } from 'react-router-dom';
 
 import logo from '../assets/images/logo_transparent.png';
-import { login } from '../services/api.service';
+import { login } from '../services/api/auth-service';
 import useStore from '../store/store';
-import { Store, User } from '../utils/Interfaces';
+import {User} from '../interfaces/User';
+import {UserStore} from '../interfaces/UserStore';
+import {successResponse} from '../utils/WebsiteUtils';
 
-
-export type LoginFormValues = {
+export type LoginFormDTO = {
     email: string
     password: string
 };
 
 export default function Login() {
     const navigate = useNavigate();
-    const store: Store = useStore();
+    const store: UserStore = useStore();
     const { colorMode } = useColorMode();
     const {
         register,
@@ -41,20 +42,22 @@ export default function Login() {
         formState: { errors },
         setError,
         reset
-    } = useForm<LoginFormValues>();
+    } = useForm<LoginFormDTO>();
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmitForm = async (data: LoginFormValues) => {
+    const handleSubmitForm = async (data: LoginFormDTO) => {
         try {
             setIsLoading(true);
             const response: any = await login(data);
-            if (response) {
+            if (successResponse(response)) {
                 reset();
                 const user: User = response.data.data.user;
                 store.setUser(user);
                 store.setLoggedIn(true);
                 setIsLoading(false);
                 navigate('/dashboard/home');
+            } else {
+                // Set error response here
             }
         } catch (error: any) {
             setIsLoading(false);

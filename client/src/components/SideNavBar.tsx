@@ -22,17 +22,14 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import axios from 'axios';
-// eslint-disable-next-line 
+// eslint-disable-next-line
 import { MouseEventHandler } from 'react';
-import { getServerUrl } from '../utils/WebsiteUtils';
 import { NavLink as ReactLink, useNavigate } from 'react-router-dom';
 
 import logo from '../assets/images/logo_transparent.png';
 import useStore from '../store/store';
 import { SideNavBarProps } from '../utils/ComponentPropTypes';
-import { Store } from '../utils/Interfaces';
-
-
+import {UserStore} from '../interfaces/UserStore';
 
 const SideNavBar = ({ isOpen, variant, onClose }: SideNavBarProps) => {
 
@@ -66,7 +63,7 @@ const SideNavBar = ({ isOpen, variant, onClose }: SideNavBarProps) => {
 
 const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
     const { colorMode, toggleColorMode } = useColorMode();
-    const store: Store = useStore();
+    const store: UserStore = useStore();
     const user = store.user;
     const navigate = useNavigate();
     const onLogoutClick = async () => {
@@ -82,8 +79,7 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
 
 
     const logout = async (): Promise<void> => {
-        const URL = getServerUrl();
-        return await axios.get(URL + '/api/auth/logout');
+        return await axios.get('/api/auth/logout');
     };
 
     return (

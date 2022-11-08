@@ -1,11 +1,11 @@
 import { Box, Flex, Heading, SimpleGrid, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
 import { PhotoCard } from '../components/PhotoCard';
 import useStore from '../store/store';
+import {UserStore} from '../interfaces/UserStore';
 // eslint-disable-next-line
-import { Store } from '../utils/Interfaces';
 
 const Uploads = () => {
-    const store: Store = useStore();
+    const store: UserStore = useStore();
     const user = store.user;
     const images = user.images;
     return (
