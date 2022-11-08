@@ -47,7 +47,7 @@ export default function Post() {
                         <Grid>
                             <HStack>
                                 <GridItem>
-                                    <Image src={Beach} />
+                                    <Image src={Beach} borderRadius={'lg'}/>
                                 </GridItem>
                                 <Flex
                                     sx={{
@@ -91,6 +91,7 @@ export default function Post() {
                                                 Picture Info
                                             </Text>
                                         </HStack>
+                                            
                                         <Text color={colorMode === 'light' ? 'white' : 'black'}>
                                             Size: 30.69 MB
                                             Posted: May 9th, 2019
