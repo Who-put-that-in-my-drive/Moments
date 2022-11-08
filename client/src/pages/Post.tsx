@@ -1,24 +1,28 @@
 import {
-    Avatar,
+    
     Button,
-    Flex,
-    Grid, 
-    HStack,
+   
+  
     Image,
     Modal,
-    ModalOverlay,
+    // ModalOverlay,
     ModalContent,
     ModalBody,
     ModalCloseButton,
-    Spacer,
-    Stat,
-    StatLabel,
-    Text,
-    Tag,
-    VStack,
+  
     useColorMode,
+    VStack,
+    Avatar,
+    StatLabel,
+    Stat,
     useDisclosure,
-    GridItem,
+    Stack,
+    Box,
+    Text,
+    Flex,
+    HStack,
+    Tag,
+    Spacer
 } from '@chakra-ui/react';
 import {
     CalendarIcon,
@@ -27,37 +31,28 @@ import {
     SunIcon,
 } from '@chakra-ui/icons';
 import Beach from '../assets/images/Beach.jpg';
-// import AvatarPic from '../assets/images/Avatar.jpg';
 
 export default function Post() {
     const { colorMode } = useColorMode();
     
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
-
         <>
             <Button onClick={onOpen}>Open Modal</Button>
 
             <Modal isOpen={isOpen} onClose={onClose} size='full'>
-                <ModalOverlay />
                 <ModalContent>
                     {/* <ModalHeader>Beach Image</ModalHeader> */}
-                    <ModalCloseButton color={'gray.100'} size={'lg'}/>
-                    <ModalBody>
-                        <Grid>
-                            <HStack>
-                                <GridItem>
-                                    <Image src={Beach} borderRadius={'lg'}/>
-                                </GridItem>
-                                <Flex
-                                    sx={{
-                                        'align-items': 'start',
-                                        'textAlign' : 'flex-start',}}
-                                    height={'100%'}
-                                    bg={colorMode === 'light' ? 'gray.700' : 'gray.100'} 
-                                    borderRadius={'lg'}
-                                    padding = {'2.5'}>
-                                    <VStack spacing={5} alignItems={'flex-start'}> 
+                    <ModalCloseButton color={'gray.100'} size={'xl'}/>
+                    <ModalBody>    
+                        <Stack spacing={-8} direction='row' >
+                            <Box p={5} w='70%' >
+                                <Image src={Beach} borderRadius={'lg'} maxHeight="90vh" minHeight="90vh"/>
+                            </Box>
+                            
+                            <Box p={5} w='30%'  >
+                                <Flex bg='white' borderRadius={'lg'} textColor="black" overflowY='scroll' maxHeight="90vh" minHeight="90vh" >
+                                    <VStack spacing={5} alignItems={'flex-start'} marginLeft="25" marginTop="5" bg='white'> 
                                         <Avatar size={'lg'} src='https://bit.ly/broken-link' />
                                         <Stat>
                                             <StatLabel 
@@ -165,7 +160,7 @@ export default function Post() {
                                                 Waves
                                             </Tag>
                                         </HStack>
-                                        <Spacer />
+                                      
                                         <Text color={colorMode === 'light' ? 'white' : 'black'} as={'u'}>
                                                 Categories
                                         </Text>
@@ -195,10 +190,12 @@ export default function Post() {
                                                 Landscape
                                             </Tag>
                                         </HStack>
+
+                                        <Spacer />
                                     </VStack>
                                 </Flex>
-                            </HStack>
-                        </Grid>
+                            </Box>
+                        </Stack>
                     </ModalBody>
                 </ModalContent>
             </Modal>    
