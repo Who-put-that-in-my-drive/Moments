@@ -28,14 +28,62 @@ Resources:
       Description: !Ref "apiGatewayDescription"
 
   ### Service Resources ###
-  apiGatewayLoginResource:
+  # Auth
+  apiGatewayAuthResource:
     Type: "AWS::ApiGateway::Resource"
     Properties:
       ParentId: !GetAtt "apiGateway.RootResourceId"
+      PathPart: 'auth'
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayLoginResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGatewayAuthResource.ResourceId"
       PathPart: 'login'
       RestApiId: !Ref "apiGateway"
 
-  apiGatewayLoginMethod:
+  apiGatewayLogoutResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGatewayAuthResource.ResourceId"
+      PathPart: 'logout'
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayRegisterResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGatewayAuthResource.ResourceId"
+      PathPart: 'register'
+      RestApiId: !Ref "apiGateway"
+
+  # Image
+  apiGatewayImageResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGateway.RootResourceId"
+      PathPart: 'image'
+      RestApiId: !Ref "apiGateway"
+
+  # User
+  apiGatewayUserResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGateway.RootResourceId"
+      PathPart: 'user'
+      RestApiId: !Ref "apiGateway"
+
+  # General
+  apiGatewayHealthResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGateway.RootResourceId"
+      PathPart: 'health'
+      RestApiId: !Ref "apiGateway"
+
+  ### Service Methods ###
+  # General
+  apiGatewayHealthMethod:
     Type: "AWS::ApiGateway::Method"
     Properties:
       ApiKeyRequired: false
@@ -53,9 +101,242 @@ Resources:
             {"statusCode": 200}
         Type: "HTTP_PROXY"
         IntegrationHttpMethod: "ANY"
-        Uri: !Join [ '', [ !Ref domainHost, '/login' ] ]
+        Uri: !Join [ '', [ !Ref domainHost, '/health' ] ]
         TimeoutInMillis: 29000
-      ResourceId: !Ref "apiGatewayTestResource"
+      ResourceId: !Ref "apiGatewayHealthResource"
+      RestApiId: !Ref "apiGateway"
+
+  # Auth
+  apiGatewayLoginMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "POST"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/auth/login' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayLoginResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayLogoutMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "GET"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/auth/logout' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayLogoutResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayRegisterMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "POST"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/auth/register' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayRegisterResource"
+      RestApiId: !Ref "apiGateway"
+
+  # Image
+  apiGatewayGetImageMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "GET"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/image' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayImageResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayUploadImageMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "POST"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/image' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayImageResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayUpdateImageMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "PUT"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/image' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayImageResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayDeleteImageMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "DELETE"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/image' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayImageResource"
+      RestApiId: !Ref "apiGateway"
+
+  # User
+  apiGatewayGetUserMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "GET"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/user' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayUserResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayUpdateUserMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "PUT"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/user' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayUserResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayDeleteUserMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "DELETE"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/user' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayUserResource"
       RestApiId: !Ref "apiGateway"
 
   ### Provided Default Data ###
@@ -68,11 +349,11 @@ Resources:
 
   apiGatewayDeployment:
     Type: "AWS::ApiGateway::Deployment"
-    DependsOn: "apiGatewayTestMethod"
+    DependsOn: "apiGatewayLoginMethod"
     Properties:
       RestApiId: !Ref "apiGateway"
 
 Parameters:
   domainHost:
     Type: "String"
-    Default: "http://ec2-174-129-50-55.compute-1.amazonaws.com:5000/api"
+    Default: "http://ec2-54-235-34-39.compute-1.amazonaws.com:5000/api"
