@@ -3,7 +3,6 @@ import {
     Box,
     Button,
     Center,
-    Container,
     FormControl,
     FormLabel,
     Heading,
@@ -15,78 +14,81 @@ import {
     VStack,
     Wrap,
     WrapItem,
+    Flex,
 } from '@chakra-ui/react';
+import useStore from '../store/store';
+import { Store } from '../utils/Interfaces';
 
 export const Profile = () => {
+    const store: Store = useStore();
+    const user = store.user;
     return (
-        <Container maxW="40rem" ml="4rem">
-            <Box borderColor="#FFFFFF" borderTopWidth="40px">
-                <Wrap spacing="30px">
+        <>
+            <Flex direction={'column'} padding={['1rem', '3rem', '4rem', '5rem']} paddingX={['1rem', '2rem', '3rem', '7rem']} scrollBehavior={'auto'}>
+                <Wrap paddingBottom={'1rem'} spacing='2rem'>
                     <WrapItem>
-                        <Avatar size="xl" src="https://bit.ly/broken-link" />
+                        <Avatar size='xl' src='https://bit.ly/broken-link' />
                     </WrapItem>
                     <Stack>
-                        <Heading as="h1" size="2xl">
-                            Leandra Budau
+                        <Heading as='h1' size='2xl'>
+                            {user.displayName.charAt(0).toUpperCase() + user.displayName.slice(1,)}
                         </Heading>
-                        <Heading as="h2" size="md">
-                            @leandra_budau
+                        <Heading as='h2' size='md'>
+                            {'@' + user.displayName}
                         </Heading>
                     </Stack>
                 </Wrap>
                 <FormControl>
-                    <Box borderColor="#FFFFFF" borderLeftWidth="130px">
-                        <VStack align="left" spacing="0.75rem">
-                            <Box borderBottomWidth="2px" color="white">
-                                <Text as="b" color="#000000" fontSize="xl">
+                    <Box>
+                        <VStack align='left' spacing={'1rem'} >
+                            <Box borderBottomWidth='2px'>
+                                <Text as='b' fontSize='xl'>
                                     User Info
                                 </Text>
                             </Box>
-                            <HStack spacing="50px">
-                                <div>
+                            <Flex justifyContent={'space-around'}>
+                                <Box paddingRight='1rem' style={{ width: '100%' }}>
                                     <FormLabel>First Name</FormLabel>
-                                    <Input placeholder="Leandra" type="text" />
-                                </div>
-                                <div>
+                                    <Input placeholder={user.firstName || 'First name'} type='text' />
+                                </Box>
+                                <Box paddingLeft='1rem' style={{ width: '100%' }}>
                                     <FormLabel>Last Name</FormLabel>
-                                    <Input placeholder="Budau" type="text" />
-                                </div>
-                            </HStack>
+                                    <Input placeholder={user.lastName || 'Last name'} type='text' />
+                                </Box>
+                            </Flex>
                             <div>
                                 <FormLabel>Username</FormLabel>
-                                <Input placeholder="leandra_budau" type="text" />
+                                <Input disabled type='text' value={user.displayName} />
                             </div>
                             <div>
                                 <FormLabel>Email Address</FormLabel>
-                                <Input placeholder="leandrabudau123@gmail.com" type="text" />
+                                <Input disabled type='text' value={user.email} />
                             </div>
-                            <Box borderBottomWidth="2px" color="white" pt='0.7rem'>
-                                <Text as="b" color="#000000" fontSize="xl">
+                            <Box borderBottomWidth='2px' pt='0.7rem'>
+                                <Text as='b' fontSize='xl'>
                                     Profile Picture
                                 </Text>
                             </Box>
-                            <HStack position='relative' spacing="40px">
-                                <Avatar mt="1rem" size="xl" src="https://bit.ly/broken-link" />
+                            <HStack position='relative' spacing='2rem'>
+                                <Avatar size='xl' src='https://bit.ly/broken-link' />
                                 <Link color='teal.500' href='#'>
                                     Change Profile Picture
                                 </Link>
                                 <Input
-                                    accept="image/*"
-                                    aria-hidden="true"
-                                    left='5em'
+                                    accept='image/*'
+                                    aria-hidden='true'
                                     opacity='0'
-                                    placeholder="test"
+                                    placeholder='test'
                                     position='absolute'
-                                    type="file"
-                                    width='50%'
+                                    type='file'
                                 />
                             </HStack>
                             <Center>
-                                <HStack mt="3.5rem" spacing="2.5rem">
-                                    <Button colorScheme="gray" size="sm">
+                                <HStack mt='1rem' spacing='2rem'>
+                                    <Button colorScheme='gray' size='sm'>
                                         Cancel
                                     </Button>
-                                    <Button colorScheme="teal" size="sm">
+                                    <Button colorScheme='teal' size='sm'>
                                         Save
                                     </Button>
                                 </HStack>
@@ -94,7 +96,7 @@ export const Profile = () => {
                         </VStack>
                     </Box>
                 </FormControl>
-            </Box>
-        </Container>
+            </Flex>
+        </>
     );
 };
