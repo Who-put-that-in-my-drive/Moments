@@ -29,9 +29,10 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as ReactLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo_transparent.png';
-import { registerUser } from '../services/api.service';
+import { registerUser } from '../services/api/auth-service';
+import {successResponse} from '../utils/WebsiteUtils';
 
-export type RegisterFormValues = {
+export type RegisterFormDTO = {
     email: string,
     password: string,
     confirm_password: string,
@@ -51,18 +52,21 @@ export default function Register() {
         formState: { errors },
         watch,
         reset
-    } = useForm<RegisterFormValues>();
+    } = useForm<RegisterFormDTO>();
     const minPassLength: number = 7;
     const minUsernameLength: number = 3;
 
-    const handleSubmitForm = async (data: RegisterFormValues) => {
+    const handleSubmitForm = async (data: RegisterFormDTO) => {
         setGeneralError(false);
         setIsLoading(true);
         try {
-            await registerUser(data);
-            reset();
-            onOpen();
-            setIsLoading(false);
+            if (successResponse(await registerUser(data))) {
+                reset();
+                onOpen();
+                setIsLoading(false);
+            } else {
+                // Set error response here
+            }
         } catch (error) {
             setGeneralError(true);
             setIsLoading(false);
