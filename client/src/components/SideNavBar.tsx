@@ -18,18 +18,21 @@ import {
     MenuItem,
     MenuList,
     Text,
+    Tooltip,
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
-import axios from 'axios';
-// eslint-disable-next-line
+// eslint-disable-next-line 
 import { MouseEventHandler } from 'react';
 import { NavLink as ReactLink, useNavigate } from 'react-router-dom';
 
 import logo from '../assets/images/logo_transparent.png';
 import useStore from '../store/store';
 import { SideNavBarProps } from '../utils/ComponentPropTypes';
-import {UserStore} from '../interfaces/UserStore';
+import { UserStore } from '../interfaces/UserStore';
+import { logout } from '../services/api/auth-service';
+
+
 
 const SideNavBar = ({ isOpen, variant, onClose }: SideNavBarProps) => {
 
@@ -48,7 +51,7 @@ const SideNavBar = ({ isOpen, variant, onClose }: SideNavBarProps) => {
     ) : (
         <Drawer isOpen={isOpen} onClose={onClose} placement="left">
             <DrawerOverlay>
-                <DrawerContent backgroundColor={'gray.100'}>
+                <DrawerContent>
                     <DrawerCloseButton />
                     <DrawerHeader>Moments</DrawerHeader>
                     <DrawerBody>
@@ -77,10 +80,6 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
         }
     };
 
-
-    const logout = async (): Promise<void> => {
-        return await axios.get('/api/auth/logout');
-    };
 
     return (
         <Flex
@@ -113,13 +112,13 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
                         icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
                         onClick={toggleColorMode}
                     />
-                    <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} onClick={onClick} size='md' to='/dashboard/home' w="100%">
+                    <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} colorScheme={'gray'} onClick={onClick} size='md' to='/dashboard/home' w="100%">
                         Home
                     </Button>
-                    <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} onClick={onClick} size='md' to='/dashboard/profile' w="100%">
+                    <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} colorScheme={'gray'} onClick={onClick} size='md' to='/dashboard/profile' w="100%">
                         Profile
                     </Button>
-                    <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} disabled={true} onClick={onClick} size='md' to='/dashboard/explore' w="100%">
+                    <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} colorScheme={'gray'} disabled={true} onClick={onClick} size='md' to='/dashboard/explore' w="100%">
                         Explore
                     </Button>
                 </VStack>
@@ -132,16 +131,17 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
                 w='100%'
             >
                 <Menu>
-                    <MenuButton as={Button} paddingBottom={'3rem'} paddingTop='2rem' rightIcon={<ChevronDownIcon />}>
-                        <Flex align='center' alignContent='center' justifyContent={'center'} mt={4}>
-
-                            <Avatar size='md' src='avatar-1.jpg' />
-                            <Flex display={'flex'} flexDir='column' ml={4}>
-                                <Heading as='h3' size='sm'>{user.displayName || 'No user found'}</Heading>
-                                <Text color='gray'>{user.email || 'No user found'}</Text>
+                    <Tooltip aria-label='A tooltip' label={user.email}>
+                        <MenuButton as={Button} paddingBottom={'3rem'} paddingTop='2rem' rightIcon={<ChevronDownIcon />}>
+                            <Flex align='center' alignContent='center' justifyContent={'center'} mt={4}>
+                                <Avatar size='md' src='avatar-1.jpg' />
+                                <Flex display={'flex'} flexDir='column' maxW={'70%'} ml='2'>
+                                    <Heading as='h3' noOfLines={1} size='sm'>{user.displayName || 'No user found'}</Heading>
+                                    <Text color='gray' noOfLines={1}>{user.email || 'No user found'}</Text>
+                                </Flex>
                             </Flex>
-                        </Flex>
-                    </MenuButton>
+                        </MenuButton>
+                    </Tooltip>
                     <MenuList>
                         <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
                     </MenuList>
