@@ -1,3 +1,3 @@
-export const getServerUrl = (): string => {
-    return process.env.REACT_APP_DEV_SERVER_URL || 'https://momentsimagegallery.site';
+export const successResponse = (response: Response): boolean => {
+    return response.status >= 200 && response.status < 400;
 };

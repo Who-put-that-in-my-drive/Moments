@@ -1,11 +1,10 @@
 import create from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+import {UserStore} from '../interfaces/UserStore';
+import {User} from '../interfaces/User';
 // eslint-disable-next-line
-import { Store, User } from '../utils/Interfaces';
 
-
-
-const useStore = create<Store>()(
+const useStore = create<UserStore>()(
     devtools(
         persist(
             (set) => ({
