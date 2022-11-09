@@ -6,7 +6,7 @@ import { Explore } from './pages/Explore';
 import Login from './pages/Login';
 import { Profile } from './pages/Profile';
 import Register from './pages/Register';
-import Post from './pages/Post';
+// import Post from './pages/Post';
 import Uploads from './pages/Uploads';
 
 
@@ -25,7 +25,7 @@ function App() {
                         <Route element={<Profile />} path='profile' />
                         <Route element={<Explore />} path='explore' />
                     </Route>
-                    <Route element={<Post />} path='/post' />
+                    {/* <Route element={<Post />} path='/post' /> */}
                 </Routes>
             </Router>
         </>

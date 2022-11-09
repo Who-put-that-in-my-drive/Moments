@@ -23,9 +23,9 @@ import { Link as ReactLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo_transparent.png';
 import { login } from '../services/api/auth-service';
 import useStore from '../store/store';
-import {User} from '../interfaces/User';
-import {UserStore} from '../interfaces/UserStore';
-import {successResponse} from '../utils/WebsiteUtils';
+import { User } from '../interfaces/User';
+import { UserStore } from '../interfaces/UserStore';
+import { successResponse } from '../utils/WebsiteUtils';
 
 export type LoginFormDTO = {
     email: string
@@ -81,7 +81,7 @@ export default function Login() {
     return (
         <Center h={'100vh'} marginTop={['5rem', '7rem', '0', '0']} padding={['0rem', '0.5rem', '3rem', '5rem']}>
             <ScaleFade in initialScale={0.9}>
-                <Box borderRadius='lg' boxShadow='2xl' >
+                <Box boxShadow='2xl' >
                     <Flex direction={{ base: 'column', sm: 'row' }} >
                         <Flex flex={1}>
                             <Image
