@@ -8,16 +8,19 @@ import { Profile } from './pages/Profile';
 import Register from './pages/Register';
 // import Post from './pages/Post';
 import Uploads from './pages/Uploads';
+import useStore from './store/store';
 
 
 function App() {
     const { colorMode, toggleColorMode } = useColorMode();
+    const store = useStore();
+    const loggedIn: boolean = store.loggedIn;
     return (
         <>
             <Button display={'none'} onClick={toggleColorMode} position={'absolute'}>Toggle {colorMode} theme</Button>
             <Router>
                 <Routes>
-                    <Route element={<Navigate replace to='/login' />} path='/' />
+                    <Route element={<Navigate replace to={loggedIn ? '/dashboard/home' : '/login'} />} path='*' />
                     <Route element={<Login />} path='login' />
                     <Route element={<Register />} path='register' />
                     <Route element={<Dashboard />} path='dashboard' >
