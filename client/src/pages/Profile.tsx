@@ -8,7 +8,6 @@ import {
     Link,
     HStack,
     Input,
-    Stack,
     Text,
     VStack,
     Wrap,
@@ -18,6 +17,7 @@ import {
     FormControl,
     useToast,
     Tag,
+    Stack,
 } from '@chakra-ui/react';
 import useStore from '../store/store';
 import { useForm } from 'react-hook-form';
@@ -38,14 +38,21 @@ export const Profile = () => {
     const toast = useToast();
     const user = store.user;
     const minNameLength: number = 2;
-    const userName = (user.firstName && user.lastName ? user.firstName + ' ' + user.lastName : '') || '';
+
+    const userName = (user.firstName && user.lastName ?
+        user.firstName + ' ' + user.lastName :
+        '') || '';
+
     const {
         register,
         handleSubmit,
         formState: { errors }
     } = useForm<UpdateFormDTO>();
-    const [loading, setLoading] = useState(false);
 
+    const [loading, setLoading] = useState(false);
+    const capitalizeFirstChar = (str: string): string => {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    };
     const showToast = (status: string) => {
         const title = status === 'success' ? 'User updated.' : 'User update failed.';
         const description = status === 'success' ? 'We\'ve successfully updated your info.' : 'Something went wrong.';
@@ -66,15 +73,18 @@ export const Profile = () => {
         const formData: UpdateFormDTO = {
             ...data,
             displayName: user.displayName,
-            email: user.email
+            email: user.email,
+            firstName: capitalizeFirstChar(data.firstName),
+            lastName: capitalizeFirstChar(data.lastName)
         };
+
         try {
             const updateUserResponse = await updateUser(formData);
             if (successResponse(updateUserResponse)) {
                 const updatedUserData: User = {
                     ...user,
-                    firstName: data.firstName,
-                    lastName: data.lastName
+                    firstName: formData.firstName,
+                    lastName: formData.lastName
                 };
                 store.updateUser(updatedUserData);
                 showToast('success');
@@ -91,18 +101,15 @@ export const Profile = () => {
     return (
         <>
             <Flex direction={'column'} padding={['1rem', '3rem', '4rem', '5rem']} paddingX={['1rem', '2rem', '3rem', '7rem']} scrollBehavior={'auto'}>
-                <Wrap paddingBottom={'1rem'} spacing='2rem'>
+                <Wrap align={'center'} direction={['column', 'column', 'row', 'row']} paddingBottom={'1rem'} spacing={['1rem', '1rem', '2rem', '2rem']}>
                     <WrapItem>
                         <Avatar size='xl' />
                     </WrapItem>
-                    <Stack>
-                        <Heading as='h1' noOfLines={1} size={'2xl'}>
+                    <Stack alignItems={['center', 'center', 'normal', 'normal']} direction={'column'} justifyContent='center'>
+                        <Heading as='h1' noOfLines={1} size={'xl'}>
                             {userName.length > 0 ? userName : ''}
                         </Heading>
-                        <Heading as='h2' colorScheme={'gray'} size='md'>
-
-                        </Heading>
-                        <Tag colorScheme='blue' rounded='full' size={'lg'}>
+                        <Tag colorScheme='blue' rounded='full' size={'md'} width={'-webkit-fit-content'}>
                             {'@' + user.displayName}
                         </Tag>
                     </Stack>

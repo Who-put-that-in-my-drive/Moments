@@ -5,6 +5,12 @@ import { User } from '../interfaces/User';
 // import { Image } from '../interfaces/Image';
 // eslint-disable-next-line
 
+const initialUserState: User = {
+    displayName: '',
+    email: '',
+    images: []
+};
+
 const useStore = create<UserStore>()(
     devtools(
         persist(
@@ -15,11 +21,7 @@ const useStore = create<UserStore>()(
                         {
                             ...state,
                             loggedIn: false,
-                            user: {
-                                displayName: '',
-                                email: '',
-                                images: []
-                            }
+                            user: initialUserState
                         })
                 ),
                 setLoggedIn: (val: boolean) => set((state) => ({ ...state, loggedIn: val })),
@@ -32,11 +34,7 @@ const useStore = create<UserStore>()(
                         lastName: updatedUser.lastName
                     }
                 })),
-                user: {
-                    displayName: '',
-                    email: '',
-                    images: []
-                }
+                user: initialUserState,
             }),
             {
                 name: 'Moments-store'
