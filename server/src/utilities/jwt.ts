@@ -19,7 +19,7 @@ export default class Jwt {
                 },
                 secret,
                 {
-                    expiresIn: '1h'
+                    expiresIn: '4h'
                 }
             ));
         });
