@@ -12,7 +12,7 @@ export const getUser = async (): Promise<Response> => {
 };
 
 export const updateUser = async (data: UpdateFormDTO): Promise<Response> => {
-    const userData = { displayName: data.displayName, email: data.email, firstName: data.firstName, lastName: data.lastName };
+    const userData = { firstName: data.firstName, lastName: data.lastName };
     return await axios.put('/user', userData);
 };
 
