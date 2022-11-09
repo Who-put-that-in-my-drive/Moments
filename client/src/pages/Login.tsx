@@ -25,7 +25,7 @@ import { login } from '../services/api/auth-service';
 import useStore from '../store/store';
 import { User } from '../interfaces/User';
 import { UserStore } from '../interfaces/UserStore';
-import { successResponse } from '../utils/WebsiteUtils';
+import { successResponse } from '../utils/ResponseUtils';
 
 export type LoginFormDTO = {
     email: string

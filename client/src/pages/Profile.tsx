@@ -23,7 +23,7 @@ import useStore from '../store/store';
 import { useForm } from 'react-hook-form';
 import { updateUser } from '../services/api/user-service';
 import { useState } from 'react';
-import { successResponse } from '../utils/WebsiteUtils';
+import { successResponse } from '../utils/ResponseUtils';
 import { User } from '../interfaces/User';
 
 export type UpdateFormDTO = {

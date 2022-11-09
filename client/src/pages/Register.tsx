@@ -30,7 +30,7 @@ import { useForm } from 'react-hook-form';
 import { Link as ReactLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo_transparent.png';
 import { registerUser } from '../services/api/auth-service';
-import {successResponse} from '../utils/WebsiteUtils';
+import {successResponse} from '../utils/ResponseUtils';
 
 export type RegisterFormDTO = {
     email: string,
