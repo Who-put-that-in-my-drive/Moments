@@ -14,7 +14,7 @@ import Cookie from '../../utilities/cookie';
 const router = express.Router();
 
 router
-    .route('/user')
+    .route('/')
     .get(authenticateToken, async (req: Request, res: Response) => {
         try {
             const userDb = await User.findOne({email: getEmail(req)});
