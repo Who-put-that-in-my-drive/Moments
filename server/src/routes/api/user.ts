@@ -56,8 +56,7 @@ router
                 }
 
                 if (await User.findOneAndUpdate({email}, {...updateUserDTO})) {
-                    const cookieWithJwt = new Cookie(await Jwt.generateJwt(email)).generateCookie();
-                    return res.setHeader('Set-Cookie', cookieWithJwt).status(200).json(new ServerResponse('User Updated'));
+                    return res.status(200).json(new ServerResponse('User Updated'));
                 } else {
                     return res.status(500).json(new ServerResponse('Server Error'));
                 }
