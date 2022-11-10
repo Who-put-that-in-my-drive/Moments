@@ -10,5 +10,6 @@ router.use('/auth', require('./auth'));
 router.use('/image', require('./image'));
 router.use('/images', require('./images'));
 router.use('/user', require('./user'));
+router.use('/user/avatar', require('./user/avatar'))
 
 module.exports = router;
