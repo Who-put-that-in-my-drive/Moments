@@ -1,4 +1,4 @@
-import {User} from './User';
+import { User } from './User';
 
 export interface UserStore {
     user: User,
@@ -6,5 +6,5 @@ export interface UserStore {
     removeUser: () => void
     loggedIn: boolean
     setLoggedIn: (val: boolean) => void
-
+    updateUser: (updatedUser: User) => void
 }
