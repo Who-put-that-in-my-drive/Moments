@@ -73,6 +73,14 @@ Resources:
       PathPart: 'user'
       RestApiId: !Ref "apiGateway"
 
+  # Avatar
+  apiGatewayAvatarResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGatewayUserResource.RootResourceId"
+      PathPart: 'avatar'
+      RestApiId: !Ref "apiGateway"
+
   # General
   apiGatewayHealthResource:
     Type: "AWS::ApiGateway::Resource"
@@ -337,6 +345,53 @@ Resources:
         Uri: !Join [ '', [ !Ref domainHost, '/user' ] ]
         TimeoutInMillis: 29000
       ResourceId: !Ref "apiGatewayUserResource"
+      RestApiId: !Ref "apiGateway"
+
+  # Avatar
+  apiGatewayGetUserAvatarMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "GET"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/user/avatar' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayAvatarResource"
+      RestApiId: !Ref "apiGateway"
+
+  apiGatewayGetUpdateAvatarMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "PUT"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/user/avatar' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayAvatarResource"
       RestApiId: !Ref "apiGateway"
 
   ### Provided Default Data ###
