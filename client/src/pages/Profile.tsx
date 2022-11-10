@@ -18,13 +18,22 @@ import {
     useToast,
     Tag,
     Stack,
+    AlertDialog,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogCloseButton,
+    AlertDialogBody,
+    AlertDialogFooter,
+    useDisclosure,
 } from '@chakra-ui/react';
 import useStore from '../store/store';
 import { useForm } from 'react-hook-form';
-import { updateUser } from '../services/api/user-service';
-import { useState } from 'react';
+import { deleteUser, updateUser } from '../services/api/user-service';
+import { useRef, useState } from 'react';
 import { successResponse } from '../utils/ResponseUtils';
 import { User } from '../interfaces/User';
+import { useNavigate } from 'react-router-dom';
 
 export type UpdateFormDTO = {
     email: string
@@ -36,18 +45,20 @@ export type UpdateFormDTO = {
 export const Profile = () => {
     const store = useStore();
     const toast = useToast();
-    const user = store.user;
-    const minNameLength: number = 2;
-
-    const userName = (user.firstName && user.lastName ?
-        user.firstName + ' ' + user.lastName :
-        '') || '';
-
+    const { onClose, isOpen, onOpen } = useDisclosure();
+    const cancelRef = useRef<HTMLButtonElement>(null);
     const {
         register,
         handleSubmit,
         formState: { errors }
     } = useForm<UpdateFormDTO>();
+    const user = store.user;
+    const minNameLength: number = 2;
+    const navigate = useNavigate();
+    const userName = (user.firstName && user.lastName ?
+        user.firstName + ' ' + user.lastName :
+        '') || '';
+
 
     const [loading, setLoading] = useState(false);
     const capitalizeFirstChar = (str: string): string => {
@@ -94,8 +105,36 @@ export const Profile = () => {
             showToast('error');
             setLoading(false);
         }
+    };
 
+    const deleteUserHandler = async () => {
+        const deleteUserResponse: any = await deleteUser();
+        if (successResponse(deleteUserResponse)) {
+            store.removeUser();
+            toast({
+                description: 'User deleted!\nWe\'re sorry to see you go 😕',
+                duration: 3000,
+                isClosable: true,
+                position: 'top',
+                status: 'success',
+                title: 'Success!'
+            });
+            onClose();
+            setTimeout(() => {
+                navigate('login');
+            }, 3000);
 
+        } else {
+            onClose();
+            toast({
+                description: 'Something went wrong!',
+                duration: 3000,
+                isClosable: true,
+                position: 'top',
+                status: 'error',
+                title: 'Error!'
+            });
+        }
     };
 
     return (
@@ -194,6 +233,44 @@ export const Profile = () => {
                                     </Button>
                                 </HStack>
                             </Center>
+                            <Box borderBottomWidth='2px' pt='0.7rem'>
+                                <Text as='b' fontSize='xl'>
+                                    Delete Profile
+                                </Text>
+                            </Box>
+                            <Center>
+                                <HStack position='relative' spacing='2rem'>
+                                    <Button colorScheme='red' loadingText='Deleting..' onClick={onOpen} size='sm' type='button'>
+                                        Delete Profile
+                                    </Button>
+                                    <AlertDialog
+                                        isCentered
+                                        isOpen={isOpen}
+                                        leastDestructiveRef={cancelRef}
+                                        motionPreset='slideInBottom'
+                                        onClose={onClose}
+                                    >
+                                        <AlertDialogOverlay />
+
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>Discard Changes?</AlertDialogHeader>
+                                            <AlertDialogCloseButton />
+                                            <AlertDialogBody>
+                                                Are you sure you want to delete your account?
+                                            </AlertDialogBody>
+                                            <AlertDialogFooter>
+                                                <Button onClick={onClose} ref={cancelRef}>
+                                                    Cancel
+                                                </Button>
+                                                <Button colorScheme='red' ml={3} onClick={deleteUserHandler}>
+                                                    Yes
+                                                </Button>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+
+                                </HStack>
+                            </Center>
                         </VStack>
                     </Box>
                 </form>
@@ -201,3 +278,4 @@ export const Profile = () => {
         </>
     );
 };
+
