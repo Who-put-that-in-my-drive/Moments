@@ -1,4 +1,29 @@
-import { Box, Flex, useBreakpointValue } from '@chakra-ui/react';
+
+import { 
+    Box, 
+    Button,
+    Flex,
+    IconButton,
+    Input,
+    InputGroup,
+    InputLeftElement,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuList,
+    Tab,
+    Tabs,
+    TabList,
+    useBreakpointValue,
+    Spacer, 
+} from '@chakra-ui/react';
+
+import { 
+    ChevronDownIcon,
+    Search2Icon,
+    SettingsIcon,
+} from '@chakra-ui/icons';
+
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
@@ -7,7 +32,7 @@ import SideNavBar from '../components/SideNavBar';
 
 const smVariant = { navigation: 'drawer', navigationButton: true };
 const mdVariant = { navigation: 'sidebar', navigationButton: false };
-
+// eslint-disable-next-line
 
 const Dashboard = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -29,8 +54,39 @@ const Dashboard = () => {
                             showSidebarButton={variants?.navigationButton}
                         />
                     </Box>
-                </Box>
+                </Box> 
                 <Box maxH='100vh' overflowY='scroll' w='100%' zIndex={100}>
+                    <Tabs aria-label='tab nav'>
+                        <TabList>
+                            <Tab>All</Tab>
+                            <Tab>Documents</Tab>
+                            <Tab>Photos</Tab>
+                            <Tab>People</Tab>
+                        </TabList>
+                    </Tabs>
+
+                    <Flex padding={'10'}>
+                        <Menu>
+                            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                                Filters
+                            </MenuButton>
+                            <MenuList>
+                                <MenuItem>Last Updated</MenuItem>
+                            </MenuList>        
+                        </Menu>
+                        <Spacer />
+                        <InputGroup>
+                            <InputLeftElement pointerEvents='none' >
+                                <Search2Icon />   
+                            </InputLeftElement>
+                            <Input maxW={'60'} placeholder='Search' type='search'/>
+                        </InputGroup>
+
+                        <IconButton 
+                            aria-label='Access Settings'
+                            icon={<SettingsIcon/>} 
+                        />
+                    </Flex>
                     <Outlet />
                 </Box>
             </Flex>
