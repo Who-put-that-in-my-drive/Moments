@@ -53,3 +53,6 @@ server/yarn-error.log*
 *.zip
 
 .env
+
+# Server Coverage
+/server/converage

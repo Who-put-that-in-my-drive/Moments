@@ -30,24 +30,24 @@ router.route('/register').post(async (req: Request, res: Response) => {
         const dateTime = getCurrentDateTime();
 
         // Mongoose handles verifications and generates errors, although we want to handle this part
-        if (!(validator.isEmail(email))) {
+        if (!(validator.isEmail(email)) || !(email.length <= 32)) {
             return res.status(400).json(new ServerResponse('Invalid Email'));
+        }
+
+        if (await User.exists({email})) {
+            return res.status(409).json(new ServerResponse('Email Already In Use'));
+        }
+
+        if (!(displayName.length >= 3 && displayName.length <= 18)) {
+            return res.status(400).json(new ServerResponse('Invalid Display Name Length'));
+        }
+
+        if (await User.exists({displayName})) {
+            return res.status(409).json(new ServerResponse('Display Name Already In Use'));
         }
 
         if (!(password.length >= 7 && password.length <= 32)) {
             return res.status(400).json(new ServerResponse('Invalid Password Length'));
-        }
-
-        if (await User.exists({email})) {
-            return res.status(400).json(new ServerResponse('Email Already In Use'));
-        }
-
-        if (!(displayName.length >= 3 && displayName.length <= 18)) {
-            return res.status(400).json(new ServerResponse('Invalid Display Length'));
-        }
-
-        if (await User.exists({displayName})) {
-            return res.status(400).json(new ServerResponse('Display Name Already In Use'));
         }
 
         const hashedPassword = await getHashedValue(user.password);
