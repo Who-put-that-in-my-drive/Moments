@@ -27,16 +27,12 @@ app.use(
 );
 
 app.get('/', (req: Request, res: Response) => {
-    res.send({ msg: 'Server Online!' });
+    console.log('Cookies: ', req.cookies);
+    res.send({ message: 'Server Online!' });
 });
 
 app.use('/api', require('./routes/api'));
 
-// Simplifies
-if (process.env.NODE_ENV !== 'TEST') {
-    app.listen(port, () => {
-        console.log(`Server started and bound to port ${port} successfully...🚀`);
-    });
-}
-
-export default app
+app.listen(port, () => {
+    console.log(`Server started and bound to port ${port} successfully...🚀`);
+});
