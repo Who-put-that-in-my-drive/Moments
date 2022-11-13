@@ -26,5 +26,13 @@ export type SideNavBarProps = {
     variant: 'drawer' | 'sidebar' | any
 };
 
+export type CollectionProps = {
+    isOpen: boolean,
+    onClose: () => void,
+    onOpen: () => void,
+    thumbnail: string,
+    collectionName: string,
+    numberOfItems: number,
+}
 
 export {};
