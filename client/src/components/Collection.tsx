@@ -8,12 +8,15 @@ import {
     ModalContent, ModalFooter, ModalHeader,
     ModalOverlay,
     Text,
+    useDisclosure,
+
 } from '@chakra-ui/react';
 
 // eslint-disable-next-line no-unused-vars
 import { CollectionProps } from '../utils/ComponentPropTypes';
 
-export const Collection = ({isOpen, onClose, onOpen, images, collectionName, numberOfItems}: CollectionProps) => {
+export const Collection = ({images, collectionName}: CollectionProps) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <>
             <Modal isOpen={isOpen} onClose={onClose} size={['xl', '2xl', '3xl', '5xl']}>
@@ -32,19 +35,21 @@ export const Collection = ({isOpen, onClose, onOpen, images, collectionName, num
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-            <Flex onClick={onOpen} w='full'>
-                <AspectRatio boxShadow='dark-lg' minW='15rem'  ratio={16 / 9}>
+            <Flex direction={'column'} justifyContent="center" marginLeft={'0.8'}>
+                <AspectRatio minW='15rem'  ratio={16 / 9}>
                     <Image
-                        alt={`Picture of ${collectionName}`}
+                        _hover={{ cursor: 'pointer' }}
+                        alt={`Collection thumbnail for ${collectionName}`}
+                        boxShadow='dark-lg'
                         objectFit={'cover'}
+                        onClick={onOpen}
                         rounded="lg"
                         src={images[0]}
-
                     />
                 </AspectRatio>
-                <Box>
-                    <Text as='b' fontSize='xl' textAlign='left'>{collectionName}</Text>
-                    <Text fontSize='sm' textAlign='left'>{numberOfItems}</Text>
+                <Box marginTop='1.1rem'>
+                    <Text fontSize='xl' textAlign='center'>{<b>{collectionName}</b>}</Text>
+                    <Text fontSize='sm' textAlign='center'>{images.length} items</Text>
                 </Box>
             </Flex>
         </>

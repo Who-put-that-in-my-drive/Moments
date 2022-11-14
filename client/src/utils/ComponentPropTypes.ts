@@ -27,12 +27,8 @@ export type SideNavBarProps = {
 };
 
 export type CollectionProps = {
-    isOpen: boolean,
-    onClose: () => void,
-    onOpen: () => void,
     images: string[],
     collectionName: string,
-    numberOfItems: number,
 }
 
 export {};

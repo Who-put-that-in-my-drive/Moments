@@ -11,8 +11,8 @@ import {
     Spacer,
     Tab,
     TabList,
-    Tabs, Text,
-    useDisclosure
+    Tabs,
+    Text,
 } from '@chakra-ui/react';
 import { Collection } from '../components/Collection';
 
@@ -33,7 +33,6 @@ export const Explore = () => {
     const images = user.images;
     const [tags, setTags] = useState<TagStructure[]>([]);
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const gatherTags = () => {
         if (images.length > 0) {
@@ -59,16 +58,15 @@ export const Explore = () => {
     }, []);
 
     return (
-        <Flex align={['center', 'center', 'normal', 'normal']} direction='column' p={['1rem', '2rem', '4rem', '4rem']}
-            width='100%'>
-            <Flex align={['center', '', '', '']} marginRight={['', '', '4rem','4rem']} zIndex={1000}>
+        <Flex align={['center', 'center', 'normal', 'normal']} direction='column' p={['1rem', '2rem', '4rem', '4rem']}>
+            <Flex align={['center', '', '', '']} marginRight={['', '', '4rem','4rem']} minWidth='100%' zIndex={1000}>
                 <Box w='100%'>
-                    <Heading as='h2' noOfLines={2} paddingBottom={['1rem', '2rem', '3rem']}
+                    <Heading as='h2' noOfLines={2} paddingBottom={['1rem', '2rem', '2.5rem']}
                         size={['xl', 'xl', '2xl', '3xl']} textAlign={['center', 'center', 'left', 'left']}>
                         Explore
                     </Heading>
-                    <Flex display='none'>
-                        <Box>
+                    <Flex align={['center', 'center', 'normal', 'normal']} justifyContent={['center', 'center', '', '']}>
+                        <Box display='none'>
                             <Tabs paddingBottom={['1rem', '', '', '3rem']}>
                                 <TabList>
                                     <Tab>All</Tab>
@@ -77,8 +75,8 @@ export const Explore = () => {
                                 </TabList>
                             </Tabs>
                         </Box>
-                        <Spacer/>
-                        <Box paddingLeft='1rem'>
+                        <Spacer display={['none','none', 'block', 'block']}/>
+                        <Box>
                             <Flex>
                                 <InputGroup maxWidth='16rem'>
                                     <InputLeftElement pointerEvents='none'><SearchIcon/></InputLeftElement>
@@ -88,19 +86,18 @@ export const Explore = () => {
                             </Flex>
                         </Box>
                     </Flex>
-                    <Heading as='h3' noOfLines={2} paddingBottom={['1rem', '2rem', '3rem']} size={['md', 'md', 'xl', '2xl']}
+                    <Heading as='h2' fontWeight='semibold' marginTop='1rem' noOfLines={2} paddingBottom={['0.5rem', '1rem', '2rem']} size={['md', 'md', 'xl', '2xl']}
                         textAlign={['center', 'center', 'left', 'left']}>
                         Collections
                     </Heading>
                 </Box>
             </Flex>
-            <Box scrollBehavior='auto' w='100%'>
+            <SimpleGrid maxH={['65vh', '69vh', '70vh', '75vh']}  minChildWidth='15rem' spacing='2rem'>
                 {tags.length > 0 ?
-                    <SimpleGrid marginTop={'1rem'} minChildWidth='15rem' overflowY='scroll' spacing='2rem'>
-                        {tags.map((tag, index) => <Collection collectionName={tag.name} images={tag.imageUrls} isOpen={isOpen} key={index} numberOfItems={tag.count} onClose={onClose} onOpen={onOpen} />)}
-                    </SimpleGrid> :
-                    <Text>No collections available, add tags to uploaded images to get started.</Text>}
-            </Box>
+                    tags.map((tag, index) => <Collection collectionName={tag.name} images={tag.imageUrls} key={index} />)
+                    : <Text> No collections created. Add tags to uploaded images to get started.</Text>
+                }
+            </SimpleGrid>
         </Flex>
     );
 };
