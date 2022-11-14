@@ -77,7 +77,7 @@ Resources:
   apiGatewayAvatarResource:
     Type: "AWS::ApiGateway::Resource"
     Properties:
-      ParentId: !GetAtt "apiGatewayUserResource.RootResourceId"
+      ParentId: !GetAtt "apiGatewayUserResource.ResourceId"
       PathPart: 'avatar'
       RestApiId: !Ref "apiGateway"
 

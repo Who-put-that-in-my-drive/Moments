@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { LoginFormDTO } from '../../pages/Login';
 import { RegisterFormDTO } from '../../pages/Register';
+import {getUrl} from '../../utils/WebsiteUtils';
 
-axios.defaults.baseURL = process.env.SERVER_MODE === 'PRODUCTION' ? process.env.REACT_APP_DEV_SERVER_URL : process.env.REACT_APP_DEV_LOCAL_URL;
+axios.defaults.baseURL = getUrl();
 
 if (axios.defaults.baseURL?.includes('localhost')) {
     axios.defaults.headers.common['Authorization'] = process.env.REACT_APP_ACCESS_TOKEN || '';
