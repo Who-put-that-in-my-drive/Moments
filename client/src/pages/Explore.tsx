@@ -11,13 +11,53 @@ import {
     Spacer,
     Tab,
     TabList,
-    Tabs
+    Tabs, Text,
+    useDisclosure
 } from '@chakra-ui/react';
 import { Collection } from '../components/Collection';
 
-import Beach from '../assets/images/Beach.jpg';
+// eslint-disable-next-line no-unused-vars
+import { UserStore } from '../interfaces/UserStore';
+import useStore from '../store/store';
+import { useEffect, useState } from 'react';
+
+type TagStructure = {
+    count: number,
+    imageUrls: string[],
+    name: string
+}
 
 export const Explore = () => {
+    const store: UserStore = useStore();
+    const user = store.user;
+    const images = user.images;
+    const [tags, setTags] = useState<TagStructure[]>([]);
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const gatherTags = () => {
+        if (images.length > 0) {
+            let gatheredTags: TagStructure[] = [];
+            images.forEach(image => {
+                if (gatheredTags[image.tags] === undefined) {
+                    gatheredTags[image.tags] = {
+                        count: 1,
+                        imageUrls: [image.url],
+                        name: image.tags
+                    };
+                } else {
+                    gatheredTags[image.tags].count++;
+                    gatheredTags[image.tags].imageUrls.push(image.url);
+                }
+            });
+            setTags(gatheredTags);
+        }
+    };
+
+    useEffect(() => {
+        gatherTags();
+    }, []);
+
     return (
         <Flex align={['center', 'center', 'normal', 'normal']} direction='column' p={['1rem', '2rem', '4rem', '4rem']}
             width='100%'>
@@ -55,10 +95,11 @@ export const Explore = () => {
                 </Box>
             </Flex>
             <Box scrollBehavior='auto' w='100%'>
-                <SimpleGrid marginTop={'1rem'} minChildWidth='15rem'
-                    overflowY='scroll' spacing='2rem'>
-                    <Collection collectionName='Test' isOpen={false} numberOfItems={6} onClose={() => {}} onOpen={() => {}} thumbnail={Beach} />
-                </SimpleGrid>
+                {tags.length > 0 ?
+                    <SimpleGrid marginTop={'1rem'} minChildWidth='15rem' overflowY='scroll' spacing='2rem'>
+                        {tags.map((tag, index) => <Collection collectionName={tag.name} images={tag.imageUrls} isOpen={isOpen} key={index} numberOfItems={tag.count} onClose={onClose} onOpen={onOpen} />)}
+                    </SimpleGrid> :
+                    <Text>No collections available, add tags to uploaded images to get started.</Text>}
             </Box>
         </Flex>
     );

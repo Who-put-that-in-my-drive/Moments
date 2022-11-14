@@ -30,7 +30,7 @@ export type CollectionProps = {
     isOpen: boolean,
     onClose: () => void,
     onOpen: () => void,
-    thumbnail: string,
+    images: string[],
     collectionName: string,
     numberOfItems: number,
 }
