@@ -1,7 +1,8 @@
-import { Box, Flex, Heading, SimpleGrid, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, Heading, SimpleGrid, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
 import { PhotoCard } from '../components/PhotoCard';
 import useStore from '../store/store';
-import {UserStore} from '../interfaces/UserStore';
+import { UserStore } from '../interfaces/UserStore';
+import UploadModal from '../components/UploadModal';
 // eslint-disable-next-line
 
 const Uploads = () => {
@@ -9,7 +10,7 @@ const Uploads = () => {
     const user = store.user;
     const images = user.images;
     return (
-        <Flex align={['center', 'center', 'normal', 'normal']} direction='column' p={['1rem', '2rem', '4rem', '4rem']} width='100%'>
+        <Flex align={['center', 'center', 'normal', 'normal']} direction='column' maxH={'100vh'} p={['1rem', '2rem', '4rem', '3rem']} width='100%'>
             <Flex align={['center', '', '', '']} marginRight={'4rem'} zIndex={1000}>
                 <Box w='100%'>
                     <Heading as='h2' noOfLines={2} paddingBottom={['1rem', '2rem', '3rem']} size={['xl', 'xl', '2xl', '3xl']} textAlign={['center', 'center', 'left', 'left']}>
@@ -24,7 +25,7 @@ const Uploads = () => {
                     </Tabs>
                 </Box>
             </Flex>
-            <SimpleGrid marginTop={'1rem'} maxH={['65vh', '69vh', '70vh', '75vh']} minChildWidth='15rem' overflowY='scroll' spacing='2rem'>
+            <SimpleGrid marginTop={'1rem'} maxH={['65vh', '69vh', '70vh', '67vh']} minChildWidth='15rem' overflowY='scroll' spacing='2rem'>
                 {images.length > 0 ? images.map(image => {
                     return (<PhotoCard
                         date={image.uploadedOn}
@@ -37,6 +38,9 @@ const Uploads = () => {
                     No images found. Please upload images.
                 </Text>}
             </SimpleGrid>
+            <Center paddingTop='.75rem' w={'100%'}>
+                <UploadModal />
+            </Center>
         </Flex>
     );
 };

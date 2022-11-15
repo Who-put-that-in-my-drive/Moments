@@ -39,4 +39,4 @@ if (process.env.NODE_ENV !== 'TEST') {
     });
 }
 
-export default app
+export default app;

@@ -16,9 +16,10 @@ import '../assets/DnD.scss';
 // import { uploadImageToS3 } from '../services/api/image-service';
 // import { successResponse } from '../utils/WebsiteUtils';
 // import { uploadImage } from '../services/api/image-service';
+import { AiOutlineCloudUpload } from 'react-icons/ai';
 import DragAndDrop from './DragAndDrop';
 
-export interface UploadFormDTO{
+export interface UploadFormDTO {
     title: string,
     format: any,
     size: string,
@@ -33,7 +34,7 @@ export const UploadModal = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        
+
         // const formData = {
         //     //@ts-ignore
         //     title: inputs.title,
@@ -58,15 +59,15 @@ export const UploadModal = () => {
     //             // Set error response here
     //         }
     //     } catch (error: any) {
-            
+
     //     }
     // };
 
     return (
         <>
-            <Button onClick={onOpen}>Open Modal</Button>
+            <Button leftIcon={<AiOutlineCloudUpload />} onClick={onOpen} width={'100%'}>Upload Images</Button>
 
-            <Modal isOpen={isOpen} onClose={onClose} size="2xl">
+            <Modal isOpen={isOpen} onClose={onClose} size='2xl'>
                 <ModalOverlay />
 
                 <ModalContent>
@@ -80,39 +81,39 @@ export const UploadModal = () => {
 
                             <FormControl isRequired my={3}>
                                 <FormLabel>Title</FormLabel>
-                                <Input 
-                                    name="title" 
-                                    type="text" 
+                                <Input
+                                    name='title'
+                                    type='text'
                                 ></Input>
                             </FormControl>
 
                             <FormControl>
                                 <FormLabel>Caption</FormLabel>
                                 <Input
-                                    name="caption" 
-                                    type="text" 
+                                    name='caption'
+                                    type='text'
                                 ></Input>
                             </FormControl>
 
                             <FormControl>
                                 <FormLabel>Tags</FormLabel>
                                 <Input
-                                    name="tags" 
-                                    type="text" 
+                                    name='tags'
+                                    type='text'
                                 ></Input>
                             </FormControl>
 
                             <FormControl>
                                 <FormLabel>Location</FormLabel>
                                 <Input
-                                    name="location" 
-                                    type="text" 
+                                    name='location'
+                                    type='text'
                                 ></Input>
                             </FormControl>
                         </ModalBody>
 
                         <ModalFooter>
-                            <Button colorScheme='blue' mr={3} type="submit">
+                            <Button colorScheme='blue' mr={3} type='submit'>
                                 Upload
                             </Button>
                         </ModalFooter>
