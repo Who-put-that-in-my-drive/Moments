@@ -13,9 +13,8 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import '../assets/DnD.scss';
-// import { uploadImageToS3 } from '../services/api/image-service';
-// import { successResponse } from '../utils/WebsiteUtils';
-// import { uploadImage } from '../services/api/image-service';
+import { uploadImageToS3 , uploadImage } from '../services/api/image-service';
+import { successResponse } from '../utils/ResponseUtils';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import DragAndDrop from './DragAndDrop';
 
@@ -33,11 +32,11 @@ let formData = {
     format: '',
     location: '',
     size: '',
-    tags: '',
+    tags: [],
     title: '',
 };
 
-let imageBytes;
+let imageBytes: any;
 
 export const UploadModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,30 +46,28 @@ export const UploadModal = () => {
 
         //@ts-ignore
         formData = {...formData, caption: e.target.caption.value, location: e.target.location.value, tags: e.target.tags.value, title: e.target.title.value,};
-        console.log(formData);
+        sendFormData(formData);
     };
 
-    // const handleFormSubmit = async (uploadFormDTO: UploadFormDTO) => {
-    //     try {
-    //         const response: any = await uploadImage(uploadFormDTO);
-    //         if (successResponse(response)) {
-    //             // const presignedURL = response.data.data.presignedUrl;
+    const sendFormData = async (uploadFormDTO: UploadFormDTO) => {
+        try {
+            const response: any = await uploadImage(uploadFormDTO);
+            if (successResponse(response)) {
+                const presignedURL = response.data.data.presignedUrl;
 
-    //             // uploadImageToS3(image, presignedURL, uploadFormDTO.format)
-    //         } else {
-    //             // Set error response here
-    //         }
-    //     } catch (error: any) {
+                uploadImageToS3(imageBytes, presignedURL, uploadFormDTO.format);
+            } else {
+                // Set error response here
+            }
+        } catch (error: any) {
 
-    //     }
-    // };
+        }
+    };
 
     const handleImageSubmit = (image: any, format: any, size: any) => {
-        formData.format = format;
+        formData.format = format.split('/')[1];
         formData.size = size;
         imageBytes = image;
-
-        alert(imageBytes);
     };
     
     return (
