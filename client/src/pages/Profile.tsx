@@ -204,6 +204,16 @@ export const Profile = () => {
                                 <FormLabel>Email Address</FormLabel>
                                 <Input  {...register('email')} disabled type='text' value={user.email} />
                             </div>
+                            <Center>
+                                <HStack mt='1rem' spacing='2rem'>
+                                    <Button colorScheme='gray' size='sm'>
+                                        Cancel
+                                    </Button>
+                                    <Button colorScheme='teal' isLoading={loading} loadingText='Updating..' size='sm' type='submit'>
+                                        Save
+                                    </Button>
+                                </HStack>
+                            </Center>
                             <Box borderBottomWidth='2px' pt='0.7rem'>
                                 <Text as='b' fontSize='xl'>
                                     Profile Picture
@@ -223,16 +233,6 @@ export const Profile = () => {
                                     type='file'
                                 />
                             </HStack>
-                            <Center>
-                                <HStack mt='1rem' spacing='2rem'>
-                                    <Button colorScheme='gray' size='sm'>
-                                        Cancel
-                                    </Button>
-                                    <Button colorScheme='teal' isLoading={loading} loadingText='Updating..' size='sm' type='submit'>
-                                        Save
-                                    </Button>
-                                </HStack>
-                            </Center>
                             <Box borderBottomWidth='2px' pt='0.7rem'>
                                 <Text as='b' fontSize='xl'>
                                     Delete Profile
