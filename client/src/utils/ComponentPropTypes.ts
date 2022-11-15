@@ -26,5 +26,9 @@ export type SideNavBarProps = {
     variant: 'drawer' | 'sidebar' | any
 };
 
+export type CollectionProps = {
+    images: string[],
+    collectionName: string,
+}
 
 export {};
