@@ -13,25 +13,22 @@ export default class DragAndDrop extends React.Component {
 
     onFileLoad(e: any){
         const file = e.currentTarget.files[0];
+        const imageFormat = file.type;
+        const imageSize = file.size;
 
         let fileReader = new FileReader();
         fileReader.onload = () => {
-            console.log('IMAGE LOADED: ', fileReader.result);
-            //@ts-ignore
+            // console.log('IMAGE LOADED: ', fileReader.result);
             const file = {
                 data: fileReader.result,
                 isUploading: false
             };
+
             // Add file
             this.addLoadedFile(file);
-        };
 
-        fileReader.onabort = () => {
-            alert('Reading Aborted');
-        };
-
-        fileReader.onerror = () => {
-            alert('Reading ERROR!');
+            //@ts-ignore
+            this.props.imageSubmitCallback(fileReader.result, imageFormat, imageSize);
         };
 
         fileReader.readAsDataURL(file);
@@ -42,8 +39,6 @@ export default class DragAndDrop extends React.Component {
             //@ts-ignore
             loadedFiles: [file] 
         }));
-        console.log(file);
-        // this.props.set
     }
 
     render() {

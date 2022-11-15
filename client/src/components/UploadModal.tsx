@@ -28,6 +28,16 @@ export interface UploadFormDTO {
     location: string,
 }
 
+let formData = {
+    caption: '',
+    format: '',
+    location: '',
+    size: '',
+    tags: '',
+    title: '',
+};
+
+let imageBytes;
 
 export const UploadModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -35,17 +45,9 @@ export const UploadModal = () => {
     const handleSubmit = (e: any) => {
         e.preventDefault();
 
-        // const formData = {
-        //     //@ts-ignore
-        //     title: inputs.title,
-        //     format: 'test',
-        //     size: '256mb',
-        //     caption: e.target.caption.value,
-        //     tags: [],
-        //     location: e.target.location.value,
-        // }
         //@ts-ignore
-        alert(inputs.title);
+        formData = {...formData, caption: e.target.caption.value, location: e.target.location.value, tags: e.target.tags.value, title: e.target.title.value,};
+        console.log(formData);
     };
 
     // const handleFormSubmit = async (uploadFormDTO: UploadFormDTO) => {
@@ -63,20 +65,28 @@ export const UploadModal = () => {
     //     }
     // };
 
+    const handleImageSubmit = (image: any, format: any, size: any) => {
+        formData.format = format;
+        formData.size = size;
+        imageBytes = image;
+
+        alert(imageBytes);
+    };
+    
     return (
         <>
             <Button leftIcon={<AiOutlineCloudUpload />} onClick={onOpen} width={'100%'}>Upload Images</Button>
 
             <Modal isOpen={isOpen} onClose={onClose} size='2xl'>
                 <ModalOverlay />
-
                 <ModalContent>
                     <ModalHeader>Upload Image</ModalHeader>
                     <ModalCloseButton />
                     <form onSubmit={handleSubmit}>
                         <ModalBody>
                             <FormControl>
-                                <DragAndDrop />
+                                {/* @ts-ignore */}
+                                <DragAndDrop imageSubmitCallback={handleImageSubmit} />
                             </FormControl>
 
                             <FormControl isRequired my={3}>
@@ -118,7 +128,6 @@ export const UploadModal = () => {
                             </Button>
                         </ModalFooter>
                     </form>
-
                 </ModalContent>
             </Modal>
         </>
