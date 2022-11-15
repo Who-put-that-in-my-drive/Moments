@@ -18,14 +18,13 @@ export default class DragAndDrop extends React.Component {
 
         let fileReader = new FileReader();
         fileReader.onload = () => {
-            // console.log('IMAGE LOADED: ', fileReader.result);
-            const file = {
+            const fileDTO = {
                 data: fileReader.result,
                 isUploading: false
             };
 
             // Add file
-            this.addLoadedFile(file);
+            this.addLoadedFile(fileDTO);
 
             //@ts-ignore
             this.props.imageSubmitCallback(fileReader.result, imageFormat, imageSize);
@@ -37,7 +36,7 @@ export default class DragAndDrop extends React.Component {
     addLoadedFile(file: any){
         this.setState(() => ({
             //@ts-ignore
-            loadedFiles: [file] 
+            loadedFiles: [file]
         }));
     }
 
@@ -49,21 +48,21 @@ export default class DragAndDrop extends React.Component {
             <div className='inner-container' style={{display:'flex', flexDirection:'column'}}>
                 <div className="sub-header">Drag an Image</div>
                 <div className="draggable-container">
-                    <input 
-                        id='file-browser-input' 
-                        onChange={this.onFileLoad.bind(this)} 
+                    <input
+                        id='file-browser-input'
+                        onChange={this.onFileLoad.bind(this)}
                         type="file"
 
-                        onDragOver={(e) => { 
-                            e.preventDefault(); 
+                        onDragOver={(e) => {
+                            e.preventDefault();
                             e.stopPropagation();
                         }}
 
                         // @ts-ignore
                         onDrop={this.onFileLoad.bind(this)}
-                        
+
                         //@ts-ignore
-                        name='file-browser-input' 
+                        name='file-browser-input'
                         //@ts-ignore
                         ref={input => this.fileInput = input}
                     />
@@ -81,12 +80,12 @@ export default class DragAndDrop extends React.Component {
                     </div>
                     <div className="helper-text">Drag and Drop Images Here</div>
                     <div className="file-browser-container">
-                        <AnchorButton 
-                            intent={Intent.PRIMARY} 
-                            minimal={true} 
-                            onClick={() => 
+                        <AnchorButton
+                            intent={Intent.PRIMARY}
+                            minimal={true}
+                            onClick={() =>
                                 /*@ts-ignore*/
-                                this.fileInput.click()} 
+                                this.fileInput.click()}
                             text="Browse"/>
                     </div>
                 </div>

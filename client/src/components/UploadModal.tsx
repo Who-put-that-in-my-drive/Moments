@@ -13,7 +13,7 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import '../assets/DnD.scss';
-import { uploadImageToS3 , uploadImage } from '../services/api/image-service';
+import {uploadImage, uploadImageToS3} from '../services/api/image-service';
 import { successResponse } from '../utils/ResponseUtils';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import DragAndDrop from './DragAndDrop';
@@ -41,12 +41,19 @@ let imageBytes: any;
 export const UploadModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
 
         //@ts-ignore
-        formData = {...formData, caption: e.target.caption.value, location: e.target.location.value, tags: e.target.tags.value, title: e.target.title.value,};
-        sendFormData(formData);
+        formData = {
+            ...formData,
+            caption: e.target.caption.value,
+            location: e.target.location.value,
+            tags: e.target.tags.value,
+            title: e.target.title.value,
+        };
+
+        await sendFormData(formData);
     };
 
     const sendFormData = async (uploadFormDTO: UploadFormDTO) => {
@@ -55,7 +62,13 @@ export const UploadModal = () => {
             if (successResponse(response)) {
                 const presignedURL = response.data.data.presignedUrl;
 
-                uploadImageToS3(imageBytes, presignedURL, uploadFormDTO.format);
+                const binary = atob(imageBytes.split(',')[1]);
+                const array = [];
+                for(let i = 0; i < binary.length; i++) {
+                    array.push(binary.charCodeAt(i));
+                }
+
+                await uploadImageToS3(new Blob([new Uint8Array(array)], {type: 'image/' + uploadFormDTO.format}),presignedURL, uploadFormDTO.format);
             } else {
                 // Set error response here
             }
@@ -69,7 +82,7 @@ export const UploadModal = () => {
         formData.size = size;
         imageBytes = image;
     };
-    
+
     return (
         <>
             <Button leftIcon={<AiOutlineCloudUpload />} onClick={onOpen} width={'100%'}>Upload Images</Button>
