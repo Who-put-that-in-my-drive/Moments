@@ -5,9 +5,9 @@
   "scripts": {
     "build": "npx tsc",
     "start": "nodemon src/index.ts",
-    "lint": "eslint . --ext \".js,.ts\"",
+    "lint": "eslint . --ext=js,ts",
     "lint:fix": "npm run lint -- --fix",
-    "test": "cross-env NODE_ENV=TEST jest --verbose --coverage --forceExit --maxWorkers=1"
+    "test": "cross-env NODE_ENV=TEST jest"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.196.0",

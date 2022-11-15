@@ -2,14 +2,13 @@ export default {
     clearMocks: true,
     collectCoverage: true,
     coverageDirectory: 'coverage',
+    forceExit: true,
     maxWorkers: 1,
     moduleFileExtensions: [
         'js',
         'mjs',
         'cjs',
-        'jsx',
         'ts',
-        'tsx',
         'json',
         'node'
     ],
@@ -19,10 +18,9 @@ export default {
     testTimeout: 30000,
     testPathIgnorePatterns: [
         '\\\\node_modules\\\\',
-        'utils.ts'
     ],
     transform: {
-        '^.+\\.(ts|tsx)$': ['ts-jest', {'tsConfigFile': 'tsconfig.json'}]
+        '^.+\\.(ts)$': ['ts-jest', {'tsConfigFile': 'tsconfig.json'}]
     },
     preset: 'ts-jest',
     testEnvironment: 'node',
