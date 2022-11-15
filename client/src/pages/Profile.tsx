@@ -197,7 +197,7 @@ export const Profile = () => {
                                 </Box>
                             </Flex>
                             <div>
-                                <FormLabel>Username</FormLabel>
+                                <FormLabel>Display name</FormLabel>
                                 <Input  {...register('displayName')} disabled type='text' value={user.displayName} />
                             </div>
                             <div>
