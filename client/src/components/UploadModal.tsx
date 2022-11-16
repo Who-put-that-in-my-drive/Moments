@@ -65,7 +65,7 @@ export const UploadModal = () => {
 
     return (
         <>
-            <Button leftIcon={<AiOutlineCloudUpload />} onClick={onOpen} width={'100%'}>Upload Images</Button>
+            <Button height='3.5rem' leftIcon={<AiOutlineCloudUpload />} minW='15rem' onClick={onOpen}>Upload Images</Button>
 
             <Modal isOpen={isOpen} onClose={onClose} size='2xl'>
                 <ModalOverlay />

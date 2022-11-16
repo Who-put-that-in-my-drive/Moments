@@ -1,9 +1,9 @@
-import { Box, Center, Flex, Heading, SimpleGrid, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, SimpleGrid, Spacer, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
 import { PhotoCard } from '../components/PhotoCard';
 import useStore from '../store/store';
 import { UserStore } from '../interfaces/UserStore';
 import UploadModal from '../components/UploadModal';
-// eslint-disable-next-line
+
 
 const Uploads = () => {
     const store: UserStore = useStore();
@@ -11,7 +11,7 @@ const Uploads = () => {
     const images = user.images;
     return (
         <Flex align={['center', 'normal', 'normal', 'normal']} direction='column' maxH={'100vh'} p={['1rem', '2rem', '4rem', '3rem']} width='100%'>
-            <Flex align={['center', 'center', '', '']} zIndex={1000}>
+            <Flex align={['center', 'center', '', '']} >
                 <Box w='100%'>
                     <Heading as='h2' noOfLines={2} paddingBottom={['1rem', '2rem', '3rem']} size={['xl', 'xl', '2xl', '3xl']} textAlign={['center', 'center', 'left', 'left']}>
                         Uploaded Images
@@ -38,9 +38,11 @@ const Uploads = () => {
                     No images found. Please upload images.
                 </Text>}
             </SimpleGrid>
-            <Center paddingTop='.75rem' w={'100%'}>
+
+            <Flex float={'right'} height='100%' justifyContent='space-between' paddingTop='2.75rem'>
+                <Spacer />
                 <UploadModal />
-            </Center>
+            </Flex>
         </Flex>
     );
 };
