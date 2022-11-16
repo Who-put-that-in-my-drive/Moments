@@ -10,8 +10,8 @@ const Uploads = () => {
     const user = store.user;
     const images = user.images;
     return (
-        <Flex align={['center', 'center', 'normal', 'normal']} direction='column' maxH={'100vh'} p={['1rem', '2rem', '4rem', '3rem']} width='100%'>
-            <Flex align={['center', '', '', '']} marginRight={'4rem'} zIndex={1000}>
+        <Flex align={['center', 'normal', 'normal', 'normal']} direction='column' maxH={'100vh'} p={['1rem', '2rem', '4rem', '3rem']} width='100%'>
+            <Flex align={['center', 'center', '', '']} zIndex={1000}>
                 <Box w='100%'>
                     <Heading as='h2' noOfLines={2} paddingBottom={['1rem', '2rem', '3rem']} size={['xl', 'xl', '2xl', '3xl']} textAlign={['center', 'center', 'left', 'left']}>
                         Uploaded Images
@@ -25,7 +25,7 @@ const Uploads = () => {
                     </Tabs>
                 </Box>
             </Flex>
-            <SimpleGrid marginTop={'1rem'} maxH={['65vh', '69vh', '70vh', '67vh']} minChildWidth='15rem' overflowY='scroll' spacing='2rem'>
+            <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '14rem', '15rem']} overflowY='scroll' spacing='2rem'>
                 {images.length > 0 ? images.map(image => {
                     return (<PhotoCard
                         date={image.uploadedOn}
