@@ -42,7 +42,6 @@ export default class Jwt {
             if (serverMode === 'PRODUCTION') {
                 resolve(req.cookies.accessToken);
             } else {
-                const testReq = req;
                 // @ts-ignore
                 resolve(req.headers['authorization']);
             }

@@ -83,28 +83,29 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
 
     return (
         <Flex
+            align='center'
             flexDir='column'
             h='100%'
             justifyContent='space-between'
             left='0'
             transition={'.2s'}
         >
+            <Image
+                alt={'Login Image'}
+                src={logo}
+                w={['60%', '50%', '50%', '90%']}
+            />
 
             <Flex
                 as='nav'
                 flexDir='column'
                 w='100%'
             >
-                <Image
-                    alt={'Login Image'}
-                    src={logo}
-                    w={'100%'}
-                />
+
                 <VStack
                     align='center'
                     as={'nav'}
-                    paddingTop={'3rem'}
-                    spacing={9}
+                    spacing={[4, 5, 4, 7]}
                     width={'100%'}
                 >
                     <IconButton
@@ -127,10 +128,9 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
             <Flex
                 flexDir='column'
                 mb={2}
-                p='5%'
                 w='100%'
             >
-                <Menu>
+                <Menu >
                     <Tooltip aria-label='A tooltip' label={user.email}>
                         <MenuButton as={Button} paddingBottom={'3rem'} paddingTop='2rem' rightIcon={<ChevronDownIcon />}>
                             <Flex align='center' alignContent='center' justifyContent={'center'} mt={4}>

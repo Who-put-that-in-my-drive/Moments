@@ -1,10 +1,10 @@
 import express, {Request, Response} from 'express';
-import {authenticateToken} from "../../../middlewares/auth";
-import ServerResponse from "../../../utilities/serverResponse";
-import {GetObjectCommand, PutObjectCommand} from "@aws-sdk/client-s3";
-import {getSignedUrl} from "@aws-sdk/s3-request-presigner";
-import {s3Client} from "../../../utilities/s3Client";
-import {getEmail} from "../../../utilities/server";
+import {authenticateToken} from '../../../middlewares/auth';
+import ServerResponse from '../../../utilities/serverResponse';
+import {GetObjectCommand, PutObjectCommand} from '@aws-sdk/client-s3';
+import {getSignedUrl} from '@aws-sdk/s3-request-presigner';
+import {s3Client} from '../../../utilities/s3Client';
+import {getEmail} from '../../../utilities/server';
 
 const myBucket = 'moments-gallery'; // Moments Bucket
 const signedUrlExpireSeconds = 300; // 5 Minutes

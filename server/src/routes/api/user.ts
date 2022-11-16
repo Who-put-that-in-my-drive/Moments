@@ -45,13 +45,13 @@ router
 
                 if (user.firstName !== firstName) {
                     if (!(firstName.length >= 1 && firstName.length <= 18)) {
-                        return res.status(400).json(new ServerResponse('Under/Exceeds Character Length'));
+                        return res.status(400).json(new ServerResponse('First Name Under/Exceeds Character Length'));
                     }
                 }
 
                 if (user.lastName !== lastName) {
                     if (!(lastName.length >= 1 && lastName.length <= 18)) {
-                        return res.status(400).json(new ServerResponse('Under/Exceeds Character Length'));
+                        return res.status(400).json(new ServerResponse('Last Name Under/Exceeds Character Length'));
                     }
                 }
 
