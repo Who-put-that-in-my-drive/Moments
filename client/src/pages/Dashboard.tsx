@@ -1,4 +1,9 @@
-import { Box, Flex, useBreakpointValue } from '@chakra-ui/react';
+import { 
+    Box,
+    Flex,
+    useBreakpointValue,
+} from '@chakra-ui/react';
+
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
@@ -7,7 +12,7 @@ import SideNavBar from '../components/SideNavBar';
 
 const smVariant = { navigation: 'drawer', navigationButton: true };
 const mdVariant = { navigation: 'sidebar', navigationButton: false };
-
+// eslint-disable-next-line
 
 const Dashboard = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -29,7 +34,7 @@ const Dashboard = () => {
                             showSidebarButton={variants?.navigationButton}
                         />
                     </Box>
-                </Box>
+                </Box> 
                 <Box maxH='100vh' overflowY='scroll' w='100%' zIndex={100}>
                     <Outlet />
                 </Box>

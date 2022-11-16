@@ -1,15 +1,11 @@
-import {
-    
+import {   
     Button,
-   
-  
     Image,
     Modal,
     // ModalOverlay,
     ModalContent,
     ModalBody,
     ModalCloseButton,
-  
     useColorMode,
     VStack,
     Avatar,
@@ -24,12 +20,14 @@ import {
     Tag,
     Spacer
 } from '@chakra-ui/react';
+
 import {
     CalendarIcon,
     ChatIcon,
     InfoIcon,
     SunIcon,
 } from '@chakra-ui/icons';
+
 import Beach from '../assets/images/Beach.jpg';
 
 export default function Post() {
