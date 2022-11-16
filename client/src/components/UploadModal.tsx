@@ -11,7 +11,9 @@ import {
     ModalHeader,
     ModalOverlay,
     useDisclosure,
+    useToast
 } from '@chakra-ui/react';
+
 import '../assets/DnD.scss';
 import {uploadImage, uploadImageToS3} from '../services/api/image-service';
 import { successResponse } from '../utils/ResponseUtils';
@@ -40,7 +42,9 @@ let imageBytes: any;
 
 export const UploadModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const toast = useToast();
 
+    // Handle form submit
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
@@ -53,12 +57,44 @@ export const UploadModal = () => {
             title: e.target.title.value,
         };
 
-        await sendFormData(formData);
+        if(formData.format == '') {
+            toast({
+                duration: 5000,
+                isClosable: false,
+                status: 'error',
+                title: 'Select an image to upload',
+            });
+        }else if(formData.title == ''){
+            toast({
+                duration: 5000,
+                isClosable: false,
+                status: 'error',
+                title: 'Enter a title for the image',
+            });
+        }else if(formData.caption == ''){
+            toast({
+                duration: 5000,
+                isClosable: false,
+                status: 'error',
+                title: 'Enter a caption for the image',
+            });
+        }else{
+            await sendFormData(formData);
+        }
+
     };
 
+    // Handle image upload data
+    const handleImageSubmit = (image: any, format: any, size: any) => {
+        formData.format = format.split('/')[1];
+        formData.size = size;
+        imageBytes = image;
+    };
+
+    // Send form data to server
     const sendFormData = async (uploadFormDTO: UploadFormDTO) => {
         try {
-            const response: any = await uploadImage(uploadFormDTO);
+            let response: any = await uploadImage(uploadFormDTO);
             if (successResponse(response)) {
                 const presignedURL = response.data.data.presignedUrl;
 
@@ -68,19 +104,50 @@ export const UploadModal = () => {
                     array.push(binary.charCodeAt(i));
                 }
 
-                await uploadImageToS3(new Blob([new Uint8Array(array)], {type: 'image/' + uploadFormDTO.format}),presignedURL, uploadFormDTO.format);
+                response = await uploadImageToS3(new Blob([new Uint8Array(array)], {type: 'image/' + uploadFormDTO.format}),presignedURL, uploadFormDTO.format);
+
+                if (successResponse(response)){
+                    toast({
+                        duration: 5000,
+                        isClosable: true,
+                        status: 'success',
+                        title: 'Image uploaded successfully!',
+                    });
+
+                    formData = {
+                        caption: '',
+                        format: '',
+                        location: '',
+                        size: '',
+                        tags: [],
+                        title: '',
+                    };
+                    onClose();
+                }else{
+                    toast({
+                        duration: 5000,
+                        isClosable: true,
+                        status: 'error',
+                        title: 'Image failed to upload',
+                    });
+                }
+
             } else {
-                // Set error response here
+                toast({
+                    duration: 5000,
+                    isClosable: true,
+                    status: 'error',
+                    title: 'Image failed to upload',
+                });
             }
         } catch (error: any) {
-
+            toast({
+                duration: 5000,
+                isClosable: true,
+                status: 'error',
+                title: 'Image failed to upload',
+            });
         }
-    };
-
-    const handleImageSubmit = (image: any, format: any, size: any) => {
-        formData.format = format.split('/')[1];
-        formData.size = size;
-        imageBytes = image;
     };
 
     return (
@@ -92,6 +159,7 @@ export const UploadModal = () => {
                 <ModalContent>
                     <ModalHeader>Upload Image</ModalHeader>
                     <ModalCloseButton />
+
                     <form onSubmit={handleSubmit}>
                         <ModalBody>
                             <FormControl>
@@ -99,23 +167,23 @@ export const UploadModal = () => {
                                 <DragAndDrop imageSubmitCallback={handleImageSubmit} />
                             </FormControl>
 
-                            <FormControl isRequired my={3}>
-                                <FormLabel>Title</FormLabel>
+                            <FormControl my={3}>
+                                <FormLabel>Title <span style={{color: 'red'}}>*</span></FormLabel>
                                 <Input
                                     name='title'
                                     type='text'
                                 ></Input>
                             </FormControl>
 
-                            <FormControl>
-                                <FormLabel>Caption</FormLabel>
+                            <FormControl my={3}>
+                                <FormLabel>Caption <span style={{color: 'red'}}>*</span></FormLabel>
                                 <Input
                                     name='caption'
                                     type='text'
                                 ></Input>
                             </FormControl>
 
-                            <FormControl>
+                            <FormControl my={3}>
                                 <FormLabel>Tags</FormLabel>
                                 <Input
                                     name='tags'
@@ -123,7 +191,7 @@ export const UploadModal = () => {
                                 ></Input>
                             </FormControl>
 
-                            <FormControl>
+                            <FormControl my={3}>
                                 <FormLabel>Location</FormLabel>
                                 <Input
                                     name='location'
@@ -138,6 +206,7 @@ export const UploadModal = () => {
                             </Button>
                         </ModalFooter>
                     </form>
+
                 </ModalContent>
             </Modal>
         </>
