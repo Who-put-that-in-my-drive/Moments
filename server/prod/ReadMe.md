@@ -54,3 +54,36 @@ then...
 npm i && screen npm run start > output.log &
 ```
 then you can hit enter and that's all!
+
+## Install AWS Cli
+
+Firstly we need to install the AWS CLI on our Linux EC2 machine by entering the following:
+
+```
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+```
+
+## Set AWS Credentials
+
+Create `.aws` directory in your `home` directory after logging in:
+
+```
+cd ..
+sudo mkdir .aws
+cd .aws
+```
+
+then ...
+
+```
+sudo nano credentials
+```
+
+Fill out your credentials then create and fill out the config in the same directory with your config:
+
+```
+sudo nano config
+```
+
