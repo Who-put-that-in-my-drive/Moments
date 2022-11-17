@@ -3,7 +3,6 @@ import {
     Flex,
     Heading,
     Image,
-    Link,
     Stack,
     Text,
     useBreakpointValue,
@@ -38,27 +37,31 @@ export default function Landing() {
                             }}
                             as={'span'}
                             position={'relative'}>
-              Moments
+                            Moments
                         </Text>
-                        <br />{' '}
+                        <br />
                         <Text as={'span'} color={'red.400'}>
-              Enjoy every moment
-                        </Text>{' '}
+                            Enjoy every moment.
+                        </Text>
                     </Heading>
                     <Text color={'gray.500'} fontSize={{ base: 'md', lg: 'lg' }}>
-            A place for you to easily save and share what matters to you. Access your memories across all your devices.
+                        A place for you to easily save and share what matters to you. Access your memories across all your devices.
                     </Text>
                     <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
                         <Button
                             _hover={{
                                 bg: 'red.500',
                             }}
+                            as={ReactLink}
                             bg={'red.400'}
                             color={'white'}
-                            rounded={'full'}>
-                            <Link as={ReactLink} to='/login'>Login</Link>
+                            rounded={'full'}
+                            to='/login'>
+                            Login
                         </Button>
-                        <Button rounded={'full'}><Link as={ReactLink} to='/register'>Create An Account</Link></Button>
+                        <Button as={ReactLink} rounded={'full'} to='/register' variant='ghost'>
+                            Create An Account
+                        </Button>
                     </Stack>
                 </Stack>
             </Flex>
@@ -71,7 +74,7 @@ export default function Landing() {
                     }
                 />
             </Flex>
-      
+
         </Stack>
     );
 }

@@ -1,4 +1,5 @@
 export interface Image {
+    id: string
     title: string,
     format: string,
     size: string,
