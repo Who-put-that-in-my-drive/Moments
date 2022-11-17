@@ -36,7 +36,7 @@ export const PhotoCard = (props: PhotoCardProps) => {
                     />
                 </AspectRatio>
                 <Box>
-                    <Text as='b' fontSize='xl' textAlign='left'>{props.name}</Text>
+                    <Text as='b' fontSize='xl' noOfLines={1} textAlign='left'>{props.name}</Text>
                     <Text fontSize='sm' textAlign='left'>{props.date}</Text>
                 </Box>
             </Flex>
