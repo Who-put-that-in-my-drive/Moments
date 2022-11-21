@@ -12,7 +12,11 @@ export const uploadImage = async (data: UploadFormDTO): Promise<Response> => {
     return await axios.post('/image', data);
 };
 
-export const uploadImageToS3 = async (image: any, presignedUrl: string, imageExt: string): Promise<any> => {
+export const uploadAvatarImage = async (): Promise<Response> => {
+    return await axios.get('/user/avatar');
+};
+
+export const uploadImageToS3 = async (image: any, presignedUrl: string, imageExt: string): Promise<Response | undefined> => {
     // Using Vanilla JS Fetch since Ky/Axios has issues handling files
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'image/' + imageExt);
@@ -23,7 +27,7 @@ export const uploadImageToS3 = async (image: any, presignedUrl: string, imageExt
         method: 'PUT',
         redirect: 'follow'
     };
-   
+
     let responseFinal;
 
     await fetch(presignedUrl,
