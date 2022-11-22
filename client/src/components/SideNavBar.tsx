@@ -74,7 +74,7 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
             const response: any = await logout();
             console.log(response.data);
             store.removeUser();
-            navigate('/login');
+            navigate('/');
         } catch (error) {
             console.log(error);
         }
@@ -134,7 +134,7 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
                     <Tooltip aria-label='A tooltip' label={user.email}>
                         <MenuButton as={Button} paddingBottom={'3rem'} paddingTop='2rem' rightIcon={<ChevronDownIcon />}>
                             <Flex align='center' alignContent='center' justifyContent={'center'} mt={4}>
-                                <Avatar size='md' src='avatar-1.jpg' />
+                                <Avatar size='md' src={user.profilePictureURL} />
                                 <Flex display={'flex'} flexDir='column' maxW={'70%'} ml='2'>
                                     <Heading as='h3' noOfLines={1} size='sm'>{user.displayName || 'No user found'}</Heading>
                                     <Text color='gray' noOfLines={1}>{user.email || 'No user found'}</Text>
