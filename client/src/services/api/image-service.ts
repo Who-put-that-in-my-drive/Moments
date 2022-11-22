@@ -13,7 +13,7 @@ export const uploadImage = async (data: UploadFormDTO): Promise<Response> => {
 };
 
 export const uploadAvatarImage = async (): Promise<Response> => {
-    return await axios.get('/user/avatar');
+    return await axios.put('/user/avatar');
 };
 
 export const uploadImageToS3 = async (image: any, presignedUrl: string, imageExt: string): Promise<Response | undefined> => {
