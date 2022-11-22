@@ -93,9 +93,9 @@ const Uploads = () => {
                             <Tab>People</Tab>
                         </TabList>
                     </Tabs>
-                    <Flex direction={['column', 'column', 'column', 'row']} justifyContent='space-between'>
+                    <Flex direction={['column', 'column', 'row', 'row']} justifyContent='space-between'>
                         <Menu>
-                            <MenuButton as={Button} rightIcon={<ChevronDownIcon />} width={['100%', '100%', '100%', '22%']}>
+                            <MenuButton as={Button} rightIcon={<ChevronDownIcon />} width={['100%', '100%', '45%', '22%']}>
                                 Filters
                             </MenuButton>
                             <MenuList>
@@ -108,7 +108,7 @@ const Uploads = () => {
 
                         <Spacer />
 
-                        <Flex width={['100%', '100%', '100%', '22%']}>
+                        <Flex width={['100%', '100%', '45%', '22%']}>
                             <InputGroup>
                                 <InputLeftElement pointerEvents={'none'}>
                                     <Search2Icon />

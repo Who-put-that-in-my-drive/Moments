@@ -7,13 +7,22 @@ import { Image } from '../interfaces/Image';
 const initialUserState: User = {
     displayName: '',
     email: '',
-    images: []
+    images: [],
+    profilePictureURL: ''
 };
 
 const useStore = create<UserStore>()(
     devtools(
         persist(
             (set) => ({
+                //imageObj to be switched to type Image instead of any once we have proper format
+                addImage: (imageObj: any) => set((state) => ({
+                    ...state,
+                    user: {
+                        ...state.user,
+                        images: [...state.user.images].concat(imageObj)
+                    }
+                })),
                 deleteImage: (imageId: string) => set((state) => ({
                     ...state,
                     user: {
@@ -37,6 +46,13 @@ const useStore = create<UserStore>()(
                     user: {
                         ...state.user,
                         images: newImages
+                    }
+                })),
+                updateProfilePicture: (pictureURL: string) => set((state) => ({
+                    ...state,
+                    user: {
+                        ...state.user,
+                        profilePictureURL: pictureURL
                     }
                 })),
                 updateUser: (updatedUser: User) => set((state) => ({
