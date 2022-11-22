@@ -95,6 +95,10 @@ export const Profile = () => {
                         status: 'success',
                         title: 'Image uploaded successfully!',
                     });
+
+                    //Once the file upload is successful update the local store
+                    let url = URL.createObjectURL(file);
+                    store.updateProfilePicture(url);
                 } else {
                     toast({
                         duration: 5000,
