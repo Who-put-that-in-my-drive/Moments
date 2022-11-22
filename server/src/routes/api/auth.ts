@@ -8,9 +8,15 @@ import User from '../../models/user.model';
 import {getHashedValue, validatePassword} from '../../utilities/bcrypt';
 import Cookie from '../../utilities/cookie';
 import Jwt from '../../utilities/jwt';
-import {getCurrentDateTime} from '../../utilities/server';
+import {getCurrentDateTime, getEmail} from '../../utilities/server';
 import ServerResponse from '../../utilities/serverResponse';
 import {SanitizedUser} from '../../interfaces/auth/SanitizedUser';
+import {GetObjectCommand} from '@aws-sdk/client-s3';
+import {getSignedUrl} from '@aws-sdk/s3-request-presigner';
+import {s3Client} from '../../utilities/s3Client';
+
+const myBucket = 'moments-gallery'; // Moments Bucket
+const signedUrlExpireSeconds = 300; // 5 Minutes
 
 const router = express.Router();
 
@@ -84,6 +90,7 @@ router.route('/login').post(async (req: Request, res: Response) => {
         const loginUserDTO: LoginUserDTO = req.body;
 
         const userDb = await User.findOneAndUpdate({email: loginUserDTO.email.toString()}, {$set: {lastLoginDateTime: getCurrentDateTime()}});
+
         if (userDb) {
             //@ts-ignore
             const user: UserModel = userDb._doc;
@@ -91,7 +98,17 @@ router.route('/login').post(async (req: Request, res: Response) => {
                 const sanitizedUser: SanitizedUser = {...user};
                 delete sanitizedUser.password;
                 const cookieWithJwt = new Cookie(await Jwt.generateJwt(user.email)).generateCookie();
-                return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(new ServerResponse('Signed In').addData({user: sanitizedUser}));
+
+                const command = new GetObjectCommand({
+                    Bucket: myBucket,
+                    Key: `${getEmail(req)}/avatar.png`,
+                });
+
+                const presignedUrl = await getSignedUrl(s3Client, command, {
+                    expiresIn: signedUrlExpireSeconds
+                });
+
+                return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(new ServerResponse('Signed In').addData({user: sanitizedUser}).addData({presignedUrl}));
             } else {
                 return res.status(403).json(new ServerResponse('Incorrect Email/Password'));
             }
