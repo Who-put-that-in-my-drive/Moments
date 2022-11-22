@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { UploadFormDTO } from '../../components/UploadModal';
-import {getUrl} from '../../utils/WebsiteUtils';
+import { getUrl } from '../../utils/WebsiteUtils';
 
 axios.defaults.baseURL = getUrl();
 
