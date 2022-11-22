@@ -10,4 +10,6 @@ export interface UserStore {
     updateUser: (updatedUser: User) => void
     updateImagesList: (newImagesList: any[]) => void
     deleteImage: (imageId: string) => void
+    addImage: (image: any) => void
+    updateProfilePicture: (pictureURL: string) => void
 }
