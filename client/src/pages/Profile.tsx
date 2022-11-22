@@ -56,72 +56,123 @@ export const Profile = () => {
     const user = store.user;
     const minNameLength: number = 2;
     const navigate = useNavigate();
+
     const userName = (user.firstName && user.lastName ?
         user.firstName + ' ' + user.lastName : '') || '';
 
     const [loading, setLoading] = useState(false);
+
     const capitalizeFirstChar = (str: string): string => {
         return str.charAt(0).toUpperCase() + str.slice(1);
     };
 
     const handleProfileUpload = async (e: any) => {
-        const fileReader = new FileReader();
-        const imageFile = e.target.files[0];
+        const file: File = e.currentTarget.files[0];
+        const imageFormat = file.type;
 
-        const formattedFile = fileReader.readAsDataURL(imageFile);
-        const fileFormat = imageFile.type;
-        await uploadProfilePicture(imageFile, formattedFile, fileFormat);
-    };
-
-    const uploadProfilePicture = async (imageFile: File, imageBytes: any, fileFormat: string) => {
+        let fileReader = new FileReader();
+        let imagebytes = null;
+        fileReader.onload = () => {
+            imagebytes = fileReader.result;
+        };
+        fileReader.readAsDataURL(file);
         try {
-            //get the presined URL for AWS upload
-            let response: any = await uploadAvatarImage();
-            if (successResponse(response)) {
-                const presignedURL = response.data.data.presignedUrl;
-                const binary = atob(imageBytes.split(',')[1]);
+            let getPresignedURLResponse: any = await uploadAvatarImage();
+            if (successResponse(getPresignedURLResponse)) {
+                const presignedURL = getPresignedURLResponse.data.data.presignedUrl;
+                //@ts-ignore
+                const binary = atob(imagebytes.split(',')[1]);
                 const array = [];
                 for (let i = 0; i < binary.length; i++) {
                     array.push(binary.charCodeAt(i));
                 }
-                response = await uploadImageToS3(new Blob([new Uint8Array(array)], { type: 'image/' + fileFormat }), presignedURL, fileFormat);
 
-                if (successResponse(response)) {
+                const uploadToS3Response: any = await uploadImageToS3(new Blob([new Uint8Array(array)], { type: 'image/' + imageFormat }), presignedURL, imageFormat);
+                if (successResponse(uploadToS3Response)) {
                     toast({
                         duration: 5000,
                         isClosable: true,
                         status: 'success',
-                        title: 'Profile picture uploaded successfully!',
+                        title: 'Image uploaded successfully!',
                     });
-                    //Once the file upload is successful update the local store
-                    let url = URL.createObjectURL(imageFile);
-                    store.updateProfilePicture(url);
                 } else {
                     toast({
                         duration: 5000,
                         isClosable: true,
                         status: 'error',
-                        title: 'Profile picture failed to upload',
+                        title: 'Image failed to upload',
                     });
-                }
 
+                }
             } else {
                 toast({
                     duration: 5000,
                     isClosable: true,
                     status: 'error',
-                    title: 'Profile picture failed to upload',
+                    title: 'Failed to get Presigned URL from AWS',
                 });
             }
-        } catch (error: any) {
+        } catch (error) {
             toast({
                 duration: 5000,
                 isClosable: true,
                 status: 'error',
-                title: 'Profile picture failed to upload',
+                title: error + '',
             });
         }
     };
+
+    // const uploadProfilePicture = async (imageFile: File, imageBytes: any, fileFormat: string) => {
+    //     try {
+    //         //get the presined URL for AWS upload
+    //         let response: any = await uploadAvatarImage();
+    //         if (successResponse(response)) {
+    //             console.log('got the presigned URL');
+    //             const presignedURL = response.data.data.presignedUrl;
+    //             const binary = atob(imageBytes.split(',')[1]);
+    //             const array = [];
+    //             for (let i = 0; i < binary.length; i++) {
+    //                 array.push(binary.charCodeAt(i));
+    //                 console.log(i);
+    //             }
+    //             console.log('uploading the image..');
+    //             response = await uploadImageToS3(new Blob([new Uint8Array(array)], { type: 'image/' + fileFormat }), presignedURL, fileFormat);
+    //             if (successResponse(response)) {
+    //                 toast({
+    //                     duration: 5000,
+    //                     isClosable: true,
+    //                     status: 'success',
+    //                     title: 'Profile picture uploaded successfully!',
+    //                 });
+    //                 //Once the file upload is successful update the local store
+    //                 let url = URL.createObjectURL(imageFile);
+    //                 store.updateProfilePicture(url);
+    //             } else {
+    //                 toast({
+    //                     duration: 5000,
+    //                     isClosable: true,
+    //                     status: 'error',
+    //                     title: 'Profile picture failed to upload',
+    //                 });
+    //             }
+
+    //         } else {
+    //             toast({
+    //                 duration: 5000,
+    //                 isClosable: true,
+    //                 status: 'error',
+    //                 title: 'Profile picture failed to upload',
+    //             });
+    //         }
+    //     } catch (error: any) {
+    //         toast({
+    //             duration: 5000,
+    //             isClosable: true,
+    //             status: 'error',
+    //             title: 'Profile picture failed to upload',
+    //         });
+    //     }
+    // };
 
 
     const showToast = (status: string) => {
