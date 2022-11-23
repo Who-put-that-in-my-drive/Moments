@@ -101,7 +101,7 @@ router.route('/login').post(async (req: Request, res: Response) => {
 
                 const command = new GetObjectCommand({
                     Bucket: myBucket,
-                    Key: `${getEmail(req)}/avatar.png`,
+                    Key: `${userDb.email}/avatar.png`,
                 });
 
                 const presignedUrl = await getSignedUrl(s3Client, command, {
