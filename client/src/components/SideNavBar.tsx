@@ -72,7 +72,7 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
     const onLogoutClick = async () => {
         try {
             const response: any = await logout();
-            console.log(response.data);
+            response;
             store.removeUser();
             navigate('/');
         } catch (error) {
