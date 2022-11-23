@@ -11,7 +11,7 @@ import Jwt from '../../utilities/jwt';
 import {getCurrentDateTime, getEmail} from '../../utilities/server';
 import ServerResponse from '../../utilities/serverResponse';
 import {SanitizedUser} from '../../interfaces/auth/SanitizedUser';
-import {GetObjectCommand} from '@aws-sdk/client-s3';
+import {GetObjectCommand, HeadObjectCommand} from '@aws-sdk/client-s3';
 import {getSignedUrl} from '@aws-sdk/s3-request-presigner';
 import {s3Client} from '../../utilities/s3Client';
 
@@ -99,16 +99,23 @@ router.route('/login').post(async (req: Request, res: Response) => {
                 delete sanitizedUser.password;
                 const cookieWithJwt = new Cookie(await Jwt.generateJwt(user.email)).generateCookie();
 
-                const command = new GetObjectCommand({
-                    Bucket: myBucket,
-                    Key: `${userDb.email}/avatar.png`,
-                });
+                const serverResponse: ServerResponse = new ServerResponse('Signed In');
 
-                const presignedUrl = await getSignedUrl(s3Client, command, {
-                    expiresIn: signedUrlExpireSeconds
-                });
+                if (userDb.avatarImageExtension) {
+                    const command = new GetObjectCommand({
+                        Bucket: myBucket,
+                        Key: `${userDb.email}/avatar.${userDb.avatarImageExtension}`,
+                    });
 
-                return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(new ServerResponse('Signed In').addData({user: sanitizedUser}).addData({presignedUrl}));
+                    const presignedUrl = await getSignedUrl(s3Client, command, {
+                        expiresIn: signedUrlExpireSeconds
+                    });
+
+                    serverResponse.addData({presignedUrl});
+                }
+
+
+                return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(serverResponse.addData({user: sanitizedUser}));
             } else {
                 return res.status(403).json(new ServerResponse('Incorrect Email/Password'));
             }
@@ -138,5 +145,6 @@ router.route('/logout').get(async (req: Request, res: Response) => {
         res.status(500).json(new ServerResponse(String(e)));
     }
 });
+
 
 module.exports = router;
