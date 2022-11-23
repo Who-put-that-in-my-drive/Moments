@@ -57,21 +57,21 @@ export const UploadModal = () => {
             title: e.target.title.value,
         };
 
-        if (formData.format == '') {
+        if (formData.format === '') {
             toast({
                 duration: 5000,
                 isClosable: false,
                 status: 'error',
                 title: 'Select an image to upload',
             });
-        } else if (formData.title == '') {
+        } else if (formData.title === '') {
             toast({
                 duration: 5000,
                 isClosable: false,
                 status: 'error',
                 title: 'Enter a title for the image',
             });
-        } else if (formData.caption == '') {
+        } else if (formData.caption === '') {
             toast({
                 duration: 5000,
                 isClosable: false,
