@@ -45,6 +45,13 @@ export default function Login() {
     } = useForm<LoginFormDTO>();
     const [isLoading, setIsLoading] = useState(false);
 
+    let rememberMeChecked = 0;
+    const userEmail = localStorage.getItem('$email') || undefined;
+
+    const handleRememberMeChange = (e: any) => {
+        rememberMeChecked = e.target.checked;
+    };
+
     const handleSubmitForm = async (data: LoginFormDTO) => {
         try {
             setIsLoading(true);
@@ -55,6 +62,12 @@ export default function Login() {
                 store.setUser(user);
                 store.updateProfilePicture(response.data.data.presignedUrl);
                 store.setLoggedIn(true);
+                console.log(rememberMeChecked);
+                if (rememberMeChecked) {
+                    localStorage.setItem('$email', data.email);
+                } else {
+                    localStorage.removeItem('$email');
+                }
                 setIsLoading(false);
                 navigate('/dashboard/home');
             } else {
@@ -106,7 +119,7 @@ export default function Login() {
                                                 {
                                                     required: 'Please enter a valid email',
                                                 })
-                                            } shadow={'md'} type='email' />
+                                            } defaultValue={userEmail} shadow={'md'} type='email' />
                                         <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
                                     </FormControl>
 
@@ -131,7 +144,7 @@ export default function Login() {
                                             align={'start'}
                                             direction={{ base: 'column', sm: 'row' }}
                                             justify={'space-between'}>
-                                            <Checkbox>Remember me</Checkbox>
+                                            <Checkbox defaultChecked={userEmail != undefined} onChange={e => handleRememberMeChange(e)}>Remember me</Checkbox>
                                             <Link color={'blue.500'}>Forgot password?</Link>
                                         </Stack>
                                         <Center>
