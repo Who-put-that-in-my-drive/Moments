@@ -136,7 +136,6 @@ export const Profile = () => {
             description: description,
             duration: 3000,
             isClosable: true,
-            position: 'top',
             status: statusT,
             title: title
         });
@@ -178,7 +177,6 @@ export const Profile = () => {
                 description: 'User deleted!\nWe\'re sorry to see you go 😕',
                 duration: 3000,
                 isClosable: true,
-                position: 'top',
                 status: 'success',
                 title: 'Success!'
             });
@@ -193,7 +191,6 @@ export const Profile = () => {
                 description: 'Something went wrong!',
                 duration: 3000,
                 isClosable: true,
-                position: 'top',
                 status: 'error',
                 title: 'Error!'
             });

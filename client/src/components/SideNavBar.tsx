@@ -19,7 +19,7 @@ import {
     MenuList,
     Text,
     Tooltip,
-    useColorMode,
+    useColorMode, useToast,
     VStack,
 } from '@chakra-ui/react';
 // eslint-disable-next-line 
@@ -69,11 +69,17 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
     const store: UserStore = useStore();
     const user = store.user;
     const navigate = useNavigate();
+    const toast = useToast();
     const onLogoutClick = async () => {
         try {
-            const response: any = await logout();
-            response;
+            await logout();
             store.removeUser();
+            toast({
+                duration: 5000,
+                isClosable: true,
+                status: 'success',
+                title: 'Signed out',
+            });
             navigate('/');
         } catch (error) {
             console.log(error);
