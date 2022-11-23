@@ -53,6 +53,7 @@ export default function Login() {
                 reset();
                 const user: User = response.data.data.user;
                 store.setUser(user);
+                store.updateProfilePicture(response.data.data.presignedUrl);
                 store.setLoggedIn(true);
                 setIsLoading(false);
                 navigate('/dashboard/home');

@@ -71,7 +71,7 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
                     <Box>
                         <Text as='b' fontSize='2xl' textAlign='left'>{props.imageInfo.name}</Text>
                     </Box>
-                    <TableContainer marginTop='2rem' maxW='100%' rounded={'lg'}>
+                    <TableContainer marginTop='2rem' rounded={'lg'} width='100%'>
                         <Table background={colorMode === 'dark' ? 'gray.600' : 'gray.50'} variant='simple'>
                             <Thead>
                                 <Tr>
@@ -86,7 +86,7 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
                                 </Tr>
                                 <Tr>
                                     <Td>Size</Td>
-                                    <Td>{props.imageInfo.size}</Td>
+                                    <Td maxW={'100%'}>{props.imageInfo.size}</Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Format</Td>

@@ -68,7 +68,7 @@ export const Profile = () => {
 
     const handleProfileUpload = async (e: any) => {
         const file: File = e.currentTarget.files[0];
-        const imageFormat = file.type;
+        const imageFormat = file.type.split('/')[1];
 
         let fileReader = new FileReader();
         let imagebytes = null;
@@ -337,10 +337,10 @@ export const Profile = () => {
                             <HStack position='relative' spacing='2rem'>
                                 <Avatar size='xl' src={user.profilePictureURL} />
                                 <Link color='teal.500' cursor='pointer' fontSize='lg' href='#'>
-                                    Change Profile Picture
+                                    Change Profile Picture <br /> <small>(PNG/JPG/JPEG only)</small>
                                 </Link>
                                 <Input
-                                    accept='image/*'
+                                    accept='image/png, image/jpg, image/jpeg'
                                     aria-hidden='true'
                                     cursor='pointer'
                                     onChange={handleProfileUpload}
