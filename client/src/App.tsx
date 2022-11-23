@@ -10,6 +10,7 @@ import Register from './pages/Register';
 // import Post from './pages/Post';
 import Uploads from './pages/Uploads';
 import useStore from './store/store';
+import ProtectedRoute from './components/ProtectedRoute';
 
 
 function App() {
@@ -22,14 +23,14 @@ function App() {
             <Router>
                 <Routes>
                     <Route element={<Landing />} path='/' ></Route>
-                    <Route element={<Navigate replace to={loggedIn ? '/dashboard/home' : '/login'} />} path='*' />
                     <Route element={<Login />} path='login' />
                     <Route element={<Register />} path='register' />
-                    <Route element={<Dashboard />} path='dashboard' >
+                    <Route element={<ProtectedRoute loggedIn={loggedIn}><Dashboard /></ProtectedRoute>} path='dashboard' >
                         <Route element={<Uploads />} path='home' />
                         <Route element={<Profile />} path='profile' />
                         <Route element={<Explore />} path='explore' />
                     </Route>
+                    <Route element={<Navigate replace to={loggedIn ? '/dashboard/home' : '/login'} />} path='*' />
                     {/* <Route element={<Post />} path='/post' /> */}
                 </Routes>
             </Router>
