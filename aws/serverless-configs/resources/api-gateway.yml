@@ -65,6 +65,14 @@ Resources:
       PathPart: 'image'
       RestApiId: !Ref "apiGateway"
 
+  # Images
+  apiGatewayImagesResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      ParentId: !GetAtt "apiGateway.RootResourceId"
+      PathPart: 'images'
+      RestApiId: !Ref "apiGateway"
+
   # User
   apiGatewayUserResource:
     Type: "AWS::ApiGateway::Resource"
@@ -275,6 +283,30 @@ Resources:
         Uri: !Join [ '', [ !Ref domainHost, '/image' ] ]
         TimeoutInMillis: 29000
       ResourceId: !Ref "apiGatewayImageResource"
+      RestApiId: !Ref "apiGateway"
+
+  # Images
+  apiGatewayGetImagesMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: "NONE"
+      HttpMethod: "GET"
+      MethodResponses:
+        - ResponseModels:
+            application/json: !Ref "apiGatewayModel"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
+      Integration:
+        RequestTemplates:
+          application/json: |
+            {"statusCode": 200}
+        Type: "HTTP_PROXY"
+        IntegrationHttpMethod: "ANY"
+        Uri: !Join [ '', [ !Ref domainHost, '/images' ] ]
+        TimeoutInMillis: 29000
+      ResourceId: !Ref "apiGatewayImagesResource"
       RestApiId: !Ref "apiGateway"
 
   # User
