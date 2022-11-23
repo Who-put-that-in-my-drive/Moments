@@ -4,4 +4,5 @@ export interface User {
     images: any[]
     firstName?: string
     lastName?: string
+    profilePictureURL: string
 }

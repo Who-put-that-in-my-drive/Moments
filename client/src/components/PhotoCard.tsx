@@ -82,11 +82,11 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
                             <Tbody>
                                 <Tr>
                                     <Td>Title</Td>
-                                    <Td>{props.imageInfo.name}</Td>
+                                    <Td noOfLines={1}>{props.imageInfo.name}</Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Size</Td>
-                                    <Td>{props.imageInfo.size}</Td>
+                                    <Td maxW={'100%'}>{props.imageInfo.size}</Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Format</Td>

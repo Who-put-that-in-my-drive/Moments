@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 
 import '../assets/DnD.scss';
-import {uploadImage, uploadImageToS3} from '../services/api/image-service';
+import { uploadImage, uploadImageToS3 } from '../services/api/image-service';
 import { successResponse } from '../utils/ResponseUtils';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import DragAndDrop from './DragAndDrop';
@@ -57,28 +57,29 @@ export const UploadModal = () => {
             title: e.target.title.value,
         };
 
-        if(formData.format == '') {
+        if (formData.format === '') {
             toast({
                 duration: 5000,
                 isClosable: false,
                 status: 'error',
                 title: 'Select an image to upload',
             });
-        }else if(formData.title == ''){
+        } else if (formData.title === '') {
             toast({
                 duration: 5000,
                 isClosable: false,
                 status: 'error',
                 title: 'Enter a title for the image',
             });
-        }else if(formData.caption == ''){
+        } else if (formData.caption === '') {
             toast({
                 duration: 5000,
                 isClosable: false,
                 status: 'error',
                 title: 'Enter a caption for the image',
             });
-        }else{
+        } else {
+            console.log(formData);
             await sendFormData(formData);
         }
 
@@ -100,13 +101,13 @@ export const UploadModal = () => {
 
                 const binary = atob(imageBytes.split(',')[1]);
                 const array = [];
-                for(let i = 0; i < binary.length; i++) {
+                for (let i = 0; i < binary.length; i++) {
                     array.push(binary.charCodeAt(i));
                 }
 
-                response = await uploadImageToS3(new Blob([new Uint8Array(array)], {type: 'image/' + uploadFormDTO.format}),presignedURL, uploadFormDTO.format);
+                response = await uploadImageToS3(new Blob([new Uint8Array(array)], { type: 'image/' + uploadFormDTO.format }), presignedURL, uploadFormDTO.format);
 
-                if (successResponse(response)){
+                if (successResponse(response)) {
                     toast({
                         duration: 5000,
                         isClosable: true,
@@ -123,7 +124,7 @@ export const UploadModal = () => {
                         title: '',
                     };
                     onClose();
-                }else{
+                } else {
                     toast({
                         duration: 5000,
                         isClosable: true,
@@ -168,7 +169,7 @@ export const UploadModal = () => {
                             </FormControl>
 
                             <FormControl my={3}>
-                                <FormLabel>Title <span style={{color: 'red'}}>*</span></FormLabel>
+                                <FormLabel>Title <span style={{ color: 'red' }}>*</span></FormLabel>
                                 <Input
                                     name='title'
                                     type='text'
@@ -176,7 +177,7 @@ export const UploadModal = () => {
                             </FormControl>
 
                             <FormControl my={3}>
-                                <FormLabel>Caption <span style={{color: 'red'}}>*</span></FormLabel>
+                                <FormLabel>Caption <span style={{ color: 'red' }}>*</span></FormLabel>
                                 <Input
                                     name='caption'
                                     type='text'

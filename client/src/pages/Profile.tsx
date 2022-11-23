@@ -34,6 +34,7 @@ import { useRef, useState } from 'react';
 import { successResponse } from '../utils/ResponseUtils';
 import { User } from '../interfaces/User';
 import { useNavigate } from 'react-router-dom';
+import { uploadAvatarImage, uploadImageToS3 } from '../services/api/image-service';
 
 export type UpdateFormDTO = {
     email: string
@@ -55,15 +56,77 @@ export const Profile = () => {
     const user = store.user;
     const minNameLength: number = 2;
     const navigate = useNavigate();
-    const userName = (user.firstName && user.lastName ?
-        user.firstName + ' ' + user.lastName :
-        '') || '';
 
+    const userName = (user.firstName && user.lastName ?
+        user.firstName + ' ' + user.lastName : '') || '';
 
     const [loading, setLoading] = useState(false);
+
     const capitalizeFirstChar = (str: string): string => {
         return str.charAt(0).toUpperCase() + str.slice(1);
     };
+
+    const handleProfileUpload = async (e: any) => {
+        const file: File = e.currentTarget.files[0];
+        const imageFormat = file.type.split('/')[1];
+
+        let fileReader = new FileReader();
+        let imagebytes = null;
+        fileReader.onload = () => {
+            imagebytes = fileReader.result;
+        };
+        fileReader.readAsDataURL(file);
+
+        try {
+            let getPresignedURLResponse: any = await uploadAvatarImage();
+            if (successResponse(getPresignedURLResponse)) {
+                const presignedURL = getPresignedURLResponse.data.data.presignedUrl;
+                //@ts-ignore
+                const binary = atob(imagebytes.split(',')[1]);
+                const array = [];
+                for (let i = 0; i < binary.length; i++) {
+                    array.push(binary.charCodeAt(i));
+                }
+
+                const uploadToS3Response: any = await uploadImageToS3(new Blob([new Uint8Array(array)], { type: 'image/' + imageFormat }), presignedURL, imageFormat);
+                if (successResponse(uploadToS3Response)) {
+                    toast({
+                        duration: 5000,
+                        isClosable: true,
+                        status: 'success',
+                        title: 'Image uploaded successfully!',
+                    });
+
+                    //Once the file upload is successful update the local store
+                    let url = URL.createObjectURL(file);
+                    store.updateProfilePicture(url);
+                } else {
+                    toast({
+                        duration: 5000,
+                        isClosable: true,
+                        status: 'error',
+                        title: 'Image failed to upload',
+                    });
+
+                }
+            } else {
+                toast({
+                    duration: 5000,
+                    isClosable: true,
+                    status: 'error',
+                    title: 'Failed to get Presigned URL from AWS',
+                });
+            }
+        } catch (error) {
+            toast({
+                duration: 5000,
+                isClosable: true,
+                status: 'error',
+                title: error + '',
+            });
+        }
+    };
+
     const showToast = (status: string) => {
         const title = status === 'success' ? 'User updated.' : 'User update failed.';
         const description = status === 'success' ? 'We\'ve successfully updated your info.' : 'Something went wrong.';
@@ -140,9 +203,9 @@ export const Profile = () => {
     return (
         <>
             <Flex direction={'column'} padding={['1rem', '3rem', '4rem', '5rem']} paddingX={['1rem', '2rem', '3rem', '7rem']} scrollBehavior={'auto'}>
-                <Wrap align={'center'} direction={['column', 'column', 'row', 'row']} paddingBottom={'1rem'} spacing={['1rem', '1rem', '2rem', '2rem']}>
+                <Wrap align={'center'} cursor='default' direction={['column', 'column', 'row', 'row']} paddingBottom={'1rem'} spacing={['1rem', '1rem', '2rem', '2rem']}>
                     <WrapItem>
-                        <Avatar size='xl' />
+                        <Avatar size='xl' src={user.profilePictureURL} />
                     </WrapItem>
                     <Stack alignItems={['center', 'center', 'normal', 'normal']} direction={'column'} justifyContent='center'>
                         <Heading as='h1' noOfLines={1} size={'xl'}>
@@ -220,13 +283,15 @@ export const Profile = () => {
                                 </Text>
                             </Box>
                             <HStack position='relative' spacing='2rem'>
-                                <Avatar size='xl' />
-                                <Link color='teal.500' href='#'>
-                                    Change Profile Picture
+                                <Avatar size='xl' src={user.profilePictureURL} />
+                                <Link color='teal.500' cursor='pointer' fontSize='lg' href='#'>
+                                    Change Profile Picture <br /> <small>(PNG/JPG/JPEG only)</small>
                                 </Link>
                                 <Input
-                                    accept='image/*'
+                                    accept='image/png, image/jpg, image/jpeg'
                                     aria-hidden='true'
+                                    cursor='pointer'
+                                    onChange={handleProfileUpload}
                                     opacity='0'
                                     placeholder='test'
                                     position='absolute'
@@ -238,7 +303,7 @@ export const Profile = () => {
                                     Delete Profile
                                 </Text>
                             </Box>
-                            <Center>
+                            <Center padding='.5rem'>
                                 <HStack position='relative' spacing='2rem'>
                                     <Button colorScheme='red' loadingText='Deleting..' onClick={onOpen} size='sm' type='button'>
                                         Delete Profile
