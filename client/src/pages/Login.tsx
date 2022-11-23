@@ -45,8 +45,8 @@ export default function Login() {
     } = useForm<LoginFormDTO>();
     const [isLoading, setIsLoading] = useState(false);
 
-    let rememberMeChecked = 0;
     const userEmail = localStorage.getItem('$email') || undefined;
+    let rememberMeChecked = userEmail !== undefined;
 
     const handleRememberMeChange = (e: any) => {
         rememberMeChecked = e.target.checked;
@@ -62,7 +62,6 @@ export default function Login() {
                 store.setUser(user);
                 store.updateProfilePicture(response.data.data.presignedUrl);
                 store.setLoggedIn(true);
-                console.log(rememberMeChecked);
                 if (rememberMeChecked) {
                     localStorage.setItem('$email', data.email);
                 } else {
@@ -144,7 +143,7 @@ export default function Login() {
                                             align={'start'}
                                             direction={{ base: 'column', sm: 'row' }}
                                             justify={'space-between'}>
-                                            <Checkbox defaultChecked={userEmail != undefined} onChange={e => handleRememberMeChange(e)}>Remember me</Checkbox>
+                                            <Checkbox defaultChecked={rememberMeChecked} onChange={e => handleRememberMeChange(e)}>Remember me</Checkbox>
                                             <Link color={'blue.500'}>Forgot password?</Link>
                                         </Stack>
                                         <Center>
