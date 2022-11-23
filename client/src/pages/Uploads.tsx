@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Input, InputGroup, InputLeftElement, Menu, MenuButton, MenuItem, MenuList, SimpleGrid, Spacer, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Heading, Input, InputGroup, InputLeftElement, Menu, MenuButton, MenuItem, MenuList, SimpleGrid, Spacer, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
 import { PhotoCard } from '../components/PhotoCard';
 import { ChevronDownIcon, Search2Icon } from '@chakra-ui/icons';
 import { useState } from 'react';
@@ -128,9 +128,12 @@ const Uploads = () => {
                         key={image.id}
                         name={image.name}
                         size={image.size} />);
-                }) : <Text as='h1' noOfLines={2} paddingBottom='3rem' size='md'>
-                    No images found. Please upload images.
-                </Text>}
+                }) : <Center>
+                    <Text as='h1' noOfLines={2} paddingBottom='3rem' size='lg'>
+                        No images found. Please upload images.
+                    </Text>
+                </Center>
+                }
             </SimpleGrid>
 
             <Flex float={'right'} height='100%' justifyContent='space-between' paddingTop='2.75rem'>
