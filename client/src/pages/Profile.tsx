@@ -76,6 +76,7 @@ export const Profile = () => {
             imagebytes = fileReader.result;
         };
         fileReader.readAsDataURL(file);
+
         try {
             let getPresignedURLResponse: any = await uploadAvatarImage();
             if (successResponse(getPresignedURLResponse)) {
@@ -125,59 +126,6 @@ export const Profile = () => {
             });
         }
     };
-
-    // const uploadProfilePicture = async (imageFile: File, imageBytes: any, fileFormat: string) => {
-    //     try {
-    //         //get the presined URL for AWS upload
-    //         let response: any = await uploadAvatarImage();
-    //         if (successResponse(response)) {
-    //             console.log('got the presigned URL');
-    //             const presignedURL = response.data.data.presignedUrl;
-    //             const binary = atob(imageBytes.split(',')[1]);
-    //             const array = [];
-    //             for (let i = 0; i < binary.length; i++) {
-    //                 array.push(binary.charCodeAt(i));
-    //                 console.log(i);
-    //             }
-    //             console.log('uploading the image..');
-    //             response = await uploadImageToS3(new Blob([new Uint8Array(array)], { type: 'image/' + fileFormat }), presignedURL, fileFormat);
-    //             if (successResponse(response)) {
-    //                 toast({
-    //                     duration: 5000,
-    //                     isClosable: true,
-    //                     status: 'success',
-    //                     title: 'Profile picture uploaded successfully!',
-    //                 });
-    //                 //Once the file upload is successful update the local store
-    //                 let url = URL.createObjectURL(imageFile);
-    //                 store.updateProfilePicture(url);
-    //             } else {
-    //                 toast({
-    //                     duration: 5000,
-    //                     isClosable: true,
-    //                     status: 'error',
-    //                     title: 'Profile picture failed to upload',
-    //                 });
-    //             }
-
-    //         } else {
-    //             toast({
-    //                 duration: 5000,
-    //                 isClosable: true,
-    //                 status: 'error',
-    //                 title: 'Profile picture failed to upload',
-    //             });
-    //         }
-    //     } catch (error: any) {
-    //         toast({
-    //             duration: 5000,
-    //             isClosable: true,
-    //             status: 'error',
-    //             title: 'Profile picture failed to upload',
-    //         });
-    //     }
-    // };
-
 
     const showToast = (status: string) => {
         const title = status === 'success' ? 'User updated.' : 'User update failed.';
