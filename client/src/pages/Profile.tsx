@@ -43,6 +43,10 @@ export type UpdateFormDTO = {
     displayName: string
 };
 
+export type AvatarFormatDTO = {
+    format: string
+}
+
 export const Profile = () => {
     const store = useStore();
     const toast = useToast();
@@ -78,7 +82,8 @@ export const Profile = () => {
         fileReader.readAsDataURL(file);
 
         try {
-            let getPresignedURLResponse: any = await uploadAvatarImage();
+            const fileFormat: AvatarFormatDTO = { format: imageFormat };
+            let getPresignedURLResponse: any = await uploadAvatarImage(fileFormat);
             if (successResponse(getPresignedURLResponse)) {
                 const presignedURL = getPresignedURLResponse.data.data.presignedUrl;
                 //@ts-ignore

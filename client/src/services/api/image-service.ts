@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { UploadFormDTO } from '../../components/UploadModal';
+import { AvatarFormatDTO } from '../../pages/Profile';
 import { getUrl } from '../../utils/WebsiteUtils';
 
 axios.defaults.baseURL = getUrl();
@@ -12,8 +13,8 @@ export const uploadImage = async (data: UploadFormDTO): Promise<Response> => {
     return await axios.post('/image', data);
 };
 
-export const uploadAvatarImage = async (): Promise<Response> => {
-    return await axios.put('/user/avatar');
+export const uploadAvatarImage = async (data: AvatarFormatDTO): Promise<Response> => {
+    return await axios.put('/user/avatar', data);
 };
 
 export const uploadImageToS3 = async (image: any, presignedUrl: string, imageExt: string): Promise<Response | undefined> => {
