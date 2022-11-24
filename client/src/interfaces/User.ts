@@ -1,7 +1,9 @@
+import { Image } from './Image';
+
 export interface User {
     displayName: string
     email: string
-    images: any[]
+    images: Image[]
     firstName?: string
     lastName?: string
     profilePictureURL: string
