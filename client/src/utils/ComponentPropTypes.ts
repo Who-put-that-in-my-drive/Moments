@@ -2,10 +2,14 @@ import { MouseEventHandler } from 'react';
 
 export type PhotoCardProps = {
     imageURL: string
-    name: string
+    title: string
     date: string
     size: string
     format: string
+    caption: string
+    isLoaded: boolean
+    tags: string
+    categories: string
 };
 
 export type DrawerImageInfoProps = {
