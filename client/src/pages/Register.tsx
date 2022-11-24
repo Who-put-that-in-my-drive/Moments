@@ -30,7 +30,7 @@ import { useForm } from 'react-hook-form';
 import { Link as ReactLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo_transparent.png';
 import { registerUser } from '../services/api/auth-service';
-import {successResponse} from '../utils/ResponseUtils';
+import { successResponse } from '../utils/ResponseUtils';
 
 export type RegisterFormDTO = {
     email: string,
@@ -93,7 +93,7 @@ export default function Register() {
                                     <Stack spacing={4} w={'full'} >
                                         <Heading fontSize={'4xl'} textAlign={'center'}>Sign Up</Heading>
                                         <FormControl isInvalid={Boolean(errors.displayName)} margin={'1rem'}>
-                                            <FormLabel>Username</FormLabel>
+                                            <FormLabel>Display Name</FormLabel>
                                             <Input
                                                 {...register(
                                                     'displayName',

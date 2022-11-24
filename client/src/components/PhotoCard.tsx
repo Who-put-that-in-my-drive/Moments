@@ -1,5 +1,6 @@
 import {
     AspectRatio,
+    Badge,
     Box,
     Drawer,
     DrawerCloseButton,
@@ -14,6 +15,7 @@ import {
     Th,
     Thead,
     Tr,
+    useColorMode,
     useDisclosure
 } from '@chakra-ui/react';
 // eslint-disable-next-line
@@ -34,7 +36,7 @@ export const PhotoCard = (props: PhotoCardProps) => {
                     />
                 </AspectRatio>
                 <Box>
-                    <Text as='b' fontSize='xl' textAlign='left'>{props.name}</Text>
+                    <Text as='b' fontSize='xl' noOfLines={1} textAlign='left'>{props.name}</Text>
                     <Text fontSize='sm' textAlign='left'>{props.date}</Text>
                 </Box>
             </Flex>
@@ -46,6 +48,7 @@ export const PhotoCard = (props: PhotoCardProps) => {
 
 
 const DrawerImageInfo = (props: DrawerImageInfoProps) => {
+    const { colorMode } = useColorMode();
     props.onOpen;
     return (
         <Drawer
@@ -55,7 +58,7 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
             size='md'
         >
             <DrawerOverlay />
-            <DrawerContent background='gray.100'>
+            <DrawerContent>
                 <DrawerCloseButton />
                 <Flex align='center' alignContent='center' direction={'column'} justifyContent='space-between' paddingTop='5rem' paddingX={'1.5rem'} w="full">
                     <AspectRatio ratio={16 / 9} w='100%'>
@@ -68,8 +71,8 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
                     <Box>
                         <Text as='b' fontSize='2xl' textAlign='left'>{props.imageInfo.name}</Text>
                     </Box>
-                    <TableContainer background={'white'} marginTop='2rem' width='100%'>
-                        <Table variant='simple'>
+                    <TableContainer marginTop='2rem' rounded={'lg'} width='100%'>
+                        <Table background={colorMode === 'dark' ? 'gray.600' : 'gray.50'} variant='simple'>
                             <Thead>
                                 <Tr>
                                     <Th>Information</Th>
@@ -79,15 +82,15 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
                             <Tbody>
                                 <Tr>
                                     <Td>Title</Td>
-                                    <Td>{props.imageInfo.name}</Td>
+                                    <Td noOfLines={1}>{props.imageInfo.name}</Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Size</Td>
-                                    <Td>{props.imageInfo.size}</Td>
+                                    <Td maxW={'100%'}>{props.imageInfo.size}</Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Format</Td>
-                                    <Td>{props.imageInfo.format}</Td>
+                                    <Td><Badge>{props.imageInfo.format}</Badge></Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Uploaded</Td>

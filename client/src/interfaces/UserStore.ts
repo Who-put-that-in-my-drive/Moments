@@ -1,3 +1,4 @@
+// import { Image } from './Image';
 import { User } from './User';
 
 export interface UserStore {
@@ -7,4 +8,8 @@ export interface UserStore {
     loggedIn: boolean
     setLoggedIn: (val: boolean) => void
     updateUser: (updatedUser: User) => void
+    updateImagesList: (newImagesList: any[]) => void
+    deleteImage: (imageId: string) => void
+    addImage: (image: any) => void
+    updateProfilePicture: (pictureURL: string) => void
 }

@@ -41,6 +41,7 @@ rm -r *
 ```
 Run `prepare.sh` then:
 
+```
 7z x prod.zip
 cd dist
 ```

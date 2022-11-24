@@ -19,7 +19,7 @@ import {
     MenuList,
     Text,
     Tooltip,
-    useColorMode,
+    useColorMode, useToast,
     VStack,
 } from '@chakra-ui/react';
 // eslint-disable-next-line 
@@ -69,12 +69,18 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
     const store: UserStore = useStore();
     const user = store.user;
     const navigate = useNavigate();
+    const toast = useToast();
     const onLogoutClick = async () => {
         try {
-            const response: any = await logout();
-            console.log(response.data);
+            await logout();
             store.removeUser();
-            navigate('/login');
+            toast({
+                duration: 5000,
+                isClosable: true,
+                status: 'success',
+                title: 'Signed out',
+            });
+            navigate('/');
         } catch (error) {
             console.log(error);
         }
@@ -83,28 +89,29 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
 
     return (
         <Flex
+            align='center'
             flexDir='column'
             h='100%'
             justifyContent='space-between'
             left='0'
             transition={'.2s'}
         >
+            <Image
+                alt={'Login Image'}
+                src={logo}
+                w={['60%', '50%', '50%', '90%']}
+            />
 
             <Flex
                 as='nav'
                 flexDir='column'
                 w='100%'
             >
-                <Image
-                    alt={'Login Image'}
-                    src={logo}
-                    w={'100%'}
-                />
+
                 <VStack
                     align='center'
                     as={'nav'}
-                    paddingTop={'3rem'}
-                    spacing={9}
+                    spacing={[4, 5, 4, 7]}
                     width={'100%'}
                 >
                     <IconButton
@@ -127,14 +134,13 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
             <Flex
                 flexDir='column'
                 mb={2}
-                p='5%'
                 w='100%'
             >
-                <Menu>
+                <Menu >
                     <Tooltip aria-label='A tooltip' label={user.email}>
                         <MenuButton as={Button} paddingBottom={'3rem'} paddingTop='2rem' rightIcon={<ChevronDownIcon />}>
                             <Flex align='center' alignContent='center' justifyContent={'center'} mt={4}>
-                                <Avatar size='md' src='avatar-1.jpg' />
+                                <Avatar size='md' src={user.profilePictureURL} />
                                 <Flex display={'flex'} flexDir='column' maxW={'70%'} ml='2'>
                                     <Heading as='h3' noOfLines={1} size='sm'>{user.displayName || 'No user found'}</Heading>
                                     <Text color='gray' noOfLines={1}>{user.email || 'No user found'}</Text>

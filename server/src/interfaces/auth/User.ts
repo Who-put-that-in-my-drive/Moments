@@ -7,6 +7,7 @@ export interface UserModel {
     images: ImagesMap;
     firstName: string;
     lastName: string;
+    avatarImageExtension: string;
     lastLoginDateTime: number;
     createdDateTime: number;
 }
