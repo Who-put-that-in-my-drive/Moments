@@ -89,7 +89,13 @@ router
 
             if (await newImage.save()) {
                 // @ts-ignore
-                const user: UserModel = await User.findOneAndUpdate({email}, { '$set': { images: {[imageId]: imageId } } });
+                const user: UserModel = await User.findOne({email});
+
+                // @ts-ignore
+                const images = Object.fromEntries(user._doc.images);
+                images[imageId] = imageId;
+
+                await User.updateOne({email}, { '$set': { images } });
 
                 const command = new PutObjectCommand({
                     Bucket: myBucket,
