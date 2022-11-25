@@ -79,10 +79,10 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
                             src={props.imageInfo.imageURL}
                         />
                     </AspectRatio>
-                    <Box>
+                    <Box paddingY={5}>
                         <Text as='b' fontSize='2xl' textAlign='left'>{props.imageInfo.title}</Text>
                     </Box>
-                    <TableContainer marginTop='2rem' rounded={'lg'} whiteSpace={'unset'} width='100%'>
+                    <TableContainer marginTop='1rem' rounded={'lg'} whiteSpace={'unset'} width='100%'>
                         <Table background={colorMode === 'dark' ? 'gray.600' : 'gray.50'} variant='simple'>
                             <Thead>
                                 <Tr>
