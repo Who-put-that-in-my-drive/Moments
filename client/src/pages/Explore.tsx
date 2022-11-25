@@ -1,4 +1,4 @@
-import {SearchIcon, SettingsIcon} from '@chakra-ui/icons';
+import { SearchIcon, SettingsIcon } from '@chakra-ui/icons';
 import {
     Box,
     Flex,
@@ -20,6 +20,7 @@ import { Collection } from '../components/Collection';
 import { UserStore } from '../interfaces/UserStore';
 import useStore from '../store/store';
 import { useEffect, useState } from 'react';
+import { Image } from '../interfaces/Image';
 
 type TagStructure = {
     count: number,
@@ -37,17 +38,19 @@ export const Explore = () => {
     const gatherTags = () => {
         if (images.length > 0) {
             let gatheredTags: TagStructure[] = [];
-            images.forEach(image => {
-                if (gatheredTags[image.tags] === undefined) {
-                    gatheredTags[image.tags] = {
-                        count: 1,
-                        imageUrls: [image.url],
-                        name: image.tags
-                    };
-                } else {
-                    gatheredTags[image.tags].count++;
-                    gatheredTags[image.tags].imageUrls.push(image.url);
-                }
+            images.forEach((image: Image) => {
+                // eslint-disable-next-line
+                // if (gatheredTags[image.tags] === undefined) {
+                //     gatheredTags[image.tags] = {
+                //         count: 1,
+                //         imageUrls: [image.url],
+                //         name: image.tags
+                //     };
+                image;
+                // } else {
+                //     gatheredTags[image.tags].count++;
+                //     gatheredTags[image.tags].imageUrls.push(image.url);
+                // }
             });
             setTags(gatheredTags);
         }
@@ -59,7 +62,7 @@ export const Explore = () => {
 
     return (
         <Flex align={['center', 'center', 'normal', 'normal']} direction='column' p={['1rem', '2rem', '4rem', '4rem']}>
-            <Flex align={['center', '', '', '']} marginRight={['', '', '4rem','4rem']} minWidth='100%' zIndex={1000}>
+            <Flex align={['center', '', '', '']} marginRight={['', '', '4rem', '4rem']} minWidth='100%' zIndex={1000}>
                 <Box w='100%'>
                     <Heading as='h2' noOfLines={2} paddingBottom={['1rem', '2rem', '2.5rem']}
                         size={['xl', 'xl', '2xl', '3xl']} textAlign={['center', 'center', 'left', 'left']}>
@@ -75,14 +78,14 @@ export const Explore = () => {
                                 </TabList>
                             </Tabs>
                         </Box>
-                        <Spacer display={['none','none', 'block', 'block']}/>
+                        <Spacer display={['none', 'none', 'block', 'block']} />
                         <Box>
                             <Flex>
                                 <InputGroup maxWidth='16rem'>
-                                    <InputLeftElement pointerEvents='none'><SearchIcon/></InputLeftElement>
-                                    <Input placeholder='Search' type='text'/>
+                                    <InputLeftElement pointerEvents='none'><SearchIcon /></InputLeftElement>
+                                    <Input placeholder='Search' type='text' />
                                 </InputGroup>
-                                <IconButton aria-label='Settings' icon={<SettingsIcon/>} ml='0.4rem'/>
+                                <IconButton aria-label='Settings' icon={<SettingsIcon />} ml='0.4rem' />
                             </Flex>
                         </Box>
                     </Flex>
@@ -92,7 +95,7 @@ export const Explore = () => {
                     </Heading>
                 </Box>
             </Flex>
-            <SimpleGrid maxH={['65vh', '69vh', '70vh', '75vh']}  minChildWidth='15rem' spacing='2rem'>
+            <SimpleGrid maxH={['65vh', '69vh', '70vh', '75vh']} minChildWidth='15rem' spacing='2rem'>
                 {tags.length > 0 ?
                     tags.map((tag, index) => <Collection collectionName={tag.name} images={tag.imageUrls} key={index} />)
                     : <Text> No collections created. Add tags to uploaded images to get started.</Text>
