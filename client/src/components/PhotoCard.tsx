@@ -111,13 +111,6 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
                                         }) : <Tag>No tags added</Tag>}</Td>
                                 </Tr>
                                 <Tr>
-                                    <Td>Categories</Td>
-                                    <Td>{props.imageInfo.categories.length > 0 ?
-                                        convertStringToTag(props.imageInfo.categories)?.map((category, i) => {
-                                            return <Tag colorScheme='blue' key={i} mr={1}>{category}</Tag>;
-                                        }) : <Tag>No categories added</Tag>}</Td>
-                                </Tr>
-                                <Tr>
                                     <Td>Format</Td>
                                     <Td><Badge>{props.imageInfo.format}</Badge></Td>
                                 </Tr>
