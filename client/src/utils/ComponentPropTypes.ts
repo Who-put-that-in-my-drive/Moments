@@ -10,6 +10,7 @@ export type PhotoCardProps = {
     isLoaded: boolean
     tags: string
     categories: string
+    location: string
 };
 
 export type DrawerImageInfoProps = {

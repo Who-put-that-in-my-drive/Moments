@@ -264,6 +264,7 @@ const Uploads = () => {
                             imageURL={image.url}
                             isLoaded={imagesLoadingFlag}
                             key={image.id}
+                            location={image.location}
                             size={formatBytes(image.size)}
                             tags={image.tags}
                             title={image.title}
