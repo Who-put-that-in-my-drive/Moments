@@ -41,3 +41,7 @@ export const uploadImageToS3 = async (image: any, presignedUrl: string, imageExt
 
     return responseFinal;
 };
+
+export const getAllImages = async (): Promise<Response> => {
+    return await axios.get('/images');
+};
