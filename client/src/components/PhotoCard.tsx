@@ -31,9 +31,11 @@ export const PhotoCard = (props: PhotoCardProps) => {
                 <Flex _hover={{ cursor: 'pointer' }} direction={'column'} justifyContent="center" minW='15rem' onClick={onOpen} w="full">
                     <AspectRatio ratio={16 / 9} w='15rem'>
                         <Image
+                            _hover={{ shadow: 'xl', transition: '.2s' }}
                             alt={`Picture of ${props.title}`}
                             objectFit={'cover'}
                             rounded="lg"
+                            shadow={'lg'}
                             src={props.imageURL}
                         />
                     </AspectRatio>
