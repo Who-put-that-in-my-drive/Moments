@@ -1,100 +1,120 @@
 import {
-    Button,
-    Image,
-    Modal,
-    // ModalOverlay,
-    ModalContent,
-    ModalBody,
-    ModalCloseButton,
-    useColorMode,
-    VStack,
     Avatar,
-    StatLabel,
-    Stat,
-    useDisclosure,
-    Stack,
     Box,
-    Text,
+    Button,
     Flex,
     HStack,
+    IconButton,
+    Image,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    Spacer,
+    Stack,
     Tag,
-    Spacer
+    Text,
+    useDisclosure,
+    VStack,
 } from '@chakra-ui/react';
 
-import {
-    CalendarIcon,
-    ChatIcon,
-    InfoIcon,
-    SunIcon,
-} from '@chakra-ui/icons';
 
+import {CalendarIcon, ChatIcon, DeleteIcon, EditIcon, InfoIcon, PlusSquareIcon, SunIcon,} from '@chakra-ui/icons';
 
 export default function Post() {
-    const { colorMode } = useColorMode();
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const {isOpen, onOpen, onClose} = useDisclosure();
     return (
         <>
             <Button onClick={onOpen}>Open Modal</Button>
 
-            <Modal isOpen={isOpen} onClose={onClose} size='full'>
+            <Modal isOpen={isOpen} onClose={onClose} size="full">
                 <ModalContent>
                     {/* <ModalHeader>Beach Image</ModalHeader> */}
-                    <ModalCloseButton color={'gray.100'} size={'xl'} />
+                    <ModalCloseButton color={'gray.100'} size={'xl'}/>
                     <ModalBody>
-                        <Stack direction='row' spacing={-8} >
-                            <Box p={5} w='70%' >
-                                <Image borderRadius={'lg'} maxHeight="90vh" minHeight="90vh" src={''} />
+                        <Stack direction="row" spacing={-8}>
+                            <Box p={5} w="70%">
+                                <Image
+                                    borderRadius={'lg'}
+                                    maxHeight="90vh"
+                                    minHeight="90vh"
+                                    src={''}
+                                />
                             </Box>
 
-                            <Box p={5} w='30%'  >
-                                <Flex bg='white' borderRadius={'lg'} maxHeight="90vh" minHeight="90vh" overflowY='scroll' textColor="black" >
-                                    <VStack alignItems={'flex-start'} bg='white' marginLeft="25" marginTop="5" spacing={5}>
-                                        <Avatar size={'lg'} src='https://bit.ly/broken-link' />
-                                        <Stat>
-                                            <StatLabel
-                                                color={colorMode === 'light' ? 'white' : 'black'}
-                                                fontSize={'lg'}
-                                            >
-                                                @jameskibi12
-                                            </StatLabel>
-                                        </Stat>
+                            <Box p={5} w="30%">
+                                <Flex
+                                    bg="white"
+                                    borderRadius={'lg'}
+                                    maxHeight="90vh"
+                                    minHeight="90vh"
+                                    overflowY="scroll"
+                                    textColor="black"
+                                >
+                                    <VStack
+                                        alignItems={'flex-start'}
+                                        bg="white"
+                                        marginLeft="25"
+                                        marginTop="5"
+                                        spacing={5}
+                                    >
+                                        <Avatar size={'lg'} src="https://bit.ly/broken-link"/>
+                                        <Text
+                                            fontSize={'2xl'}
+                                        >
+                                            <b>@jameskibi12a</b>
+                                        </Text>
                                         <HStack padding={'-5'}>
-                                            <CalendarIcon color={colorMode === 'light' ? 'white' : 'black'} />
-                                            <Text as={'b'} color={colorMode === 'light' ? 'white' : 'black'} textAlign={'start'}>
+                                            <CalendarIcon
+                                            />
+                                            <Text
+                                                as={'b'}
+                                                textAlign={'start'}
+                                            >
                                                 Date and Time Taken
                                             </Text>
                                         </HStack>
-                                        <Text color={colorMode === 'light' ? 'white' : 'black'}>
+                                        <Text>
                                             11:34 AM; Tuesday, May 4th, 2019
                                         </Text>
                                         <HStack>
-                                            <ChatIcon color={colorMode === 'light' ? 'white' : 'black'} />
-                                            <Text as={'b'} color={colorMode === 'light' ? 'white' : 'black'}>
+                                            <ChatIcon
+                                            />
+                                            <Text
+                                                as={'b'}
+                                            >
                                                 Caption
                                             </Text>
                                         </HStack>
-                                        <Text color={colorMode === 'light' ? 'white' : 'black'}>
+                                        <Text>
                                             This is a beach I visited a few years ago!
                                         </Text>
                                         <HStack>
-                                            <InfoIcon color={colorMode === 'light' ? 'white' : 'black'} />
-                                            <Text as={'b'} color={colorMode === 'light' ? 'white' : 'black'}>
+                                            <InfoIcon
+                                            />
+                                            <Text
+                                                as={'b'}
+                                            >
                                                 Picture Info
                                             </Text>
                                         </HStack>
 
-                                        <Text color={colorMode === 'light' ? 'white' : 'black'}>
-                                            Size: 30.69 MB
-                                            Posted: May 9th, 2019
+                                        <Text>
+                                            Size: 30.69 MB Posted: May 9th, 2019
                                         </Text>
                                         <HStack>
-                                            <SunIcon color={colorMode === 'light' ? 'white' : 'black'} />
-                                            <Text as={'b'} color={colorMode === 'light' ? 'white' : 'black'}>
+                                            <SunIcon
+                                            />
+                                            <Text
+                                                as={'b'}
+                                            >
                                                 Tags
                                             </Text>
                                         </HStack>
-                                        <Text as={'u'} color={colorMode === 'light' ? 'white' : 'black'}>
+                                        <Text
+                                            as={'u'}
+                                        >
                                             Theme
                                         </Text>
                                         <HStack spacing={2}>
@@ -158,7 +178,9 @@ export default function Post() {
                                             </Tag>
                                         </HStack>
 
-                                        <Text as={'u'} color={colorMode === 'light' ? 'white' : 'black'}>
+                                        <Text
+                                            as={'u'}
+                                        >
                                             Categories
                                         </Text>
                                         <HStack spacing={2}>
@@ -187,8 +209,24 @@ export default function Post() {
                                                 Landscape
                                             </Tag>
                                         </HStack>
-
-                                        <Spacer />
+                                        <Flex>
+                                            <IconButton
+                                                aria-label="Share"
+                                                icon={<PlusSquareIcon/>}
+                                                size="md"
+                                            />
+                                            <IconButton
+                                                aria-label="Edit"
+                                                icon={<EditIcon/>}
+                                                size="md"
+                                            />
+                                            <IconButton
+                                                aria-label="Delete"
+                                                icon={<DeleteIcon/>}
+                                                size="md"
+                                            />
+                                        </Flex>
+                                        <Spacer/>
                                     </VStack>
                                 </Flex>
                             </Box>
