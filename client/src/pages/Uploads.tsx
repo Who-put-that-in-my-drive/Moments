@@ -1,4 +1,4 @@
-import { Box, Button, Center, Flex, Heading, Input, InputGroup, InputLeftElement, Menu, MenuButton, MenuItem, MenuList, SimpleGrid, Spacer, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Heading, Input, InputGroup, InputLeftElement, Menu, MenuButton, SimpleGrid, Spacer, Text, MenuItemOption, MenuList, MenuOptionGroup } from '@chakra-ui/react';
 import { PhotoCard } from '../components/PhotoCard';
 import { ChevronDownIcon, Search2Icon } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
@@ -217,29 +217,22 @@ const Uploads = () => {
                     <Heading as='h2' noOfLines={2} paddingBottom={['1rem', '2rem', '3rem']} size={['xl', 'xl', '2xl', '3xl']} textAlign={['center', 'center', 'left', 'left']}>
                         Uploaded Images
                     </Heading>
-                    <Tabs display={'none'} paddingBottom={['1rem', '', '', '3rem']} >
-                        <TabList>
-                            <Tab>All</Tab>
-                            <Tab>Documents</Tab>
-                            <Tab>Photos</Tab>
-                            <Tab>People</Tab>
-                        </TabList>
-                    </Tabs>
                     <Flex direction={['column', 'column', 'row', 'row']} justifyContent='space-between'>
                         <Menu>
                             <MenuButton as={Button} disabled={images.length <= 0 ? true : false} rightIcon={<ChevronDownIcon />} width={['100%', '100%', '45%', '22%']}>
                                 Filters
                             </MenuButton>
                             <MenuList>
-                                <MenuItem onClick={(e) => onSortMenuClick(e)}>A-Z</MenuItem>
-                                <MenuItem onClick={(e) => onSortMenuClick(e)}>Z-A</MenuItem>
-                                <MenuItem onClick={(e) => onSortMenuClick(e)}>Last Updated ↑</MenuItem>
-                                <MenuItem onClick={(e) => onSortMenuClick(e)}>Last Updated ↓</MenuItem>
-                                <MenuItem onClick={(e) => onSortMenuClick(e)}>File Size ↑</MenuItem>
-                                <MenuItem onClick={(e) => onSortMenuClick(e)}>File Size ↓</MenuItem>
+                                <MenuOptionGroup title='Order' type='radio'>
+                                    <MenuItemOption onClick={(e: any) => onSortMenuClick(e)} value='A-Z'>A-Z</MenuItemOption>
+                                    <MenuItemOption onClick={(e: any) => onSortMenuClick(e)} value='Z-A'>Z-A</MenuItemOption>
+                                    <MenuItemOption onClick={(e: any) => onSortMenuClick(e)} value='Last Updated ↑'>Last Updated ↑</MenuItemOption>
+                                    <MenuItemOption onClick={(e: any) => onSortMenuClick(e)} value='Last Updated ↓'>Last Updated ↓</MenuItemOption>
+                                    <MenuItemOption onClick={(e: any) => onSortMenuClick(e)} value='File Size ↑'>File Size ↑</MenuItemOption>
+                                    <MenuItemOption onClick={(e: any) => onSortMenuClick(e)} value='File Size ↓'>File Size ↓</MenuItemOption>
+                                </MenuOptionGroup>
                             </MenuList>
                         </Menu>
-
                         <Spacer />
 
                         <Flex width={['100%', '100%', '45%', '22%']}>
@@ -252,8 +245,8 @@ const Uploads = () => {
                         </Flex>
                     </Flex>
                 </Box>
-            </Flex>
-            <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '14rem', '15rem']} overflowY='scroll' spacing='2rem'>
+            </Flex >
+            <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '14rem', '15rem']} overflowY='auto' spacing='2rem'>
                 {images.length > 0 ?
                     (displayImages.length > 0 ? displayImages.map(image => {
                         return (<PhotoCard
@@ -286,7 +279,7 @@ const Uploads = () => {
                 <Spacer />
                 <UploadModal />
             </Flex>
-        </Flex>
+        </Flex >
     );
 };
 
