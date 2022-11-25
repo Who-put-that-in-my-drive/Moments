@@ -172,6 +172,7 @@ export const UploadModal = () => {
                                 <FormLabel>Title <span style={{ color: 'red' }}>*</span></FormLabel>
                                 <Input
                                     name='title'
+                                    placeholder='Sunset'
                                     type='text'
                                 ></Input>
                             </FormControl>
@@ -180,6 +181,7 @@ export const UploadModal = () => {
                                 <FormLabel>Caption <span style={{ color: 'red' }}>*</span></FormLabel>
                                 <Input
                                     name='caption'
+                                    placeholder='Fun evening with friends'
                                     type='text'
                                 ></Input>
                             </FormControl>
@@ -188,6 +190,7 @@ export const UploadModal = () => {
                                 <FormLabel>Tags</FormLabel>
                                 <Input
                                     name='tags'
+                                    placeholder='Sunset, Hue, Evening, Friends'
                                     type='text'
                                 ></Input>
                             </FormControl>
@@ -196,6 +199,7 @@ export const UploadModal = () => {
                                 <FormLabel>Location</FormLabel>
                                 <Input
                                     name='location'
+                                    placeholder='Blue Mountain'
                                     type='text'
                                 ></Input>
                             </FormControl>
