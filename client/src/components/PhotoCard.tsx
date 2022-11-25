@@ -70,7 +70,7 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
             <DrawerOverlay />
             <DrawerContent overflowY='auto' >
                 <DrawerCloseButton />
-                <Flex marginBottom={['1rem', '1rem', 0, 0]} align='center' alignContent='center' direction={'column'} justifyContent='space-between' paddingTop='5rem' paddingX={'1.5rem'} w="full">
+                <Flex align='center' alignContent='center' direction={'column'} justifyContent='space-between' marginBottom={['1rem', '1rem', 0, 0]} paddingTop='5rem' paddingX={'1.5rem'} w="full">
                     <AspectRatio ratio={16 / 9} w='100%'>
                         <Image
                             alt={`Picture of ${props.imageInfo.title}`}
