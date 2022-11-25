@@ -22,7 +22,6 @@ import {
 } from '@chakra-ui/react';
 // eslint-disable-next-line
 import { DrawerImageInfoProps, PhotoCardProps } from '../utils/ComponentPropTypes';
-
 export const PhotoCard = (props: PhotoCardProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     props.size, props.format;
@@ -38,7 +37,7 @@ export const PhotoCard = (props: PhotoCardProps) => {
                             src={props.imageURL}
                         />
                     </AspectRatio>
-                    <Box>
+                    <Box paddingLeft='1' paddingTop='2'>
                         <Text as='b' fontSize='xl' noOfLines={1} textAlign='left'>{props.title}</Text>
                         <Text fontSize='sm' textAlign='left'>{props.date}</Text>
                     </Box>
@@ -86,7 +85,7 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
                         <Table background={colorMode === 'dark' ? 'gray.600' : 'gray.50'} variant='simple'>
                             <Thead>
                                 <Tr>
-                                    <Th>Information</Th>
+                                    <Th fontSize={'sm'}>Information</Th>
                                     <Th></Th>
                                 </Tr>
                             </Thead>
@@ -100,15 +99,20 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
                                     <Td>{props.imageInfo.caption}</Td>
                                 </Tr>
                                 <Tr>
-                                    <Td>Size</Td>
-                                    <Td>{props.imageInfo.size}</Td>
+                                    <Td>Location</Td>
+                                    <Td>{props.imageInfo.location.length <= 0 ?
+                                        'No location provided' : props.imageInfo.location}</Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Tags</Td>
                                     <Td>{props.imageInfo.tags.length > 0 ?
                                         convertStringToTag(props.imageInfo.tags)?.map((tag, i) => {
-                                            return <Tag colorScheme='blue' key={i} mr={1}>{tag}</Tag>;
+                                            return <Tag colorScheme='blue' key={i} mr={1} my={1}>{tag}</Tag>;
                                         }) : <Tag>No tags added</Tag>}</Td>
+                                </Tr>
+                                <Tr>
+                                    <Td>Size</Td>
+                                    <Td>{props.imageInfo.size}</Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Format</Td>
