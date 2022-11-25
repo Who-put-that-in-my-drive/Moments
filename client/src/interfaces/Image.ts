@@ -2,12 +2,12 @@ export interface Image {
     id: string
     title: string,
     format: string,
-    size: string,
+    size: number,
     caption: string,
-    tags: string[],
-    categories: string[],
-    owner: string,
+    tags: string,
+    categories: string,
+    url: string,
     location: string,
-    lastModifiedDateTime: number,
-    uploadedDateTime: number,
+    lastModifiedDateTime: string,
+    uploadedDateTime: string,
 }
