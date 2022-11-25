@@ -2,7 +2,7 @@ export interface Image {
     id: string
     title: string,
     format: string,
-    size: string,
+    size: number,
     caption: string,
     tags: string,
     categories: string,
