@@ -80,7 +80,6 @@ export const UploadModal = ({ refreshImagesArray }: UploadModalProps) => {
                 title: 'Enter a caption for the image',
             });
         } else {
-            console.log(formData);
             await sendFormData(formData);
         }
 
@@ -157,7 +156,6 @@ export const UploadModal = ({ refreshImagesArray }: UploadModalProps) => {
     return (
         <>
             <Button height='3.5rem' leftIcon={<AiOutlineCloudUpload />} minW='15rem' onClick={onOpen}>Upload Images</Button>
-
             <Modal isOpen={isOpen} onClose={onClose} size='2xl'>
                 <ModalOverlay />
                 <ModalContent>

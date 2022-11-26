@@ -1,7 +1,15 @@
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import {
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
     AspectRatio,
     Badge,
     Box,
+    Button,
     Drawer,
     DrawerCloseButton,
     DrawerContent,
@@ -9,7 +17,11 @@ import {
     Editable,
     EditableInput,
     EditablePreview,
-    Flex, Image,
+    Flex, IconButton, Image,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuList,
     Skeleton,
     Table,
     TableContainer,
@@ -24,15 +36,16 @@ import {
     useDisclosure
 } from '@chakra-ui/react';
 // eslint-disable-next-line
-import { DrawerImageInfoProps, PhotoCardProps } from '../utils/ComponentPropTypes';
+import { DeleteImageDialogProps, DrawerImageInfoProps, PhotoCardProps } from '../utils/ComponentPropTypes';
+import React from 'react';
+import { DeleteIcon } from '@chakra-ui/icons';
 export const PhotoCard = (props: PhotoCardProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    props.size, props.format;
     return (
         <>
             <Skeleton fadeDuration={2} isLoaded={props.isLoaded}>
                 <Flex direction={'column'} justifyContent='center' minW='15rem' w='full'>
-                    <AspectRatio ratio={16 / 9} w='15rem'>
+                    <AspectRatio ratio={16 / 9}>
                         <Image
                             _hover={{ cursor: 'pointer' }}
                             alt={`Picture of ${props.title}`}
@@ -43,10 +56,22 @@ export const PhotoCard = (props: PhotoCardProps) => {
                             src={props.imageURL}
                         />
                     </AspectRatio>
-                    <Box paddingLeft='1' paddingTop='2'>
-                        <Text as='b' fontSize='xl' noOfLines={1} textAlign='left'>{props.title}</Text>
-                        <Text fontSize='sm' textAlign='left'>{props.date}</Text>
-                    </Box>
+                    <Flex align={'center'} justifyContent='space-between'>
+                        <Box paddingLeft='1' paddingTop='2'>
+                            <Text as='b' fontSize='xl' noOfLines={1} textAlign='left'>{props.title}</Text>
+                            <Text fontSize='sm' textAlign='left'>{props.date}</Text>
+                        </Box>
+                        <Menu>
+                            <MenuButton
+                                aria-label='Options'
+                                as={IconButton}
+                                icon={<BsThreeDotsVertical />}
+                            />
+                            <MenuList>
+                                <DeleteImageDialog deleteImageCallback={props.deleteImageCallback} imageId={props.id} />
+                            </MenuList>
+                        </Menu>
+                    </Flex>
                 </Flex>
                 <DrawerImageInfo imageInfo={props} isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
             </Skeleton>
@@ -54,6 +79,43 @@ export const PhotoCard = (props: PhotoCardProps) => {
     );
 };
 
+
+
+const DeleteImageDialog = (props: DeleteImageDialogProps) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const cancelRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+    return (
+        <>
+            <MenuItem color='red' icon={<DeleteIcon />} onClick={onOpen}>
+                Delete
+            </MenuItem>
+
+            <AlertDialog
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                            Delete Customer
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody>
+                            Are you sure?
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                            <Button colorScheme='red' ml={3} onClick={() => { props.deleteImageCallback(props.imageId); onClose(); }} type='submit'>
+                                Delete
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
+        </>
+    );
+};
 
 
 const DrawerImageInfo = (props: DrawerImageInfoProps) => {

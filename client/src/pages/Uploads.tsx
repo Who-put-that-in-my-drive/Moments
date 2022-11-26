@@ -42,7 +42,6 @@ const Uploads = () => {
         }
     };
 
-
     useEffect(() => {
         //Fetch new images and update the local store as well as component state images
         getImages();
@@ -61,6 +60,14 @@ const Uploads = () => {
             });
         }
         setDisplayImages(newImageList);
+    };
+
+    //Callback coming from image component to delete an image
+    const deleteImage = (imageId: string): void => {
+        let images = [...displayImages];
+        images = images.filter((imageObj: Image) => (imageObj.id != imageId));
+        setDisplayImages([...images]);
+        store.deleteImage(imageId);
     };
 
     //Helper function to sort images by name A -> Z
@@ -254,7 +261,9 @@ const Uploads = () => {
                             caption={image.caption}
                             categories={image.categories}
                             date={convertEpochToDate(parseInt(image.uploadedDateTime))}
+                            deleteImageCallback={deleteImage}
                             format={image.format}
+                            id={image.id}
                             imageURL={image.url}
                             isLoaded={imagesLoadingFlag}
                             key={image.id}

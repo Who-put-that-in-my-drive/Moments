@@ -1,4 +1,3 @@
-// import { Image } from './Image';
 import { User } from './User';
 
 export interface UserStore {
