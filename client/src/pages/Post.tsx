@@ -174,7 +174,7 @@ export default function Post() {
                                                 Waves
                                             </Tag>
                                         </HStack>
-                                        <ButtonGroup bottom={0} spacing={'2rem'} variant={'solid'}>
+                                        <ButtonGroup spacing={'2rem'} variant={'solid'}>
                                             <IconButton
                                                 aria-label="Share"
                                                 icon={<PlusSquareIcon/>}
