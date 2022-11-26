@@ -52,8 +52,8 @@ export const PhotoCard = (props: PhotoCardProps) => {
                             objectFit={'cover'}
                             onClick={onOpen}
                             rounded='lg'
-                            shadow={'lg'}
                             src={props.imageURL}
+                            transition='.2s'
                         />
                     </AspectRatio>
                     <Flex align={'center'} justifyContent='space-between'>

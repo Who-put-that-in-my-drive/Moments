@@ -219,17 +219,18 @@ const Uploads = () => {
     };
 
     return (
-        <Flex align={['center', 'normal', 'normal', 'normal']} direction='column' maxH={'100vh'} p={['1rem', '2rem', '4rem', '3rem']} width='100%'>
+        <Flex align={['center', 'normal', 'normal', 'normal']} direction='column' maxH={'100vh'} p={['1rem', '2rem', '2rem', '2rem']} width='100%'>
             <Flex align={['center', 'center', '', '']} >
                 <Box w='100%'>
                     <Heading as='h2' noOfLines={2} paddingBottom={['1rem', '2rem', '3rem']} size={['xl', 'xl', '2xl', '3xl']} textAlign={['center', 'center', 'left', 'left']}>
                         Uploaded Images
                     </Heading>
-                    <Flex direction={['column', 'column', 'row', 'row']} justifyContent='space-between'>
+                    <Flex direction={['column-reverse', 'column-reverse', 'row', 'row']} justifyContent='space-between'>
                         <Menu>
-                            <MenuButton as={Button} disabled={images.length <= 0 ? true : false} rightIcon={<ChevronDownIcon />} width={['100%', '100%', '45%', '22%']}>
+                            <MenuButton as={Button} disabled={images.length <= 0 ? true : false} rightIcon={<ChevronDownIcon />} width={['100%', '100%', '45%', '32%']}>
                                 Filters
                             </MenuButton>
+                            <br />
                             <MenuList>
                                 <MenuOptionGroup defaultValue='Upload date desc' onChange={(value) => onSortMenuClick(value)} title='Order' type='radio'>
                                     <MenuItemOption value='A-Z'>A-Z</MenuItemOption>
@@ -243,7 +244,7 @@ const Uploads = () => {
                         </Menu>
                         <Spacer />
 
-                        <Flex width={['100%', '100%', '45%', '22%']}>
+                        <Flex width={['100%', '100%', '45%', '32%']}>
                             <InputGroup>
                                 <InputLeftElement pointerEvents={'none'}>
                                     <Search2Icon />
@@ -254,7 +255,7 @@ const Uploads = () => {
                     </Flex>
                 </Box>
             </Flex >
-            <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '13rem', '15rem']} overflowY='auto' spacing='2rem'>
+            <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '13rem', '15rem']} overflowY='auto' padding={'1.7rem'} spacing='2rem'>
                 {images.length > 0 ?
                     (displayImages.length > 0 ? displayImages.map(image => {
                         return (<PhotoCard
