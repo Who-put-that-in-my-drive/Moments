@@ -31,11 +31,13 @@ export const PhotoCard = (props: PhotoCardProps) => {
     return (
         <>
             <Skeleton fadeDuration={2} isLoaded={props.isLoaded}>
-                <Flex _hover={{ cursor: 'pointer' }} direction={'column'} justifyContent='center' minW='15rem' onClick={onOpen} w='full'>
+                <Flex direction={'column'} justifyContent='center' minW='15rem' w='full'>
                     <AspectRatio ratio={16 / 9} w='15rem'>
                         <Image
+                            _hover={{ cursor: 'pointer' }}
                             alt={`Picture of ${props.title}`}
                             objectFit={'cover'}
+                            onClick={onOpen}
                             rounded='lg'
                             shadow={'lg'}
                             src={props.imageURL}

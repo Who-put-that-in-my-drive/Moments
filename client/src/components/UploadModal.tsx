@@ -19,6 +19,7 @@ import { uploadImage, uploadImageToS3 } from '../services/api/image-service';
 import { successResponse } from '../utils/ResponseUtils';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import DragAndDrop from './DragAndDrop';
+import { UploadModalProps } from '../utils/ComponentPropTypes';
 
 export interface UploadFormDTO {
     title: string,
@@ -40,7 +41,7 @@ let formData = {
 
 let imageBytes: any;
 
-export const UploadModal = () => {
+export const UploadModal = ({ refreshImagesArray }: UploadModalProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
 
@@ -124,6 +125,8 @@ export const UploadModal = () => {
                         title: '',
                     };
                     onClose();
+                    //This will call the getImages() in the parent component to refresh the view
+                    refreshImagesArray();
                 } else {
                     toast({
                         duration: 5000,
