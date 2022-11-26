@@ -98,7 +98,7 @@ const DeleteImageDialog = (props: DeleteImageDialogProps) => {
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                            Delete Customer
+                            Delete Image
                         </AlertDialogHeader>
 
                         <AlertDialogBody>
