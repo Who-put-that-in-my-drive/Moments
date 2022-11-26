@@ -31,9 +31,11 @@ export const PhotoCard = (props: PhotoCardProps) => {
                 <Flex _hover={{ cursor: 'pointer' }} direction={'column'} justifyContent="center" minW='15rem' onClick={onOpen} w="full">
                     <AspectRatio ratio={16 / 9} w='15rem'>
                         <Image
+                            _hover={{ shadow: 'xl', transition: '.2s' }}
                             alt={`Picture of ${props.title}`}
                             objectFit={'cover'}
                             rounded="lg"
+                            shadow={'lg'}
                             src={props.imageURL}
                         />
                     </AspectRatio>
@@ -68,9 +70,9 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
             size='md'
         >
             <DrawerOverlay />
-            <DrawerContent>
+            <DrawerContent overflowY='auto' >
                 <DrawerCloseButton />
-                <Flex align='center' alignContent='center' direction={'column'} justifyContent='space-between' paddingTop='5rem' paddingX={'1.5rem'} w="full">
+                <Flex align='center' alignContent='center' direction={'column'} justifyContent='space-between' marginBottom={['1rem', '1rem', 0, 0]} paddingTop='5rem' paddingX={'1.5rem'} w="full">
                     <AspectRatio ratio={16 / 9} w='100%'>
                         <Image
                             alt={`Picture of ${props.imageInfo.title}`}
