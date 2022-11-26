@@ -52,8 +52,8 @@ export const PhotoCard = (props: PhotoCardProps) => {
                             objectFit={'cover'}
                             onClick={onOpen}
                             rounded='lg'
-                            shadow={'lg'}
                             src={props.imageURL}
+                            transition='.2s'
                         />
                     </AspectRatio>
                     <Flex align={'center'} justifyContent='space-between'>
@@ -98,7 +98,7 @@ const DeleteImageDialog = (props: DeleteImageDialogProps) => {
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                            Delete Customer
+                            Delete Image
                         </AlertDialogHeader>
 
                         <AlertDialogBody>
