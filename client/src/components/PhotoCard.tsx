@@ -6,6 +6,9 @@ import {
     DrawerCloseButton,
     DrawerContent,
     DrawerOverlay,
+    Editable,
+    EditableInput,
+    EditablePreview,
     Flex, Image,
     Skeleton,
     Table,
@@ -28,13 +31,12 @@ export const PhotoCard = (props: PhotoCardProps) => {
     return (
         <>
             <Skeleton fadeDuration={2} isLoaded={props.isLoaded}>
-                <Flex _hover={{ cursor: 'pointer' }} direction={'column'} justifyContent="center" minW='15rem' onClick={onOpen} w="full">
+                <Flex _hover={{ cursor: 'pointer' }} direction={'column'} justifyContent='center' minW='15rem' onClick={onOpen} w='full'>
                     <AspectRatio ratio={16 / 9} w='15rem'>
                         <Image
-                            _hover={{ shadow: 'xl', transition: '.2s' }}
                             alt={`Picture of ${props.title}`}
                             objectFit={'cover'}
-                            rounded="lg"
+                            rounded='lg'
                             shadow={'lg'}
                             src={props.imageURL}
                         />
@@ -72,11 +74,11 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
             <DrawerOverlay />
             <DrawerContent overflowY='auto' >
                 <DrawerCloseButton />
-                <Flex align='center' alignContent='center' direction={'column'} justifyContent='space-between' marginBottom={['1rem', '1rem', 0, 0]} paddingTop='5rem' paddingX={'1.5rem'} w="full">
+                <Flex align='center' alignContent='center' direction={'column'} justifyContent='space-between' marginBottom={['1rem', '1rem', '1rem', '1rem']} paddingTop='5rem' paddingX={'1.5rem'} w='full'>
                     <AspectRatio ratio={16 / 9} w='100%'>
                         <Image
                             alt={`Picture of ${props.imageInfo.title}`}
-                            rounded="lg"
+                            rounded='lg'
                             src={props.imageInfo.imageURL}
                         />
                     </AspectRatio>
@@ -94,23 +96,39 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
                             <Tbody>
                                 <Tr>
                                     <Td >Title</Td>
-                                    <Td>{props.imageInfo.title}</Td>
+                                    <Td>
+                                        <Editable defaultValue={props.imageInfo.title}>
+                                            <EditablePreview />
+                                            <EditableInput />
+                                        </Editable>
+                                    </Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Caption</Td>
-                                    <Td>{props.imageInfo.caption}</Td>
+                                    <Td>
+                                        <Editable defaultValue={props.imageInfo.caption}>
+                                            <EditablePreview />
+                                            <EditableInput />
+                                        </Editable>
+                                    </Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Location</Td>
-                                    <Td>{props.imageInfo.location.length <= 0 ?
-                                        'No location provided' : props.imageInfo.location}</Td>
+                                    <Td>
+                                        <Editable defaultValue={props.imageInfo.location.length <= 0 ?
+                                            'No location provided' : props.imageInfo.location}>
+                                            <EditablePreview />
+                                            <EditableInput />
+                                        </Editable>
+                                    </Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Tags</Td>
-                                    <Td>{props.imageInfo.tags.length > 0 ?
-                                        convertStringToTag(props.imageInfo.tags)?.map((tag, i) => {
-                                            return <Tag colorScheme='blue' key={i} mr={1} my={1}>{tag}</Tag>;
-                                        }) : <Tag>No tags added</Tag>}</Td>
+                                    <Td>
+                                        {props.imageInfo.tags.length > 0 ?
+                                            convertStringToTag(props.imageInfo.tags)?.map((tag, i) => {
+                                                return <Tag colorScheme='blue' key={i} mr={1} my={1}>{tag}</Tag>;
+                                            }) : <Tag>No tags added</Tag>}</Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Size</Td>
