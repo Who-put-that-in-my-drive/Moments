@@ -36,4 +36,8 @@ export type CollectionProps = {
     collectionName: string,
 }
 
+export type UploadModalProps = {
+    refreshImagesArray: () => void
+}
+
 export {};
