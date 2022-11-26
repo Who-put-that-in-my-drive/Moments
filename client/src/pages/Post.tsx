@@ -2,6 +2,7 @@ import {
     Avatar,
     Box,
     Button,
+    ButtonGroup,
     Flex,
     HStack,
     IconButton,
@@ -37,8 +38,8 @@ export default function Post() {
                             <Box p={5} w="70%">
                                 <Image
                                     borderRadius={'lg'}
-                                    maxHeight="90vh"
-                                    minHeight="90vh"
+                                    maxHeight="92vh"
+                                    minHeight="92vh"
                                     src={''}
                                 />
                             </Box>
@@ -47,7 +48,7 @@ export default function Post() {
                                 <Flex
                                     bg="white"
                                     borderRadius={'lg'}
-                                    maxHeight="90vh"
+                                    maxHeight="92vh"
                                     minHeight="90vh"
                                     overflowY="scroll"
                                     textColor="black"
@@ -55,6 +56,7 @@ export default function Post() {
                                     <VStack
                                         alignItems={'flex-start'}
                                         bg="white"
+                                        marginBottom="5"
                                         marginLeft="25"
                                         marginTop="5"
                                         spacing={5}
@@ -112,11 +114,6 @@ export default function Post() {
                                                 Tags
                                             </Text>
                                         </HStack>
-                                        <Text
-                                            as={'u'}
-                                        >
-                                            Theme
-                                        </Text>
                                         <HStack spacing={2}>
                                             <Tag
                                                 colorScheme={'teal'}
@@ -177,55 +174,23 @@ export default function Post() {
                                                 Waves
                                             </Tag>
                                         </HStack>
-
-                                        <Text
-                                            as={'u'}
-                                        >
-                                            Categories
-                                        </Text>
-                                        <HStack spacing={2}>
-                                            <Tag
-                                                colorScheme={'orange'}
-                                                key={'sm'}
-                                                size={'sm'}
-                                                variant={'solid'}
-                                            >
-                                                Scenery
-                                            </Tag>
-                                            <Tag
-                                                colorScheme={'orange'}
-                                                key={'sm'}
-                                                size={'sm'}
-                                                variant={'solid'}
-                                            >
-                                                Outdoors
-                                            </Tag>
-                                            <Tag
-                                                colorScheme={'orange'}
-                                                key={'sm'}
-                                                size={'sm'}
-                                                variant={'solid'}
-                                            >
-                                                Landscape
-                                            </Tag>
-                                        </HStack>
-                                        <Flex>
+                                        <ButtonGroup bottom={0} spacing={'2rem'} variant={'solid'}>
                                             <IconButton
                                                 aria-label="Share"
                                                 icon={<PlusSquareIcon/>}
-                                                size="md"
+                                                size="lg"
                                             />
                                             <IconButton
                                                 aria-label="Edit"
                                                 icon={<EditIcon/>}
-                                                size="md"
+                                                size="lg"
                                             />
                                             <IconButton
                                                 aria-label="Delete"
                                                 icon={<DeleteIcon/>}
-                                                size="md"
+                                                size="lg"
                                             />
-                                        </Flex>
+                                        </ButtonGroup>
                                         <Spacer/>
                                     </VStack>
                                 </Flex>
