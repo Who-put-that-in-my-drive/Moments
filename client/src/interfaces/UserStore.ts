@@ -1,8 +1,9 @@
-// import { Image } from './Image';
 import { User } from './User';
 
 export interface UserStore {
-    user: User,
+    isAvatarLoaded: boolean
+    setIsAvatarLoaded: (input: boolean) => void
+    user: User
     setUser: (user: User) => void
     removeUser: () => void
     loggedIn: boolean

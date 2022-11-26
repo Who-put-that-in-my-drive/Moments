@@ -3,6 +3,7 @@ import {
     Flex,
     Heading,
     Image,
+    Show,
     Stack,
     Text,
     useBreakpointValue,
@@ -65,15 +66,17 @@ export default function Landing() {
                     </Stack>
                 </Stack>
             </Flex>
-            <Flex flex={1}>
-                <Image
-                    alt={'Login Image'}
-                    objectFit={'cover'}
-                    src={
-                        'https://images.unsplash.com/photo-1507992781348-310259076fe0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
-                    }
-                />
-            </Flex>
+            <Show breakpoint='(min-width: 700px)'>
+                <Flex flex={1}>
+                    <Image
+                        alt={'Login Image'}
+                        objectFit={'cover'}
+                        src={
+                            'https://images.unsplash.com/photo-1507992781348-310259076fe0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
+                        }
+                    />
+                </Flex>
+            </Show>
 
         </Stack>
     );

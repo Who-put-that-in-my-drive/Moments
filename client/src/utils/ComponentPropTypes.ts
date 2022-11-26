@@ -2,6 +2,7 @@ import { MouseEventHandler } from 'react';
 
 export type PhotoCardProps = {
     imageURL: string
+    id: string
     title: string
     date: string
     size: string
@@ -11,6 +12,7 @@ export type PhotoCardProps = {
     tags: string
     categories: string
     location: string
+    deleteImageCallback: (imageID: string) => void
 };
 
 export type DrawerImageInfoProps = {
@@ -34,6 +36,15 @@ export type SideNavBarProps = {
 export type CollectionProps = {
     images: string[],
     collectionName: string,
+}
+
+export type UploadModalProps = {
+    refreshImagesArray: () => void
+}
+
+export type DeleteImageDialogProps = {
+    imageId: string
+    deleteImageCallback: any
 }
 
 export {};

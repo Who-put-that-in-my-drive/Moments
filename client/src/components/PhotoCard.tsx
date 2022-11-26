@@ -1,12 +1,27 @@
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import {
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
     AspectRatio,
     Badge,
     Box,
+    Button,
     Drawer,
     DrawerCloseButton,
     DrawerContent,
     DrawerOverlay,
-    Flex, Image,
+    Editable,
+    EditableInput,
+    EditablePreview,
+    Flex, IconButton, Image,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuList,
     Skeleton,
     Table,
     TableContainer,
@@ -21,28 +36,42 @@ import {
     useDisclosure
 } from '@chakra-ui/react';
 // eslint-disable-next-line
-import { DrawerImageInfoProps, PhotoCardProps } from '../utils/ComponentPropTypes';
+import { DeleteImageDialogProps, DrawerImageInfoProps, PhotoCardProps } from '../utils/ComponentPropTypes';
+import React from 'react';
+import { DeleteIcon } from '@chakra-ui/icons';
 export const PhotoCard = (props: PhotoCardProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    props.size, props.format;
     return (
         <>
             <Skeleton fadeDuration={2} isLoaded={props.isLoaded}>
-                <Flex _hover={{ cursor: 'pointer' }} direction={'column'} justifyContent="center" minW='15rem' onClick={onOpen} w="full">
-                    <AspectRatio ratio={16 / 9} w='15rem'>
+                <Flex direction={'column'} justifyContent='center' minW='15rem' w='full'>
+                    <AspectRatio ratio={16 / 9}>
                         <Image
-                            _hover={{ shadow: 'xl', transition: '.2s' }}
+                            _hover={{ cursor: 'pointer' }}
                             alt={`Picture of ${props.title}`}
                             objectFit={'cover'}
-                            rounded="lg"
+                            onClick={onOpen}
+                            rounded='lg'
                             shadow={'lg'}
                             src={props.imageURL}
                         />
                     </AspectRatio>
-                    <Box paddingLeft='1' paddingTop='2'>
-                        <Text as='b' fontSize='xl' noOfLines={1} textAlign='left'>{props.title}</Text>
-                        <Text fontSize='sm' textAlign='left'>{props.date}</Text>
-                    </Box>
+                    <Flex align={'center'} justifyContent='space-between'>
+                        <Box paddingLeft='1' paddingTop='2'>
+                            <Text as='b' fontSize='xl' noOfLines={1} textAlign='left'>{props.title}</Text>
+                            <Text fontSize='sm' textAlign='left'>{props.date}</Text>
+                        </Box>
+                        <Menu>
+                            <MenuButton
+                                aria-label='Options'
+                                as={IconButton}
+                                icon={<BsThreeDotsVertical />}
+                            />
+                            <MenuList>
+                                <DeleteImageDialog deleteImageCallback={props.deleteImageCallback} imageId={props.id} />
+                            </MenuList>
+                        </Menu>
+                    </Flex>
                 </Flex>
                 <DrawerImageInfo imageInfo={props} isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
             </Skeleton>
@@ -50,6 +79,43 @@ export const PhotoCard = (props: PhotoCardProps) => {
     );
 };
 
+
+
+const DeleteImageDialog = (props: DeleteImageDialogProps) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const cancelRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+    return (
+        <>
+            <MenuItem color='red' icon={<DeleteIcon />} onClick={onOpen}>
+                Delete
+            </MenuItem>
+
+            <AlertDialog
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                            Delete Customer
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody>
+                            Are you sure?
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                            <Button colorScheme='red' ml={3} onClick={() => { props.deleteImageCallback(props.imageId); onClose(); }} type='submit'>
+                                Delete
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
+        </>
+    );
+};
 
 
 const DrawerImageInfo = (props: DrawerImageInfoProps) => {
@@ -72,11 +138,11 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
             <DrawerOverlay />
             <DrawerContent overflowY='auto' >
                 <DrawerCloseButton />
-                <Flex align='center' alignContent='center' direction={'column'} justifyContent='space-between' marginBottom={['1rem', '1rem', 0, 0]} paddingTop='5rem' paddingX={'1.5rem'} w="full">
+                <Flex align='center' alignContent='center' direction={'column'} justifyContent='space-between' marginBottom={['1rem', '1rem', '1rem', '1rem']} paddingTop='5rem' paddingX={'1.5rem'} w='full'>
                     <AspectRatio ratio={16 / 9} w='100%'>
                         <Image
                             alt={`Picture of ${props.imageInfo.title}`}
-                            rounded="lg"
+                            rounded='lg'
                             src={props.imageInfo.imageURL}
                         />
                     </AspectRatio>
@@ -94,23 +160,39 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
                             <Tbody>
                                 <Tr>
                                     <Td >Title</Td>
-                                    <Td>{props.imageInfo.title}</Td>
+                                    <Td>
+                                        <Editable defaultValue={props.imageInfo.title}>
+                                            <EditablePreview />
+                                            <EditableInput />
+                                        </Editable>
+                                    </Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Caption</Td>
-                                    <Td>{props.imageInfo.caption}</Td>
+                                    <Td>
+                                        <Editable defaultValue={props.imageInfo.caption}>
+                                            <EditablePreview />
+                                            <EditableInput />
+                                        </Editable>
+                                    </Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Location</Td>
-                                    <Td>{props.imageInfo.location.length <= 0 ?
-                                        'No location provided' : props.imageInfo.location}</Td>
+                                    <Td>
+                                        <Editable defaultValue={props.imageInfo.location.length <= 0 ?
+                                            'No location provided' : props.imageInfo.location}>
+                                            <EditablePreview />
+                                            <EditableInput />
+                                        </Editable>
+                                    </Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Tags</Td>
-                                    <Td>{props.imageInfo.tags.length > 0 ?
-                                        convertStringToTag(props.imageInfo.tags)?.map((tag, i) => {
-                                            return <Tag colorScheme='blue' key={i} mr={1} my={1}>{tag}</Tag>;
-                                        }) : <Tag>No tags added</Tag>}</Td>
+                                    <Td>
+                                        {props.imageInfo.tags.length > 0 ?
+                                            convertStringToTag(props.imageInfo.tags)?.map((tag, i) => {
+                                                return <Tag colorScheme='blue' key={i} mr={1} my={1}>{tag}</Tag>;
+                                            }) : <Tag>No tags added</Tag>}</Td>
                                 </Tr>
                                 <Tr>
                                     <Td>Size</Td>

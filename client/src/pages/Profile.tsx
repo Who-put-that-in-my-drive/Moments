@@ -26,6 +26,7 @@ import {
     AlertDialogBody,
     AlertDialogFooter,
     useDisclosure,
+    SkeletonCircle,
 } from '@chakra-ui/react';
 import useStore from '../store/store';
 import { useForm } from 'react-hook-form';
@@ -71,6 +72,7 @@ export const Profile = () => {
     };
 
     const handleProfileUpload = async (e: any) => {
+        store.setIsAvatarLoaded(false);
         const file: File = e.currentTarget.files[0];
         const imageFormat = file.type.split('/')[1];
 
@@ -105,6 +107,9 @@ export const Profile = () => {
                     //Once the file upload is successful update the local store
                     let url = URL.createObjectURL(file);
                     store.updateProfilePicture(url);
+
+                    //Update the skeleton from onloading to loaded
+                    store.setIsAvatarLoaded(true);
                 } else {
                     toast({
                         duration: 5000,
@@ -112,6 +117,8 @@ export const Profile = () => {
                         status: 'error',
                         title: 'Image failed to upload',
                     });
+                    store.setIsAvatarLoaded(true);
+
 
                 }
             } else {
@@ -121,6 +128,7 @@ export const Profile = () => {
                     status: 'error',
                     title: 'Failed to get Presigned URL from AWS',
                 });
+                store.setIsAvatarLoaded(true);
             }
         } catch (error) {
             toast({
@@ -129,6 +137,8 @@ export const Profile = () => {
                 status: 'error',
                 title: error + '',
             });
+            store.setIsAvatarLoaded(true);
+
         }
     };
 
@@ -205,9 +215,11 @@ export const Profile = () => {
     return (
         <>
             <Flex direction={'column'} padding={['1rem', '3rem', '4rem', '5rem']} paddingX={['1rem', '2rem', '3rem', '7rem']} scrollBehavior={'auto'}>
-                <Wrap align={'center'} cursor='default' direction={['column', 'column', 'row', 'row']} paddingBottom={'1rem'} spacing={['1rem', '1rem', '2rem', '2rem']}>
+                <Wrap align={'center'} cursor='default' direction={['column', 'column', 'row', 'row']} paddingBottom={'2rem'} spacing={['1rem', '1rem', '2rem', '2rem']}>
                     <WrapItem>
-                        <Avatar size='xl' src={user.profilePictureURL} />
+                        <SkeletonCircle fadeDuration={2} isLoaded={store.isAvatarLoaded} size='5rem'>
+                            <Avatar size='xl' src={user.profilePictureURL} />
+                        </SkeletonCircle>
                     </WrapItem>
                     <Stack alignItems={['center', 'center', 'normal', 'normal']} direction={'column'} justifyContent='center'>
                         <Heading as='h1' noOfLines={1} size={'xl'}>
@@ -284,8 +296,10 @@ export const Profile = () => {
                                     Profile Picture
                                 </Text>
                             </Box>
-                            <HStack position='relative' spacing='2rem'>
-                                <Avatar size='xl' src={user.profilePictureURL} />
+                            <HStack paddingBottom={'1rem'} position='relative' spacing='2rem'>
+                                <SkeletonCircle fadeDuration={2} isLoaded={store.isAvatarLoaded} size='5rem'>
+                                    <Avatar size='xl' src={user.profilePictureURL} />
+                                </SkeletonCircle>
                                 <Link color='teal.500' cursor='pointer' fontSize='lg' href='#'>
                                     Change Profile Picture <br /> <small>(PNG/JPG/JPEG only)</small>
                                 </Link>

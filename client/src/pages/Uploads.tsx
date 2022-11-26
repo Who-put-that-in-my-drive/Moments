@@ -28,9 +28,11 @@ const Uploads = () => {
                     return castRawToImage(imgData);
                 });
                 //update the local state (which will be used for local operations like search/sort)
-                setDisplayImages([...imagesList]);
+                //By default it will be sorted by latest image first
+                setDisplayImages([...imagesList].sort(sortByDateDescending));
                 //update the store which is main source of truth
-                store.updateImagesList([...imagesList]);
+                //By default it will be sorted by latest image first
+                store.updateImagesList([...imagesList].sort(sortByDateDescending));
                 //fake loading effect
                 setTimeout(() => setImagesLoadingFlag(true), 300);
             }
@@ -39,7 +41,6 @@ const Uploads = () => {
             console.log(error);
         }
     };
-
 
     useEffect(() => {
         //Fetch new images and update the local store as well as component state images
@@ -59,6 +60,14 @@ const Uploads = () => {
             });
         }
         setDisplayImages(newImageList);
+    };
+
+    //Callback coming from image component to delete an image
+    const deleteImage = (imageId: string): void => {
+        let images = [...displayImages];
+        images = images.filter((imageObj: Image) => (imageObj.id != imageId));
+        setDisplayImages([...images]);
+        store.deleteImage(imageId);
     };
 
     //Helper function to sort images by name A -> Z
@@ -97,9 +106,9 @@ const Uploads = () => {
         const size2 = b.size;
         let comparison = 0;
 
-        if (size1 > size2) {
+        if (size1 < size2) {
             comparison = 1;
-        } else if (size1 < size2) {
+        } else if (size1 > size2) {
             comparison = -1;
         }
         return comparison;
@@ -110,9 +119,9 @@ const Uploads = () => {
         const size2 = b.size;
         let comparison = 0;
 
-        if (size1 < size2) {
+        if (size1 > size2) {
             comparison = 1;
-        } else if (size1 > size2) {
+        } else if (size1 < size2) {
             comparison = -1;
         }
         return comparison;
@@ -146,24 +155,24 @@ const Uploads = () => {
     };
 
     const onSortMenuClick = (e: any): void => {
-        const eventType = e.target.innerHTML;
-        switch (eventType) {
+
+        switch (e) {
         case 'A-Z':
             setDisplayImages([...displayImages].sort(sortByNameAtoZ));
             break;
         case 'Z-A':
             setDisplayImages([...displayImages].sort(sortByNameZtoA));
             break;
-        case 'File Size ↑':
+        case 'File Size desc':
             setDisplayImages([...displayImages].sort(sortBySizeDescending));
             break;
-        case 'File Size ↓':
+        case 'File Size asc':
             setDisplayImages([...displayImages].sort(sortBySizeAscending));
             break;
-        case 'Last Updated ↑':
+        case 'Upload date asc':
             setDisplayImages([...displayImages].sort(sortByDateAscending));
             break;
-        case 'Last Updated ↓':
+        case 'Upload date desc':
             setDisplayImages([...displayImages].sort(sortByDateDescending));
             break;
         default:
@@ -198,7 +207,7 @@ const Uploads = () => {
         image['id'] = obj.data._id;
         image['title'] = obj.data.title;
         image['format'] = obj.data.format;
-        image['size'] = obj.data.size;
+        image['size'] = parseInt(obj.data.size);
         image['caption'] = obj.data.caption;
         image['tags'] = obj.data.tags;
         image['categories'] = obj.data.categories;
@@ -206,7 +215,6 @@ const Uploads = () => {
         image['location'] = obj.data.location;
         image['lastModifiedDateTime'] = obj.data.lastModifiedDateTime;
         image['uploadedDateTime'] = obj.data.uploadedDateTime;
-
         return image;
     };
 
@@ -223,13 +231,13 @@ const Uploads = () => {
                                 Filters
                             </MenuButton>
                             <MenuList>
-                                <MenuOptionGroup title='Order' type='radio'>
-                                    <MenuItemOption onClick={(e: any) => onSortMenuClick(e)} value='A-Z'>A-Z</MenuItemOption>
-                                    <MenuItemOption onClick={(e: any) => onSortMenuClick(e)} value='Z-A'>Z-A</MenuItemOption>
-                                    <MenuItemOption onClick={(e: any) => onSortMenuClick(e)} value='Last Updated ↑'>Last Updated ↑</MenuItemOption>
-                                    <MenuItemOption onClick={(e: any) => onSortMenuClick(e)} value='Last Updated ↓'>Last Updated ↓</MenuItemOption>
-                                    <MenuItemOption onClick={(e: any) => onSortMenuClick(e)} value='File Size ↑'>File Size ↑</MenuItemOption>
-                                    <MenuItemOption onClick={(e: any) => onSortMenuClick(e)} value='File Size ↓'>File Size ↓</MenuItemOption>
+                                <MenuOptionGroup defaultValue='Upload date desc' onChange={(value) => onSortMenuClick(value)} title='Order' type='radio'>
+                                    <MenuItemOption value='A-Z'>A-Z</MenuItemOption>
+                                    <MenuItemOption value='Z-A'>Z-A</MenuItemOption>
+                                    <MenuItemOption value='Upload date desc'>Upload date ↑</MenuItemOption>
+                                    <MenuItemOption value='Upload date asc'>Upload date ↓</MenuItemOption>
+                                    <MenuItemOption value='File Size asc'>File Size ↑</MenuItemOption>
+                                    <MenuItemOption value='File Size desc'>File Size ↓</MenuItemOption>
                                 </MenuOptionGroup>
                             </MenuList>
                         </Menu>
@@ -253,7 +261,9 @@ const Uploads = () => {
                             caption={image.caption}
                             categories={image.categories}
                             date={convertEpochToDate(parseInt(image.uploadedDateTime))}
+                            deleteImageCallback={deleteImage}
                             format={image.format}
+                            id={image.id}
                             imageURL={image.url}
                             isLoaded={imagesLoadingFlag}
                             key={image.id}
@@ -277,7 +287,7 @@ const Uploads = () => {
 
             <Flex float={'right'} height='100%' justifyContent='space-between' paddingTop='2.75rem'>
                 <Spacer />
-                <UploadModal />
+                <UploadModal refreshImagesArray={getImages} />
             </Flex>
         </Flex >
     );

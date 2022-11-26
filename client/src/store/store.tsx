@@ -30,6 +30,7 @@ const useStore = create<UserStore>()(
                         images: state.user.images.filter((imageObj: Image) => (imageObj.id != imageId))
                     }
                 })),
+                isAvatarLoaded: true,
                 loggedIn: false,
                 removeUser: () => set(
                     (state) => (
@@ -39,6 +40,10 @@ const useStore = create<UserStore>()(
                             user: initialUserState
                         })
                 ),
+                setIsAvatarLoaded: (isLoaded: boolean) => set((state) => ({
+                    ...state,
+                    isAvatarLoaded: isLoaded
+                })),
                 setLoggedIn: (val: boolean) => set((state) => ({ ...state, loggedIn: val })),
                 setUser: (user: User) => set((state) => ({ ...state, user: user })),
                 updateImagesList: (newImages: any[]) => set((state) => ({
@@ -63,7 +68,7 @@ const useStore = create<UserStore>()(
                         lastName: updatedUser.lastName
                     }
                 })),
-                user: initialUserState,
+                user: initialUserState
             }),
             {
                 name: 'Moments-store'
