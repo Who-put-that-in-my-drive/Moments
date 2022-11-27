@@ -50,8 +50,6 @@ export const Explore = () => {
     const images = user.images;
 
     const deleteImage = (imageId: string): void => {
-        let _images = [...images];
-        _images = _images.filter((imageObj: Image) => (imageObj.id != imageId));
         store.deleteImage(imageId);
     };
 
@@ -229,7 +227,7 @@ export const Explore = () => {
 
                 <Flex align={['center', 'normal', 'normal', 'normal']} direction='column' maxH={'100vh'} p={['1rem', '2rem', '4rem', '3rem']} width='100%'>
 
-                    <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '14rem', '15rem']} overflowY='scroll' spacing='2rem'>
+                    <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '14rem', '15rem']} overflowY='auto' spacing='2rem'>
 
                         {displayCollection.map(image => {
                             return (
