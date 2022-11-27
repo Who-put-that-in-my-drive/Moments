@@ -1,9 +1,8 @@
-import { SearchIcon, SettingsIcon } from '@chakra-ui/icons';
+import { SearchIcon } from '@chakra-ui/icons';
 import {
     Box,
     Flex,
     Heading,
-    IconButton,
     Input,
     InputGroup,
     InputLeftElement,
@@ -48,99 +47,30 @@ export const Explore = () => {
     const store: UserStore = useStore();
     const user = store.user;
     const images = user.images;
-
     const deleteImage = (imageId: string): void => {
         store.deleteImage(imageId);
     };
 
-    const dummyImage1: Image = {
-        caption: 'testing123',
-        categories: 'caption',
-        format: 'png',
-        id: '1',
-        lastModifiedDateTime: '123',
-        location: 'Toronto',
-        size: 12.2,
-        tags: 'Ocean',
-        title: 'title1',
-        uploadedDateTime: '321',
-        url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
-    };
-    const dummyImage2: Image = {
-        caption: 'testing123',
-        categories: 'caption',
-        format: 'png',
-        id: '1',
-        lastModifiedDateTime: '123',
-        location: 'Toronto',
-        size: 12.2,
-        tags: 'Ocean',
-        title: 'title1',
-        uploadedDateTime: '321',
-        url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
-    };
-    const dummyImage3: Image = {
-        caption: 'testing123',
-        categories: 'caption',
-        format: 'png',
-        id: '1',
-        lastModifiedDateTime: '123',
-        location: 'Toronto',
-        size: 12.2,
-        tags: 'Ocean',
-        title: 'title1',
-        uploadedDateTime: '321',
-        url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
-    };
-    const dummyImage4: Image = {
-        caption: 'testing123',
-        categories: 'caption',
-        format: 'png',
-        id: '1',
-        lastModifiedDateTime: '123',
-        location: 'Toronto',
-        size: 12.2,
-        tags: 'Ocean',
-        title: 'title1',
-        uploadedDateTime: '321',
-        url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
-    };
-
-    const dummyImage5: Image = {
-        caption: 'testing123',
-        categories: 'caption',
-        format: 'png',
-        id: '1',
-        lastModifiedDateTime: '123',
-        location: 'Toronto',
-        size: 12.2,
-        tags: 'People',
-        title: 'title1',
-        uploadedDateTime: '321',
-        url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
-    };
-
-    const dummyImage6: Image = {
-        caption: 'testing123',
-        categories: 'caption',
-        format: 'png',
-        id: '1',
-        lastModifiedDateTime: '123',
-        location: 'Toronto',
-        size: 12.2,
-        tags: 'People',
-        title: 'title1',
-        uploadedDateTime: '321',
-        url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
-    };
-
-    const images23 = [dummyImage1, dummyImage2, dummyImage3, dummyImage4, dummyImage5, dummyImage6];
-    console.log(images23);
 
     const [tags, setTags] = useState<TagStructure[]>([]);
+    const [displayTags, setDisplayTags] = useState<TagStructure[]>([]);
     const [displayCollection, setDisplayCollection] = useState<ImageDto[]>([]);
     const [showCollection, setShowCollection] = useState(0);
     const [collectionName, setCollectionName] = useState('');
+
+    const onSearchBarChange = (searchQuery: string): void => {
+        let newTagsList: TagStructure[] = [];
+        if(searchQuery.length <= 0) {
+            newTagsList = tags;
+        } else {
+            tags.map(item => {
+                if(item.name.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())) {
+                    newTagsList.push(item);
+                }
+            });
+        }
+        setDisplayTags(newTagsList);
+    };
 
     const onClickBackToCollection = () => {
         setShowCollection(0);
@@ -174,6 +104,7 @@ export const Explore = () => {
                 });
 
             });
+            setDisplayTags(gatheredTags);
             setTags(gatheredTags);
         }
     };
@@ -205,9 +136,8 @@ export const Explore = () => {
                             <Flex>
                                 <InputGroup maxWidth='16rem'>
                                     <InputLeftElement pointerEvents='none'><SearchIcon /></InputLeftElement>
-                                    <Input placeholder='Search' type='text' />
+                                    <Input onChange={(e) => onSearchBarChange(e.target.value)} placeholder='Search' type='text' />
                                 </InputGroup>
-                                <IconButton aria-label='Settings' icon={<SettingsIcon />} ml='0.4rem' />
                             </Flex>
                         </Box>
                     </Flex>
@@ -219,9 +149,11 @@ export const Explore = () => {
                 </Box>
             </Flex>
             {showCollection === 0 ? <SimpleGrid maxH={['65vh', '69vh', '70vh', '75vh']} minChildWidth='15rem' spacing='2rem'>
-                {tags.length > 0 ?
-                    tags.map((tag, index) => <Collection collectionName={tag.name} count={tag.count} displayCollection={displayCollection} images={tag.imageData} key={index} setCollectionName={setCollectionName} setDisplayCollection={setDisplayCollection} setShowCollection={setShowCollection} thumbnail={tag.imageData[0].url} />)
-                    : <Text> No collections created. Add tags to uploaded images to get started.</Text>
+                {displayTags.length > 0 ?
+                    displayTags.map((tag, index) => <Collection collectionName={tag.name} count={tag.count} displayCollection={displayCollection} images={tag.imageData} key={index} setCollectionName={setCollectionName} setDisplayCollection={setDisplayCollection} setShowCollection={setShowCollection} thumbnail={tag.imageData[0].url} />)
+                    : <> {tags.length > 0 ? <Text> No collections was found.</Text> 
+                        : <Text> No collections created. Add tags to uploaded images to get started.</Text>}</>
+
                 }
             </SimpleGrid> :
 
