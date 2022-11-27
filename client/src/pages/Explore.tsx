@@ -55,7 +55,7 @@ export const Explore = () => {
         store.deleteImage(imageId);
     };
 
-    const dummyImage1 : Image = {
+    const dummyImage1: Image = {
         caption: 'testing123',
         categories: 'caption',
         format: 'png',
@@ -65,10 +65,10 @@ export const Explore = () => {
         size: 12.2,
         tags: 'Ocean',
         title: 'title1',
-        uploadedDateTime:'321',
+        uploadedDateTime: '321',
         url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
     };
-    const dummyImage2 : Image = {
+    const dummyImage2: Image = {
         caption: 'testing123',
         categories: 'caption',
         format: 'png',
@@ -78,10 +78,10 @@ export const Explore = () => {
         size: 12.2,
         tags: 'Ocean',
         title: 'title1',
-        uploadedDateTime:'321',
+        uploadedDateTime: '321',
         url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
     };
-    const dummyImage3 : Image = {
+    const dummyImage3: Image = {
         caption: 'testing123',
         categories: 'caption',
         format: 'png',
@@ -91,10 +91,10 @@ export const Explore = () => {
         size: 12.2,
         tags: 'Ocean',
         title: 'title1',
-        uploadedDateTime:'321',
+        uploadedDateTime: '321',
         url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
     };
-    const dummyImage4 : Image = {
+    const dummyImage4: Image = {
         caption: 'testing123',
         categories: 'caption',
         format: 'png',
@@ -104,11 +104,11 @@ export const Explore = () => {
         size: 12.2,
         tags: 'Ocean',
         title: 'title1',
-        uploadedDateTime:'321',
+        uploadedDateTime: '321',
         url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
     };
 
-    const dummyImage5 : Image = {
+    const dummyImage5: Image = {
         caption: 'testing123',
         categories: 'caption',
         format: 'png',
@@ -118,11 +118,11 @@ export const Explore = () => {
         size: 12.2,
         tags: 'People',
         title: 'title1',
-        uploadedDateTime:'321',
+        uploadedDateTime: '321',
         url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
     };
 
-    const dummyImage6 : Image = {
+    const dummyImage6: Image = {
         caption: 'testing123',
         categories: 'caption',
         format: 'png',
@@ -132,15 +132,15 @@ export const Explore = () => {
         size: 12.2,
         tags: 'People',
         title: 'title1',
-        uploadedDateTime:'321',
+        uploadedDateTime: '321',
         url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
     };
 
-    const images23 = [dummyImage1, dummyImage2, dummyImage3, dummyImage4, dummyImage5,dummyImage6];
+    const images23 = [dummyImage1, dummyImage2, dummyImage3, dummyImage4, dummyImage5, dummyImage6];
     console.log(images23);
 
     const [tags, setTags] = useState<TagStructure[]>([]);
-    const [displayCollection, setDisplayCollection ] = useState<ImageDto[]>([]);
+    const [displayCollection, setDisplayCollection] = useState<ImageDto[]>([]);
     const [showCollection, setShowCollection] = useState(0);
     const [collectionName, setCollectionName] = useState('');
 
@@ -149,20 +149,20 @@ export const Explore = () => {
     };
 
     const gatherTags = () => {
-        if (images.length > 0 ) {
-            let gatheredTags: TagStructure[] = [];                      
+        if (images.length > 0) {
+            let gatheredTags: TagStructure[] = [];
             images.map(img => {
-                img.tags.split(',').map(tag => {                    
+                img.tags.toString().split(',').map((tag: string) => {
                     let positionIndex = -1;
                     gatheredTags.forEach((item, index) => {
-                        if(item.name === tag) {
+                        if (item.name === tag) {
                             positionIndex = index;
                             return;
                         }
                     });
-                    
 
-                    if(positionIndex === -1) {
+
+                    if (positionIndex === -1) {
                         gatheredTags.push({
                             count: 1,
                             imageData: [img],
@@ -183,7 +183,7 @@ export const Explore = () => {
     useEffect(() => {
         gatherTags();
     }, []);
-    
+
     return (
         <Flex align={['center', 'center', 'normal', 'normal']} direction='column' p={['1rem', '2rem', '4rem', '4rem']}>
             <Flex align={['center', '', '', '']} marginRight={['', '', '4rem', '4rem']} minWidth='100%' zIndex={1000}>
@@ -213,28 +213,28 @@ export const Explore = () => {
                             </Flex>
                         </Box>
                     </Flex>
-                    
+
                     <Heading as='h2' fontWeight='semibold' marginTop='1rem' noOfLines={2} paddingBottom={['0.5rem', '1rem', '2rem']} size={['md', 'md', 'xl', '2xl']}
                         textAlign={['center', 'center', 'left', 'left']}>
-                        Collections {showCollection === 0? null: <> : {collectionName} </>}
+                        Collections {showCollection === 0 ? null : <> : {collectionName} </>}
                     </Heading>
                 </Box>
             </Flex>
-            {showCollection === 0 ? <SimpleGrid maxH={['65vh', '69vh', '70vh', '75vh']}  minChildWidth='15rem' spacing='2rem'>
+            {showCollection === 0 ? <SimpleGrid maxH={['65vh', '69vh', '70vh', '75vh']} minChildWidth='15rem' spacing='2rem'>
                 {tags.length > 0 ?
                     tags.map((tag, index) => <Collection collectionName={tag.name} count={tag.count} displayCollection={displayCollection} images={tag.imageData} key={index} setCollectionName={setCollectionName} setDisplayCollection={setDisplayCollection} setShowCollection={setShowCollection} thumbnail={tag.imageData[0].url} />)
                     : <Text> No collections created. Add tags to uploaded images to get started.</Text>
                 }
-            </SimpleGrid> : 
-            
+            </SimpleGrid> :
+
                 <Flex align={['center', 'normal', 'normal', 'normal']} direction='column' maxH={'100vh'} p={['1rem', '2rem', '4rem', '3rem']} width='100%'>
-            
+
                     <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '14rem', '15rem']} overflowY='scroll' spacing='2rem'>
-                
+
                         {displayCollection.map(image => {
                             return (
-                                <PhotoCard           
-                                    caption={image.caption} 
+                                <PhotoCard
+                                    caption={image.caption}
                                     categories={image.categories}
                                     date={'Nov 9, 2022'}
                                     deleteImageCallback={deleteImage}
@@ -250,12 +250,12 @@ export const Explore = () => {
                         })}
 
                     </SimpleGrid>
-            
-            
-                    <Button height='3.5rem' leftIcon={<AiOutlineRollback />} maxW='16rem' minW='15rem' onClick={onClickBackToCollection} style={{marginTop: '50px'}}>Back To Folder</Button>
+
+
+                    <Button height='3.5rem' leftIcon={<AiOutlineRollback />} maxW='16rem' minW='15rem' onClick={onClickBackToCollection} style={{ marginTop: '50px' }}>Back To Folder</Button>
 
                 </Flex>}
-            
+
         </Flex>
     );
 };
