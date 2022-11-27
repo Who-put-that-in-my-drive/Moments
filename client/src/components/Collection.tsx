@@ -5,13 +5,10 @@ import {
     Image,
     Text,
 } from '@chakra-ui/react';
-// import { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { CollectionProps } from '../utils/ComponentPropTypes';
 
 export const Collection = ({images, collectionName, setDisplayCollection, count, thumbnail, displayCollection, setShowCollection, setCollectionName}: CollectionProps ) => {
-    // const [open, setOpen] = useState(false);
-    // const { isOpen, onOpen, onClose } = useDisclosure();
 
     const onClickCollection = () => {
         setShowCollection(1);
