@@ -18,6 +18,12 @@ const userSchema = new Schema(
             required: true,
             trim: true,
         },
+        avatarImageExtension: {
+            type: String,
+            trim: true,
+            minlength: 3,
+            maxLength: 4
+        },
         displayName: {
             type: String,
             required: true,

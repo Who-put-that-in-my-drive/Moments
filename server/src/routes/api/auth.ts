@@ -8,9 +8,15 @@ import User from '../../models/user.model';
 import {getHashedValue, validatePassword} from '../../utilities/bcrypt';
 import Cookie from '../../utilities/cookie';
 import Jwt from '../../utilities/jwt';
-import {getCurrentDateTime} from '../../utilities/server';
+import {getCurrentDateTime, getEmail} from '../../utilities/server';
 import ServerResponse from '../../utilities/serverResponse';
 import {SanitizedUser} from '../../interfaces/auth/SanitizedUser';
+import {GetObjectCommand, HeadObjectCommand} from '@aws-sdk/client-s3';
+import {getSignedUrl} from '@aws-sdk/s3-request-presigner';
+import {s3Client} from '../../utilities/s3Client';
+
+const myBucket = 'moments-gallery'; // Moments Bucket
+const signedUrlExpireSeconds = 300; // 5 Minutes
 
 const router = express.Router();
 
@@ -30,24 +36,24 @@ router.route('/register').post(async (req: Request, res: Response) => {
         const dateTime = getCurrentDateTime();
 
         // Mongoose handles verifications and generates errors, although we want to handle this part
-        if (!(validator.isEmail(email)) || !(email.length <= 32)) {
+        if (!(validator.isEmail(email))) {
             return res.status(400).json(new ServerResponse('Invalid Email'));
-        }
-
-        if (await User.exists({email})) {
-            return res.status(409).json(new ServerResponse('Email Already In Use'));
-        }
-
-        if (!(displayName.length >= 3 && displayName.length <= 18)) {
-            return res.status(400).json(new ServerResponse('Invalid Display Name Length'));
-        }
-
-        if (await User.exists({displayName})) {
-            return res.status(409).json(new ServerResponse('Display Name Already In Use'));
         }
 
         if (!(password.length >= 7 && password.length <= 32)) {
             return res.status(400).json(new ServerResponse('Invalid Password Length'));
+        }
+
+        if (await User.exists({email})) {
+            return res.status(400).json(new ServerResponse('Email Already In Use'));
+        }
+
+        if (!(displayName.length >= 3 && displayName.length <= 18)) {
+            return res.status(400).json(new ServerResponse('Invalid Display Length'));
+        }
+
+        if (await User.exists({displayName})) {
+            return res.status(400).json(new ServerResponse('Display Name Already In Use'));
         }
 
         const hashedPassword = await getHashedValue(user.password);
@@ -84,6 +90,7 @@ router.route('/login').post(async (req: Request, res: Response) => {
         const loginUserDTO: LoginUserDTO = req.body;
 
         const userDb = await User.findOneAndUpdate({email: loginUserDTO.email.toString()}, {$set: {lastLoginDateTime: getCurrentDateTime()}});
+
         if (userDb) {
             //@ts-ignore
             const user: UserModel = userDb._doc;
@@ -91,7 +98,24 @@ router.route('/login').post(async (req: Request, res: Response) => {
                 const sanitizedUser: SanitizedUser = {...user};
                 delete sanitizedUser.password;
                 const cookieWithJwt = new Cookie(await Jwt.generateJwt(user.email)).generateCookie();
-                return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(new ServerResponse('Signed In').addData({user: sanitizedUser}));
+
+                const serverResponse: ServerResponse = new ServerResponse('Signed In');
+
+                if (userDb.avatarImageExtension) {
+                    const command = new GetObjectCommand({
+                        Bucket: myBucket,
+                        Key: `${userDb.email}/avatar.${userDb.avatarImageExtension}`,
+                    });
+
+                    const presignedUrl = await getSignedUrl(s3Client, command, {
+                        expiresIn: signedUrlExpireSeconds
+                    });
+
+                    serverResponse.addData({presignedUrl});
+                }
+
+
+                return res.setHeader('Set-Cookie', cookieWithJwt).status(202).json(serverResponse.addData({user: sanitizedUser}));
             } else {
                 return res.status(403).json(new ServerResponse('Incorrect Email/Password'));
             }
@@ -121,5 +145,6 @@ router.route('/logout').get(async (req: Request, res: Response) => {
         res.status(500).json(new ServerResponse(String(e)));
     }
 });
+
 
 module.exports = router;

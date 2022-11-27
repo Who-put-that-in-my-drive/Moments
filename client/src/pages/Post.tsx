@@ -1,4 +1,4 @@
-import {   
+import {
     Button,
     Image,
     Modal,
@@ -28,11 +28,10 @@ import {
     SunIcon,
 } from '@chakra-ui/icons';
 
-import Beach from '../assets/images/Beach.jpg';
 
 export default function Post() {
     const { colorMode } = useColorMode();
-    
+
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <>
@@ -41,19 +40,19 @@ export default function Post() {
             <Modal isOpen={isOpen} onClose={onClose} size='full'>
                 <ModalContent>
                     {/* <ModalHeader>Beach Image</ModalHeader> */}
-                    <ModalCloseButton color={'gray.100'} size={'xl'}/>
-                    <ModalBody>    
+                    <ModalCloseButton color={'gray.100'} size={'xl'} />
+                    <ModalBody>
                         <Stack direction='row' spacing={-8} >
                             <Box p={5} w='70%' >
-                                <Image borderRadius={'lg'} maxHeight="90vh" minHeight="90vh" src={Beach}/>
+                                <Image borderRadius={'lg'} maxHeight="90vh" minHeight="90vh" src={''} />
                             </Box>
-                            
+
                             <Box p={5} w='30%'  >
                                 <Flex bg='white' borderRadius={'lg'} maxHeight="90vh" minHeight="90vh" overflowY='scroll' textColor="black" >
-                                    <VStack alignItems={'flex-start'} bg='white' marginLeft="25" marginTop="5" spacing={5}> 
+                                    <VStack alignItems={'flex-start'} bg='white' marginLeft="25" marginTop="5" spacing={5}>
                                         <Avatar size={'lg'} src='https://bit.ly/broken-link' />
                                         <Stat>
-                                            <StatLabel 
+                                            <StatLabel
                                                 color={colorMode === 'light' ? 'white' : 'black'}
                                                 fontSize={'lg'}
                                             >
@@ -61,14 +60,14 @@ export default function Post() {
                                             </StatLabel>
                                         </Stat>
                                         <HStack padding={'-5'}>
-                                            <CalendarIcon color={colorMode === 'light' ? 'white' : 'black'}/>
+                                            <CalendarIcon color={colorMode === 'light' ? 'white' : 'black'} />
                                             <Text as={'b'} color={colorMode === 'light' ? 'white' : 'black'} textAlign={'start'}>
                                                 Date and Time Taken
-                                            </Text> 
+                                            </Text>
                                         </HStack>
                                         <Text color={colorMode === 'light' ? 'white' : 'black'}>
                                             11:34 AM; Tuesday, May 4th, 2019
-                                        </Text> 
+                                        </Text>
                                         <HStack>
                                             <ChatIcon color={colorMode === 'light' ? 'white' : 'black'} />
                                             <Text as={'b'} color={colorMode === 'light' ? 'white' : 'black'}>
@@ -77,14 +76,14 @@ export default function Post() {
                                         </HStack>
                                         <Text color={colorMode === 'light' ? 'white' : 'black'}>
                                             This is a beach I visited a few years ago!
-                                        </Text> 
+                                        </Text>
                                         <HStack>
                                             <InfoIcon color={colorMode === 'light' ? 'white' : 'black'} />
                                             <Text as={'b'} color={colorMode === 'light' ? 'white' : 'black'}>
                                                 Picture Info
                                             </Text>
                                         </HStack>
-                                            
+
                                         <Text color={colorMode === 'light' ? 'white' : 'black'}>
                                             Size: 30.69 MB
                                             Posted: May 9th, 2019
@@ -96,10 +95,10 @@ export default function Post() {
                                             </Text>
                                         </HStack>
                                         <Text as={'u'} color={colorMode === 'light' ? 'white' : 'black'}>
-                                                Theme
+                                            Theme
                                         </Text>
                                         <HStack spacing={2}>
-                                            <Tag 
+                                            <Tag
                                                 colorScheme={'teal'}
                                                 key={'sm'}
                                                 size={'sm'}
@@ -107,7 +106,7 @@ export default function Post() {
                                             >
                                                 Beach
                                             </Tag>
-                                            <Tag 
+                                            <Tag
                                                 colorScheme={'teal'}
                                                 key={'sm'}
                                                 size={'sm'}
@@ -115,7 +114,7 @@ export default function Post() {
                                             >
                                                 Clouds
                                             </Tag>
-                                            <Tag 
+                                            <Tag
                                                 colorScheme={'teal'}
                                                 key={'sm'}
                                                 size={'sm'}
@@ -123,7 +122,7 @@ export default function Post() {
                                             >
                                                 Nature
                                             </Tag>
-                                            <Tag 
+                                            <Tag
                                                 colorScheme={'teal'}
                                                 key={'sm'}
                                                 size={'sm'}
@@ -133,7 +132,7 @@ export default function Post() {
                                             </Tag>
                                         </HStack>
                                         <HStack spacing={2}>
-                                            <Tag 
+                                            <Tag
                                                 colorScheme={'teal'}
                                                 key={'sm'}
                                                 size={'sm'}
@@ -141,7 +140,7 @@ export default function Post() {
                                             >
                                                 Mountain
                                             </Tag>
-                                            <Tag 
+                                            <Tag
                                                 colorScheme={'teal'}
                                                 key={'sm'}
                                                 size={'sm'}
@@ -149,7 +148,7 @@ export default function Post() {
                                             >
                                                 Natural
                                             </Tag>
-                                            <Tag 
+                                            <Tag
                                                 colorScheme={'teal'}
                                                 key={'sm'}
                                                 size={'sm'}
@@ -158,12 +157,12 @@ export default function Post() {
                                                 Waves
                                             </Tag>
                                         </HStack>
-                                      
+
                                         <Text as={'u'} color={colorMode === 'light' ? 'white' : 'black'}>
-                                                Categories
+                                            Categories
                                         </Text>
                                         <HStack spacing={2}>
-                                            <Tag 
+                                            <Tag
                                                 colorScheme={'orange'}
                                                 key={'sm'}
                                                 size={'sm'}
@@ -171,7 +170,7 @@ export default function Post() {
                                             >
                                                 Scenery
                                             </Tag>
-                                            <Tag 
+                                            <Tag
                                                 colorScheme={'orange'}
                                                 key={'sm'}
                                                 size={'sm'}
@@ -179,7 +178,7 @@ export default function Post() {
                                             >
                                                 Outdoors
                                             </Tag>
-                                            <Tag 
+                                            <Tag
                                                 colorScheme={'orange'}
                                                 key={'sm'}
                                                 size={'sm'}
@@ -196,7 +195,7 @@ export default function Post() {
                         </Stack>
                     </ModalBody>
                 </ModalContent>
-            </Modal>    
+            </Modal>
         </>
     );
 }

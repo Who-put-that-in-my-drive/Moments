@@ -1,4 +1,4 @@
-import { 
+import {
     Box,
     Flex,
     useBreakpointValue,
@@ -34,8 +34,8 @@ const Dashboard = () => {
                             showSidebarButton={variants?.navigationButton}
                         />
                     </Box>
-                </Box> 
-                <Box maxH='100vh' overflowY='scroll' w='100%' zIndex={100}>
+                </Box>
+                <Box maxH='100vh' overflowY='auto' w='100%' zIndex={100}>
                     <Outlet />
                 </Box>
             </Flex>

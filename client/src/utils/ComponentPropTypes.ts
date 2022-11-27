@@ -6,10 +6,17 @@ import { Image } from '../interfaces/Image';
 
 export type PhotoCardProps = {
     imageURL: string
-    name: string
+    id: string
+    title: string
     date: string
     size: string
     format: string
+    caption: string
+    isLoaded: boolean
+    tags: string
+    categories: string
+    location: string
+    deleteImageCallback: (imageID: string) => void
 };
 
 export type DrawerImageInfoProps = {
@@ -41,6 +48,15 @@ export type CollectionProps = {
     setDisplayCollection: (displayCollection : any) => void;
     setCollectionName: (collectionName: string) => void;
     
+}
+
+export type UploadModalProps = {
+    refreshImagesArray: () => void
+}
+
+export type DeleteImageDialogProps = {
+    imageId: string
+    deleteImageCallback: any
 }
 
 export {};

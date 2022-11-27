@@ -9,7 +9,7 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
-const uri = process.env.MONGO_API || '';
+const uri = 'mongodb+srv://dbUser:ciZKW2Nzcgb6WUGQ@moments.t83scmu.mongodb.net/?retryWrites=true&w=majority';
 
 mongoose.connect(uri).catch((err) => console.error(err));
 mongoose.connection.once('open', () => {

@@ -1,4 +1,4 @@
-import {SearchIcon, SettingsIcon} from '@chakra-ui/icons';
+import { SearchIcon, SettingsIcon } from '@chakra-ui/icons';
 import {
     Box,
     Flex,
@@ -34,105 +34,111 @@ type ImageDto = {
     id: string
     title: string,
     format: string,
-    size: string,
+    size: number,
     caption: string,
-    tags: string[],
-    categories: string[],
-    owner: string,
+    tags: string,
+    categories: string,
+    url: string,
     location: string,
-    lastModifiedDateTime: number,
-    uploadedDateTime: number,
+    lastModifiedDateTime: string,
+    uploadedDateTime: string,
 }
 
 export const Explore = () => {
     const store: UserStore = useStore();
     const user = store.user;
-    const images1 = user.images;
-    console.log(images1);
+    const images = user.images;
+
+    const deleteImage = (imageId: string): void => {
+        let _images = [...images];
+        _images = _images.filter((imageObj: Image) => (imageObj.id != imageId));
+        store.deleteImage(imageId);
+    };
 
     const dummyImage1 : Image = {
         caption: 'testing123',
-        categories: ['Yes', 'Yes2'],
+        categories: 'caption',
         format: 'png',
         id: '1',
-        lastModifiedDateTime: 123,
-        location: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg',
-        owner: 'Parth',
-        size: '12.2 MB',
-        tags: ['Ocean'],
+        lastModifiedDateTime: '123',
+        location: 'Toronto',
+        size: 12.2,
+        tags: 'Ocean',
         title: 'title1',
-        uploadedDateTime:321
+        uploadedDateTime:'321',
+        url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
     };
     const dummyImage2 : Image = {
         caption: 'testing123',
-        categories: ['Yes', 'Yes2'],
+        categories: 'caption',
         format: 'png',
         id: '1',
-        lastModifiedDateTime: 123,
-        location: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg',
-        owner: 'Parth',
-        size: '12.2 MB',
-        tags: ['Ocean'],
+        lastModifiedDateTime: '123',
+        location: 'Toronto',
+        size: 12.2,
+        tags: 'Ocean',
         title: 'title1',
-        uploadedDateTime:321
+        uploadedDateTime:'321',
+        url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
     };
     const dummyImage3 : Image = {
         caption: 'testing123',
-        categories: ['Yes', 'Yes2'],
+        categories: 'caption',
         format: 'png',
         id: '1',
-        lastModifiedDateTime: 123,
-        location: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg',
-        owner: 'Parth',
-        size: '12.2 MB',
-        tags: ['Ocean'],
+        lastModifiedDateTime: '123',
+        location: 'Toronto',
+        size: 12.2,
+        tags: 'Ocean',
         title: 'title1',
-        uploadedDateTime:321
+        uploadedDateTime:'321',
+        url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
     };
     const dummyImage4 : Image = {
         caption: 'testing123',
-        categories: ['Yes', 'Yes2'],
+        categories: 'caption',
         format: 'png',
         id: '1',
-        lastModifiedDateTime: 123,
-        location: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg',
-        owner: 'Parth',
-        size: '12.2 MB',
-        tags: ['Ocean'],
+        lastModifiedDateTime: '123',
+        location: 'Toronto',
+        size: 12.2,
+        tags: 'Ocean',
         title: 'title1',
-        uploadedDateTime:321
+        uploadedDateTime:'321',
+        url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
     };
 
     const dummyImage5 : Image = {
         caption: 'testing123',
-        categories: ['Yes', 'Yes2'],
+        categories: 'caption',
         format: 'png',
         id: '1',
-        lastModifiedDateTime: 123,
-        location: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg',
-        owner: 'Parth',
-        size: '12.2 MB',
-        tags: ['People'],
+        lastModifiedDateTime: '123',
+        location: 'Toronto',
+        size: 12.2,
+        tags: 'People',
         title: 'title1',
-        uploadedDateTime:321
+        uploadedDateTime:'321',
+        url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
     };
 
     const dummyImage6 : Image = {
         caption: 'testing123',
-        categories: ['Yes', 'Yes2'],
+        categories: 'caption',
         format: 'png',
         id: '1',
-        lastModifiedDateTime: 123,
-        location: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg',
-        owner: 'Parth',
-        size: '12.2 MB',
-        tags: ['People'],
+        lastModifiedDateTime: '123',
+        location: 'Toronto',
+        size: 12.2,
+        tags: 'People',
         title: 'title1',
-        uploadedDateTime:321
+        uploadedDateTime:'321',
+        url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?cs=srgb&dl=pexels-simon-berger-1323550.jpg&fm=jpg'
     };
 
-    const images = [dummyImage1, dummyImage2, dummyImage3, dummyImage4, dummyImage5,dummyImage6];
-    
+    const images23 = [dummyImage1, dummyImage2, dummyImage3, dummyImage4, dummyImage5,dummyImage6];
+    console.log(images23);
+
     const [tags, setTags] = useState<TagStructure[]>([]);
     const [displayCollection, setDisplayCollection ] = useState<ImageDto[]>([]);
     const [showCollection, setShowCollection] = useState(0);
@@ -146,7 +152,7 @@ export const Explore = () => {
         if (images.length > 0 ) {
             let gatheredTags: TagStructure[] = [];                      
             images.map(img => {
-                img.tags.map(tag => {                    
+                img.tags.split(',').map(tag => {                    
                     let positionIndex = -1;
                     gatheredTags.forEach((item, index) => {
                         if(item.name === tag) {
@@ -180,7 +186,7 @@ export const Explore = () => {
     
     return (
         <Flex align={['center', 'center', 'normal', 'normal']} direction='column' p={['1rem', '2rem', '4rem', '4rem']}>
-            <Flex align={['center', '', '', '']} marginRight={['', '', '4rem','4rem']} minWidth='100%' zIndex={1000}>
+            <Flex align={['center', '', '', '']} marginRight={['', '', '4rem', '4rem']} minWidth='100%' zIndex={1000}>
                 <Box w='100%'>
                     <Heading as='h2' noOfLines={2} paddingBottom={['1rem', '2rem', '2.5rem']}
                         size={['xl', 'xl', '2xl', '3xl']} textAlign={['center', 'center', 'left', 'left']}>
@@ -196,14 +202,14 @@ export const Explore = () => {
                                 </TabList>
                             </Tabs>
                         </Box>
-                        <Spacer display={['none','none', 'block', 'block']}/>
+                        <Spacer display={['none', 'none', 'block', 'block']} />
                         <Box>
                             <Flex>
                                 <InputGroup maxWidth='16rem'>
-                                    <InputLeftElement pointerEvents='none'><SearchIcon/></InputLeftElement>
-                                    <Input placeholder='Search' type='text'/>
+                                    <InputLeftElement pointerEvents='none'><SearchIcon /></InputLeftElement>
+                                    <Input placeholder='Search' type='text' />
                                 </InputGroup>
-                                <IconButton aria-label='Settings' icon={<SettingsIcon/>} ml='0.4rem'/>
+                                <IconButton aria-label='Settings' icon={<SettingsIcon />} ml='0.4rem' />
                             </Flex>
                         </Box>
                     </Flex>
@@ -216,7 +222,7 @@ export const Explore = () => {
             </Flex>
             {showCollection === 0 ? <SimpleGrid maxH={['65vh', '69vh', '70vh', '75vh']}  minChildWidth='15rem' spacing='2rem'>
                 {tags.length > 0 ?
-                    tags.map((tag, index) => <Collection collectionName={tag.name} count={tag.count} displayCollection={displayCollection} images={tag.imageData} key={index} setCollectionName={setCollectionName} setDisplayCollection={setDisplayCollection} setShowCollection={setShowCollection} thumbnail={tag.imageData[0].location} />)
+                    tags.map((tag, index) => <Collection collectionName={tag.name} count={tag.count} displayCollection={displayCollection} images={tag.imageData} key={index} setCollectionName={setCollectionName} setDisplayCollection={setDisplayCollection} setShowCollection={setShowCollection} thumbnail={tag.imageData[0].url} />)
                     : <Text> No collections created. Add tags to uploaded images to get started.</Text>
                 }
             </SimpleGrid> : 
@@ -227,13 +233,20 @@ export const Explore = () => {
                 
                         {displayCollection.map(image => {
                             return (
-                                <PhotoCard
+                                <PhotoCard           
+                                    caption={image.caption} 
+                                    categories={image.categories}
                                     date={'Nov 9, 2022'}
+                                    deleteImageCallback={deleteImage}
                                     format={image.format}
-                                    imageURL={image.location}
+                                    id={image.id}
+                                    imageURL={image.url}
+                                    isLoaded={true}
                                     key={image.id}
-                                    name={image.title}
-                                    size={image.size} />);
+                                    location={image.location}
+                                    size={String(image.size)}
+                                    tags={image.tags}
+                                    title={image.title} />);
                         })}
 
                     </SimpleGrid>

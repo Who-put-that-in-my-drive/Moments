@@ -19,7 +19,7 @@ import {
     MenuList,
     Text,
     Tooltip,
-    useColorMode,
+    useColorMode, useToast,
     VStack,
 } from '@chakra-ui/react';
 // eslint-disable-next-line 
@@ -69,12 +69,18 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
     const store: UserStore = useStore();
     const user = store.user;
     const navigate = useNavigate();
+    const toast = useToast();
     const onLogoutClick = async () => {
         try {
-            const response: any = await logout();
-            console.log(response.data);
+            await logout();
             store.removeUser();
-            navigate('/login');
+            toast({
+                duration: 5000,
+                isClosable: true,
+                status: 'success',
+                title: 'Signed out',
+            });
+            navigate('/');
         } catch (error) {
             console.log(error);
         }
@@ -134,7 +140,7 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
                     <Tooltip aria-label='A tooltip' label={user.email}>
                         <MenuButton as={Button} paddingBottom={'3rem'} paddingTop='2rem' rightIcon={<ChevronDownIcon />}>
                             <Flex align='center' alignContent='center' justifyContent={'center'} mt={4}>
-                                <Avatar size='md' src='avatar-1.jpg' />
+                                <Avatar size='md' src={user.profilePictureURL} />
                                 <Flex display={'flex'} flexDir='column' maxW={'70%'} ml='2'>
                                     <Heading as='h3' noOfLines={1} size='sm'>{user.displayName || 'No user found'}</Heading>
                                     <Text color='gray' noOfLines={1}>{user.email || 'No user found'}</Text>

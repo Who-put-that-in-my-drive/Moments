@@ -15,10 +15,11 @@ import {
 } from '@chakra-ui/react';
 
 import '../assets/DnD.scss';
-import {uploadImage, uploadImageToS3} from '../services/api/image-service';
+import { uploadImage, uploadImageToS3 } from '../services/api/image-service';
 import { successResponse } from '../utils/ResponseUtils';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import DragAndDrop from './DragAndDrop';
+import { UploadModalProps } from '../utils/ComponentPropTypes';
 
 export interface UploadFormDTO {
     title: string,
@@ -40,7 +41,7 @@ let formData = {
 
 let imageBytes: any;
 
-export const UploadModal = () => {
+export const UploadModal = ({ refreshImagesArray }: UploadModalProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
 
@@ -57,28 +58,28 @@ export const UploadModal = () => {
             title: e.target.title.value,
         };
 
-        if(formData.format == '') {
+        if (formData.format === '') {
             toast({
                 duration: 5000,
                 isClosable: false,
                 status: 'error',
                 title: 'Select an image to upload',
             });
-        }else if(formData.title == ''){
+        } else if (formData.title === '') {
             toast({
                 duration: 5000,
                 isClosable: false,
                 status: 'error',
                 title: 'Enter a title for the image',
             });
-        }else if(formData.caption == ''){
+        } else if (formData.caption === '') {
             toast({
                 duration: 5000,
                 isClosable: false,
                 status: 'error',
                 title: 'Enter a caption for the image',
             });
-        }else{
+        } else {
             await sendFormData(formData);
         }
 
@@ -100,13 +101,13 @@ export const UploadModal = () => {
 
                 const binary = atob(imageBytes.split(',')[1]);
                 const array = [];
-                for(let i = 0; i < binary.length; i++) {
+                for (let i = 0; i < binary.length; i++) {
                     array.push(binary.charCodeAt(i));
                 }
 
-                response = await uploadImageToS3(new Blob([new Uint8Array(array)], {type: 'image/' + uploadFormDTO.format}),presignedURL, uploadFormDTO.format);
+                response = await uploadImageToS3(new Blob([new Uint8Array(array)], { type: 'image/' + uploadFormDTO.format }), presignedURL, uploadFormDTO.format);
 
-                if (successResponse(response)){
+                if (successResponse(response)) {
                     toast({
                         duration: 5000,
                         isClosable: true,
@@ -123,7 +124,9 @@ export const UploadModal = () => {
                         title: '',
                     };
                     onClose();
-                }else{
+                    //This will call the getImages() in the parent component to refresh the view
+                    refreshImagesArray();
+                } else {
                     toast({
                         duration: 5000,
                         isClosable: true,
@@ -153,7 +156,6 @@ export const UploadModal = () => {
     return (
         <>
             <Button height='3.5rem' leftIcon={<AiOutlineCloudUpload />} minW='15rem' onClick={onOpen}>Upload Images</Button>
-
             <Modal isOpen={isOpen} onClose={onClose} size='2xl'>
                 <ModalOverlay />
                 <ModalContent>
@@ -168,17 +170,19 @@ export const UploadModal = () => {
                             </FormControl>
 
                             <FormControl my={3}>
-                                <FormLabel>Title <span style={{color: 'red'}}>*</span></FormLabel>
+                                <FormLabel>Title <span style={{ color: 'red' }}>*</span></FormLabel>
                                 <Input
                                     name='title'
+                                    placeholder='Sunset'
                                     type='text'
                                 ></Input>
                             </FormControl>
 
                             <FormControl my={3}>
-                                <FormLabel>Caption <span style={{color: 'red'}}>*</span></FormLabel>
+                                <FormLabel>Caption <span style={{ color: 'red' }}>*</span></FormLabel>
                                 <Input
                                     name='caption'
+                                    placeholder='Fun evening with friends'
                                     type='text'
                                 ></Input>
                             </FormControl>
@@ -187,6 +191,7 @@ export const UploadModal = () => {
                                 <FormLabel>Tags</FormLabel>
                                 <Input
                                     name='tags'
+                                    placeholder='Sunset, Hue, Evening, Friends'
                                     type='text'
                                 ></Input>
                             </FormControl>
@@ -195,6 +200,7 @@ export const UploadModal = () => {
                                 <FormLabel>Location</FormLabel>
                                 <Input
                                     name='location'
+                                    placeholder='Blue Mountain'
                                     type='text'
                                 ></Input>
                             </FormControl>

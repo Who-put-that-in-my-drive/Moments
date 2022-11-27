@@ -1,25 +1,59 @@
-import { Box, Button, Flex, Heading, Input, InputGroup, InputLeftElement, Menu, MenuButton, MenuItem, MenuList, SimpleGrid, Spacer, Tab, TabList, Tabs, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Heading, Input, InputGroup, InputLeftElement, Menu, MenuButton, SimpleGrid, Spacer, Text, MenuItemOption, MenuList, MenuOptionGroup } from '@chakra-ui/react';
 import { PhotoCard } from '../components/PhotoCard';
 import { ChevronDownIcon, Search2Icon } from '@chakra-ui/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import useStore from '../store/store';
 import { UserStore } from '../interfaces/UserStore';
 import UploadModal from '../components/UploadModal';
+import { getAllImages } from '../services/api/image-service';
+import { successResponse } from '../utils/ResponseUtils';
+import { Image } from '../interfaces/Image';
 
 const Uploads = () => {
     const store: UserStore = useStore();
     const user = store.user;
     const images = user.images;
-    const [displayImages, setDisplayImages] = useState(images);
+    const [displayImages, setDisplayImages] = useState<Image[]>([]);
+    const [imagesLoadingFlag, setImagesLoadingFlag] = useState(Boolean);
+
+    const getImages = async () => {
+        setImagesLoadingFlag(false);
+        try {
+            const getImagesResponse: any = await getAllImages();
+            if (successResponse(getImagesResponse)) {
+                const imagesRawObj = getImagesResponse.data.data.images;
+                const imagesRawList = Object.values(imagesRawObj);
+                let imagesList: Image[] = imagesRawList.map((imgData: any) => {
+                    return castRawToImage(imgData);
+                });
+                //update the local state (which will be used for local operations like search/sort)
+                //By default it will be sorted by latest image first
+                setDisplayImages([...imagesList].sort(sortByDateDescending));
+                //update the store which is main source of truth
+                //By default it will be sorted by latest image first
+                store.updateImagesList([...imagesList].sort(sortByDateDescending));
+                //fake loading effect
+                setTimeout(() => setImagesLoadingFlag(true), 300);
+            }
+        } catch (error) {
+            setImagesLoadingFlag(true);
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        //Fetch new images and update the local store as well as component state images
+        getImages();
+    }, []);
 
     const onSearchBarChange = (searchQuery: string): void => {
-        let newImageList = [];
+        let newImageList: Image[] = [];
         if (searchQuery.length <= 0) {
             newImageList = images;
         } else {
             images.map(image => {
-                if ((image.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                if ((image.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
                     (image.format.toLowerCase().includes(searchQuery.toLowerCase()))) {
                     newImageList.push(image);
                 }
@@ -28,10 +62,18 @@ const Uploads = () => {
         setDisplayImages(newImageList);
     };
 
+    //Callback coming from image component to delete an image
+    const deleteImage = (imageId: string): void => {
+        let images = [...displayImages];
+        images = images.filter((imageObj: Image) => (imageObj.id != imageId));
+        setDisplayImages([...images]);
+        store.deleteImage(imageId);
+    };
+
     //Helper function to sort images by name A -> Z
-    const sortByNameAtoZ = (a: any, b: any) => {
-        const name1 = a.name.toUpperCase();
-        const name2 = b.name.toUpperCase();
+    const sortByNameAtoZ = (a: Image, b: Image) => {
+        const name1 = a.title.toUpperCase();
+        const name2 = b.title.toUpperCase();
 
         let comparison = 0;
 
@@ -44,9 +86,9 @@ const Uploads = () => {
     };
 
     //Helper function to sort images by name Z -> A
-    const sortByNameZtoA = (a: any, b: any) => {
-        const name1 = a.name.toUpperCase();
-        const name2 = b.name.toUpperCase();
+    const sortByNameZtoA = (a: Image, b: Image) => {
+        const name1 = a.title.toUpperCase();
+        const name2 = b.title.toUpperCase();
 
         let comparison = 0;
 
@@ -58,86 +100,197 @@ const Uploads = () => {
         return comparison;
     };
 
+    // Helper function to sort images by size
+    const sortBySizeAscending = (a: Image, b: Image) => {
+        const size1 = a.size;
+        const size2 = b.size;
+        let comparison = 0;
+
+        if (size1 < size2) {
+            comparison = 1;
+        } else if (size1 > size2) {
+            comparison = -1;
+        }
+        return comparison;
+    };
+    // Helper function to sort images by size
+    const sortBySizeDescending = (a: Image, b: Image) => {
+        const size1 = a.size;
+        const size2 = b.size;
+        let comparison = 0;
+
+        if (size1 > size2) {
+            comparison = 1;
+        } else if (size1 < size2) {
+            comparison = -1;
+        }
+        return comparison;
+    };
+
+    // Helper function to sort images by upload date
+    const sortByDateAscending = (a: Image, b: Image) => {
+        const size1 = a.uploadedDateTime;
+        const size2 = b.uploadedDateTime;
+        let comparison = 0;
+
+        if (size1 > size2) {
+            comparison = 1;
+        } else if (size1 < size2) {
+            comparison = -1;
+        }
+        return comparison;
+    };
+    // Helper function to sort images by upload date
+    const sortByDateDescending = (a: Image, b: Image) => {
+        const size1 = a.uploadedDateTime;
+        const size2 = b.uploadedDateTime;
+        let comparison = 0;
+
+        if (size1 < size2) {
+            comparison = 1;
+        } else if (size1 > size2) {
+            comparison = -1;
+        }
+        return comparison;
+    };
+
     const onSortMenuClick = (e: any): void => {
-        const eventType = e.target.innerHTML;
-        console.log(displayImages);
-        switch (eventType) {
+
+        switch (e) {
         case 'A-Z':
             setDisplayImages([...displayImages].sort(sortByNameAtoZ));
             break;
         case 'Z-A':
             setDisplayImages([...displayImages].sort(sortByNameZtoA));
             break;
-        case 'Last Updated':
-            // Sort by Last updated function will go here
+        case 'File Size desc':
+            setDisplayImages([...displayImages].sort(sortBySizeDescending));
             break;
-        case 'File Size':
-            //Sort by file size function will go here
+        case 'File Size asc':
+            setDisplayImages([...displayImages].sort(sortBySizeAscending));
+            break;
+        case 'Upload date asc':
+            setDisplayImages([...displayImages].sort(sortByDateAscending));
+            break;
+        case 'Upload date desc':
+            setDisplayImages([...displayImages].sort(sortByDateDescending));
             break;
         default:
             break;
         };
     };
+
+    //Helper functions for image information
+
+    //Converts a number to formatted bytes
+    const formatBytes = (bytes: number, decimals = 2): string => {
+        if (!+bytes) return '0 Bytes';
+
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+        return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+    };
+
+    //Returns a formatted date from Epoch seconds
+    const convertEpochToDate = (epochStamp: number): string => {
+        const d = new Date(0);
+        d.setUTCSeconds(epochStamp);
+        return d.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+    };
+
+    const castRawToImage = (obj: any): Image => {
+        const image = {} as Image;
+        image['id'] = obj.data._id;
+        image['title'] = obj.data.title;
+        image['format'] = obj.data.format;
+        image['size'] = parseInt(obj.data.size);
+        image['caption'] = obj.data.caption;
+        image['tags'] = obj.data.tags;
+        image['categories'] = obj.data.categories;
+        image['url'] = obj.presignedUrl;
+        image['location'] = obj.data.location;
+        image['lastModifiedDateTime'] = obj.data.lastModifiedDateTime;
+        image['uploadedDateTime'] = obj.data.uploadedDateTime;
+        return image;
+    };
+
     return (
-        <Flex align={['center', 'normal', 'normal', 'normal']} direction='column' maxH={'100vh'} p={['1rem', '2rem', '4rem', '3rem']} width='100%'>
+        <Flex align={['center', 'normal', 'normal', 'normal']} direction='column' maxH={'100vh'} p={['1rem', '2rem', '2rem', '2rem']} width='100%'>
             <Flex align={['center', 'center', '', '']} >
                 <Box w='100%'>
                     <Heading as='h2' noOfLines={2} paddingBottom={['1rem', '2rem', '3rem']} size={['xl', 'xl', '2xl', '3xl']} textAlign={['center', 'center', 'left', 'left']}>
                         Uploaded Images
                     </Heading>
-                    <Tabs display={'none'} paddingBottom={['1rem', '', '', '3rem']} >
-                        <TabList>
-                            <Tab>All</Tab>
-                            <Tab>Documents</Tab>
-                            <Tab>Photos</Tab>
-                            <Tab>People</Tab>
-                        </TabList>
-                    </Tabs>
-                    <Flex direction={['column', 'column', 'column', 'row']} justifyContent='space-between'>
+                    <Flex direction={['column-reverse', 'column-reverse', 'row', 'row']} justifyContent='space-between'>
                         <Menu>
-                            <MenuButton as={Button} rightIcon={<ChevronDownIcon />} width={['100%', '100%', '100%', '22%']}>
+                            <MenuButton as={Button} disabled={images.length <= 0 ? true : false} rightIcon={<ChevronDownIcon />} width={['100%', '100%', '45%', '32%']}>
                                 Filters
                             </MenuButton>
+                            <br />
                             <MenuList>
-                                <MenuItem onClick={(e) => onSortMenuClick(e)}>A-Z</MenuItem>
-                                <MenuItem onClick={(e) => onSortMenuClick(e)}>Z-A</MenuItem>
-                                <MenuItem onClick={(e) => onSortMenuClick(e)}>Last Updated</MenuItem>
-                                <MenuItem onClick={(e) => onSortMenuClick(e)}>File Size</MenuItem>
+                                <MenuOptionGroup defaultValue='Upload date desc' onChange={(value) => onSortMenuClick(value)} title='Order' type='radio'>
+                                    <MenuItemOption value='A-Z'>A-Z</MenuItemOption>
+                                    <MenuItemOption value='Z-A'>Z-A</MenuItemOption>
+                                    <MenuItemOption value='Upload date desc'>Upload date ↑</MenuItemOption>
+                                    <MenuItemOption value='Upload date asc'>Upload date ↓</MenuItemOption>
+                                    <MenuItemOption value='File Size asc'>File Size ↑</MenuItemOption>
+                                    <MenuItemOption value='File Size desc'>File Size ↓</MenuItemOption>
+                                </MenuOptionGroup>
                             </MenuList>
                         </Menu>
-
                         <Spacer />
 
-                        <Flex width={['100%', '100%', '100%', '22%']}>
+                        <Flex width={['100%', '100%', '45%', '32%']}>
                             <InputGroup>
                                 <InputLeftElement pointerEvents={'none'}>
                                     <Search2Icon />
                                 </InputLeftElement>
-                                <Input onChange={(e) => onSearchBarChange(e.target.value)} placeholder={'Search'} type={'search'} />
+                                <Input disabled={images.length <= 0 ? true : false} onChange={(e) => onSearchBarChange(e.target.value)} placeholder={'Search'} type={'search'} />
                             </InputGroup>
                         </Flex>
                     </Flex>
                 </Box>
-            </Flex>
-            <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '14rem', '15rem']} overflowY='scroll' spacing='2rem'>
-                {displayImages.length > 0 ? displayImages.map(image => {
-                    return (<PhotoCard
-                        date={image.uploadedOn}
-                        format={image.format}
-                        imageURL={image.url}
-                        key={image.id}
-                        name={image.name}
-                        size={image.size} />);
-                }) : <Text as='h1' noOfLines={2} paddingBottom='3rem' size='md'>
-                    No images found. Please upload images.
-                </Text>}
+            </Flex >
+            <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '13rem', '15rem']} overflowY='auto' padding={'1.7rem'} spacing='2rem'>
+                {images.length > 0 ?
+                    (displayImages.length > 0 ? displayImages.map(image => {
+                        return (<PhotoCard
+                            caption={image.caption}
+                            categories={image.categories}
+                            date={convertEpochToDate(parseInt(image.uploadedDateTime))}
+                            deleteImageCallback={deleteImage}
+                            format={image.format}
+                            id={image.id}
+                            imageURL={image.url}
+                            isLoaded={imagesLoadingFlag}
+                            key={image.id}
+                            location={image.location}
+                            size={formatBytes(image.size)}
+                            tags={image.tags}
+                            title={image.title}
+                        />);
+                    }) : <Center>
+                        <Text as='h1' noOfLines={2} paddingBottom='3rem' size='lg'>
+                            No images matched your search!
+                        </Text>
+                    </Center>)
+                    : <Center>
+                        <Text as='h1' noOfLines={2} paddingBottom='3rem' size='lg'>
+                            No images found. Please upload images!
+                        </Text>
+                    </Center>
+                }
             </SimpleGrid>
 
             <Flex float={'right'} height='100%' justifyContent='space-between' paddingTop='2.75rem'>
                 <Spacer />
-                <UploadModal />
+                <UploadModal refreshImagesArray={getImages} />
             </Flex>
-        </Flex>
+        </Flex >
     );
 };
 
