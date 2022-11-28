@@ -1,4 +1,8 @@
 import { MouseEventHandler } from 'react';
+import { Image } from '../interfaces/Image';
+
+
+
 
 export type PhotoCardProps = {
     imageURL: string
@@ -34,8 +38,16 @@ export type SideNavBarProps = {
 };
 
 export type CollectionProps = {
-    images: string[],
+    images: Image[],
+    count: number,
     collectionName: string,
+    thumbnail: string,
+    // displayCollection is for development testing 
+    displayCollection: any[],
+    setShowCollection: (showCollection: number) => void;
+    setDisplayCollection: (displayCollection : any) => void;
+    setCollectionName: (collectionName: string) => void;
+    
 }
 
 export type UploadModalProps = {

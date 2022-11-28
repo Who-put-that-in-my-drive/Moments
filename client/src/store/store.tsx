@@ -1,6 +1,7 @@
 import create from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { UserStore } from '../interfaces/UserStore';
+// eslint-disable-next-line
 import { User } from '../interfaces/User';
 import { Image } from '../interfaces/Image';
 

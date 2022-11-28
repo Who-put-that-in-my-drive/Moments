@@ -2,7 +2,13 @@ import {
     Button,
     FormControl,
     FormLabel,
+    IconButton,
     Input,
+    Menu,
+    MenuButton,
+    MenuItemOption,
+    MenuList,
+    MenuOptionGroup,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -20,6 +26,8 @@ import { successResponse } from '../utils/ResponseUtils';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import DragAndDrop from './DragAndDrop';
 import { UploadModalProps } from '../utils/ComponentPropTypes';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
 
 export interface UploadFormDTO {
     title: string,
@@ -44,7 +52,18 @@ let imageBytes: any;
 export const UploadModal = ({ refreshImagesArray }: UploadModalProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
+    const [inputTags, setInputTags] = useState('');
 
+
+    const handleCollectionMenuChange = (e: any) => {
+        let tagsString = '';
+        e.map((tag: string) => {
+            tagsString = tagsString + tag + ', ';
+        });
+        //removes the last comma from string to avoid displaying empty tags
+        tagsString = tagsString.slice(0, -2);
+        setInputTags(tagsString);
+    };
     // Handle form submit
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -188,11 +207,28 @@ export const UploadModal = ({ refreshImagesArray }: UploadModalProps) => {
                             </FormControl>
 
                             <FormControl my={3}>
-                                <FormLabel>Tags</FormLabel>
+                                <FormLabel flexDirection={'row'} zIndex={1000}>Collection
+                                    <Menu>
+                                        <MenuButton as={IconButton} icon={<ChevronDownIcon />} isActive={isOpen} mx={2} p='1'>
+                                        </MenuButton>
+                                        <MenuList>
+                                            <MenuOptionGroup onChange={(value) => (handleCollectionMenuChange(value))} title='Collections' type='checkbox'>
+                                                <MenuItemOption value='Personal'>Personal</MenuItemOption>
+                                                <MenuItemOption value='Work'>Work</MenuItemOption>
+                                                <MenuItemOption value='Vacation'>Vacation</MenuItemOption>
+                                                <MenuItemOption value='Family'>Family</MenuItemOption>
+                                                <MenuItemOption value='Summer'>Summer</MenuItemOption>
+                                                <MenuItemOption value='School'>School</MenuItemOption>
+                                            </MenuOptionGroup>
+                                        </MenuList>
+                                    </Menu>
+                                </FormLabel>
                                 <Input
+                                    disabled
                                     name='tags'
-                                    placeholder='Sunset, Hue, Evening, Friends'
+                                    placeholder='Personal, Work, Family, Friends...'
                                     type='text'
+                                    value={inputTags}
                                 ></Input>
                             </FormControl>
 

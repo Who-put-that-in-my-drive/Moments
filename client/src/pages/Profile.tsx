@@ -33,6 +33,7 @@ import { useForm } from 'react-hook-form';
 import { deleteUser, updateUser } from '../services/api/user-service';
 import { useRef, useState } from 'react';
 import { successResponse } from '../utils/ResponseUtils';
+// eslint-disable-next-line
 import { User } from '../interfaces/User';
 import { useNavigate } from 'react-router-dom';
 import { uploadAvatarImage, uploadImageToS3 } from '../services/api/image-service';
