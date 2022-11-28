@@ -18,6 +18,7 @@ import {
     EditableInput,
     EditablePreview,
     Flex, IconButton, Image,
+    Link,
     Menu,
     MenuButton,
     MenuItem,
@@ -35,10 +36,11 @@ import {
     useColorMode,
     useDisclosure
 } from '@chakra-ui/react';
+// import { saveAs } from 'file-saver';
 // eslint-disable-next-line
 import { DeleteImageDialogProps, DrawerImageInfoProps, PhotoCardProps } from '../utils/ComponentPropTypes';
 import React from 'react';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { DeleteIcon, DownloadIcon } from '@chakra-ui/icons';
 export const PhotoCard = (props: PhotoCardProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
@@ -68,6 +70,12 @@ export const PhotoCard = (props: PhotoCardProps) => {
                                 icon={<BsThreeDotsVertical />}
                             />
                             <MenuList>
+                                <MenuItem icon={<DownloadIcon />} >
+                                    {/* href={props.imageURL} target='_blank' download={props.title} */}
+                                    <Link >
+                                        Download
+                                    </Link>
+                                </MenuItem>
                                 <DeleteImageDialog deleteImageCallback={props.deleteImageCallback} imageId={props.id} />
                             </MenuList>
                         </Menu>
@@ -141,9 +149,11 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
                 <Flex align='center' alignContent='center' direction={'column'} justifyContent='space-between' marginBottom={['1rem', '1rem', '1rem', '1rem']} paddingTop='5rem' paddingX={'1.5rem'} w='full'>
                     <AspectRatio ratio={16 / 9} w='100%'>
                         <Image
-                            alt={`Picture of ${props.imageInfo.title}`}
-                            rounded='lg'
+                            alt={props.imageInfo.title}
                             src={props.imageInfo.imageURL}
+                            style={{
+                                objectFit: 'contain'
+                            }}
                         />
                     </AspectRatio>
                     <Box paddingY={5}>
