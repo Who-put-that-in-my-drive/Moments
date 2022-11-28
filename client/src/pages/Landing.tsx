@@ -57,10 +57,11 @@ export default function Landing() {
                             bg={'red.400'}
                             color={'white'}
                             rounded={'full'}
+                            style={{ color: 'inherit', textDecoration: 'none' }}
                             to='/login'>
                             Login
                         </Button>
-                        <Button as={ReactLink} rounded={'full'} to='/register' variant='ghost'>
+                        <Button as={ReactLink} rounded={'full'} style={{ color: 'inherit', textDecoration: 'none' }} to='/register' variant='ghost'>
                             Create An Account
                         </Button>
                     </Stack>
