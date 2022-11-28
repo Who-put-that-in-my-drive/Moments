@@ -36,7 +36,6 @@ import {
     useColorMode,
     useDisclosure
 } from '@chakra-ui/react';
-// import { saveAs } from 'file-saver';
 // eslint-disable-next-line
 import { DeleteImageDialogProps, DrawerImageInfoProps, PhotoCardProps } from '../utils/ComponentPropTypes';
 import React from 'react';
@@ -70,12 +69,11 @@ export const PhotoCard = (props: PhotoCardProps) => {
                                 icon={<BsThreeDotsVertical />}
                             />
                             <MenuList>
-                                <MenuItem icon={<DownloadIcon />} >
-                                    {/* href={props.imageURL} target='_blank' download={props.title} */}
-                                    <Link >
+                                <Link download href={props.imageURL} style={{ color: 'inherit', textDecoration: 'none' }} target='_blank'>
+                                    <MenuItem icon={<DownloadIcon />} >
                                         Download
-                                    </Link>
-                                </MenuItem>
+                                    </MenuItem>
+                                </Link>
                                 <DeleteImageDialog deleteImageCallback={props.deleteImageCallback} imageId={props.id} />
                             </MenuList>
                         </Menu>
