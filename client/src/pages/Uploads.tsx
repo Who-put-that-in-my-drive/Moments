@@ -288,7 +288,7 @@ const Uploads = () => {
                     </Flex>
                 </Box>
             </Flex >
-            <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '13rem', '15rem']} overflowY='auto' spacing='2rem'>
+            <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['18rem', '15rem', '13rem', '15rem']} overflowY='auto' spacing='2rem'>
                 {images.length > 0 ?
                     (displayImages.length > 0 ? displayImages.map(image => {
                         return (<PhotoCard
