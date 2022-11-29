@@ -45,3 +45,10 @@ export const uploadImageToS3 = async (image: any, presignedUrl: string, imageExt
 export const getAllImages = async (): Promise<Response> => {
     return await axios.get('/images');
 };
+
+export const deleteImage = async (imageId: string): Promise<Response> => {
+    const data = {imageId: imageId};
+    console.log(data);
+    //Edit this part according to your endpoint in backend 
+    return await axios.delete('/image/');
+};
