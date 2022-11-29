@@ -16,6 +16,7 @@ import { s3Client } from '../../utilities/s3Client';
 import {getCurrentDateTime, getEmail} from '../../utilities/server';
 import ServerResponse from '../../utilities/serverResponse';
 import {DeleteImageDTO} from '../../interfaces/image/DeleteImageDTO';
+import {UpdateImageDTO} from '../../interfaces/image/UpdateImageDTO';
 
 AWS.config.update({accessKeyId: process.env.ACCESS_KEY_ID, secretAccessKey: process.env.SECRET_ACCESS_KEY});
 AWS.config.update({region: 'us-east-1'});
@@ -123,7 +124,7 @@ router
     .put(authenticateToken, async (req: Request, res: Response) => {
         try {
             const email = getEmail(req);
-            const updateImageDTO: UploadImageDTO = req.body;
+            const updateImageDTO: UpdateImageDTO = req.body;
 
             if (await Image.findOneAndUpdate({_id: updateImageDTO.id, email}, {...updateImageDTO})) {
                 return res.status(204).json(new ServerResponse('Image Updated Successfully'));
