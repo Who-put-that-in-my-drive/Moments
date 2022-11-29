@@ -6,9 +6,13 @@ import { useEffect, useState } from 'react';
 import useStore from '../store/store';
 import { UserStore } from '../interfaces/UserStore';
 import UploadModal from '../components/UploadModal';
-import { getAllImages, deleteImage } from '../services/api/image-service';
+import { deleteImage, getAllImages } from '../services/api/image-service';
 import { successResponse } from '../utils/ResponseUtils';
 import { Image } from '../interfaces/Image';
+
+export type DeleteImageDTO = {
+    id: string;
+}
 
 const Uploads = () => {
     const store: UserStore = useStore();
@@ -66,7 +70,9 @@ const Uploads = () => {
     //Callback coming from image component to delete an image
     const deleteImageHandler = async (imageId: string) => {
         try {
-            const deleteImagePromise = await deleteImage(imageId);
+            const deleteImageObj: DeleteImageDTO = { id: imageId };
+            console.log(deleteImageObj);
+            const deleteImagePromise = await deleteImage(deleteImageObj);
             if (successResponse(deleteImagePromise)) {
                 let images = [...displayImages];
                 images = images.filter((imageObj: Image) => (imageObj.id != imageId));
@@ -282,7 +288,7 @@ const Uploads = () => {
                     </Flex>
                 </Box>
             </Flex >
-            <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '13rem', '15rem']} overflowY='auto' padding={'1.7rem'} spacing='2rem'>
+            <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '13rem', '15rem']} overflowY='auto' spacing='2rem'>
                 {images.length > 0 ?
                     (displayImages.length > 0 ? displayImages.map(image => {
                         return (<PhotoCard
