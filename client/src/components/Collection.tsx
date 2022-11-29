@@ -1,6 +1,6 @@
 import {
     AspectRatio,
-    Box, 
+    Box,
     Flex,
     Image,
     Text,
@@ -8,21 +8,19 @@ import {
 // eslint-disable-next-line no-unused-vars
 import { CollectionProps } from '../utils/ComponentPropTypes';
 
-export const Collection = ({images, collectionName, setDisplayCollection, count, thumbnail, displayCollection, setShowCollection, setCollectionName}: CollectionProps ) => {
+export const Collection = ({ images, collectionName, setDisplayCollection, count, thumbnail, setShowCollection, setCollectionName }: CollectionProps) => {
 
     const onClickCollection = () => {
         setShowCollection(1);
         setDisplayCollection(images);
         setCollectionName(collectionName);
-        // displayCollection is for development testing 
-        console.log(displayCollection);
     };
 
     return (
         <>
-            
+
             <Flex direction={'column'} justifyContent="center" marginLeft={'0.8'}>
-                <AspectRatio minW='15rem'  ratio={16 / 9}>
+                <AspectRatio minW='15rem' ratio={16 / 9}>
                     <Image
                         _hover={{ cursor: 'pointer' }}
                         alt={`Collection thumbnail for ${collectionName}`}
