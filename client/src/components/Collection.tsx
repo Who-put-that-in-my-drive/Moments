@@ -8,7 +8,7 @@ import {
 // eslint-disable-next-line no-unused-vars
 import { CollectionProps } from '../utils/ComponentPropTypes';
 
-export const Collection = ({ images, collectionName, setDisplayCollection, count, thumbnail, displayCollection, setShowCollection, setCollectionName }: CollectionProps) => {
+export const Collection = ({ images, collectionName, setDisplayCollection, count, thumbnail, setShowCollection, setCollectionName }: CollectionProps) => {
 
 
     const onClickCollection = () => {
