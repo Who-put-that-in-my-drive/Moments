@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { UploadFormDTO } from '../../components/UploadModal';
 import { AvatarFormatDTO } from '../../pages/Profile';
+import { DeleteImageDTO } from '../../pages/Uploads';
 import { getUrl } from '../../utils/WebsiteUtils';
 
 axios.defaults.baseURL = getUrl();
@@ -44,4 +45,8 @@ export const uploadImageToS3 = async (image: any, presignedUrl: string, imageExt
 
 export const getAllImages = async (): Promise<Response> => {
     return await axios.get('/images');
+};
+
+export const deleteImage = async (imageIDObj: DeleteImageDTO): Promise<Response> => {
+    return await axios.delete('/image', { data: imageIDObj });
 };

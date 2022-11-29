@@ -1,4 +1,4 @@
-import { Box, Button, Center, Flex, Heading, Input, InputGroup, InputLeftElement, Menu, MenuButton, SimpleGrid, Spacer, Text, MenuItemOption, MenuList, MenuOptionGroup } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Heading, Input, InputGroup, InputLeftElement, Menu, MenuButton, SimpleGrid, Spacer, Text, MenuItemOption, MenuList, MenuOptionGroup, useToast } from '@chakra-ui/react';
 import { PhotoCard } from '../components/PhotoCard';
 import { ChevronDownIcon, Search2Icon } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
@@ -6,9 +6,13 @@ import { useEffect, useState } from 'react';
 import useStore from '../store/store';
 import { UserStore } from '../interfaces/UserStore';
 import UploadModal from '../components/UploadModal';
-import { getAllImages } from '../services/api/image-service';
+import { deleteImage, getAllImages } from '../services/api/image-service';
 import { successResponse } from '../utils/ResponseUtils';
 import { Image } from '../interfaces/Image';
+
+export type DeleteImageDTO = {
+    id: string;
+}
 
 const Uploads = () => {
     const store: UserStore = useStore();
@@ -16,6 +20,7 @@ const Uploads = () => {
     const images = user.images;
     const [displayImages, setDisplayImages] = useState<Image[]>([]);
     const [imagesLoadingFlag, setImagesLoadingFlag] = useState(Boolean);
+    const toast = useToast();
 
     const getImages = async () => {
         setImagesLoadingFlag(false);
@@ -34,7 +39,7 @@ const Uploads = () => {
                 //By default it will be sorted by latest image first
                 store.updateImagesList([...imagesList].sort(sortByDateDescending));
                 //fake loading effect
-                setTimeout(() => setImagesLoadingFlag(true), 300);
+                setTimeout(() => setImagesLoadingFlag(true), 200);
             }
         } catch (error) {
             setImagesLoadingFlag(true);
@@ -63,11 +68,40 @@ const Uploads = () => {
     };
 
     //Callback coming from image component to delete an image
-    const deleteImage = (imageId: string): void => {
-        let images = [...displayImages];
-        images = images.filter((imageObj: Image) => (imageObj.id != imageId));
-        setDisplayImages([...images]);
-        store.deleteImage(imageId);
+    const deleteImageHandler = async (imageId: string) => {
+        try {
+            const deleteImageObj: DeleteImageDTO = { id: imageId };
+            console.log(deleteImageObj);
+            const deleteImagePromise = await deleteImage(deleteImageObj);
+            if (successResponse(deleteImagePromise)) {
+                let images = [...displayImages];
+                images = images.filter((imageObj: Image) => (imageObj.id != imageId));
+                //Update local state for images
+                setDisplayImages([...images]);
+                //Update store for latest images list
+                store.deleteImage(imageId);
+                toast({
+                    duration: 5000,
+                    isClosable: true,
+                    status: 'success',
+                    title: 'Image deleted successfully!',
+                });
+            } else {
+                toast({
+                    duration: 5000,
+                    isClosable: true,
+                    status: 'error',
+                    title: 'Something went wrong',
+                });
+            }
+        } catch (error) {
+            toast({
+                duration: 5000,
+                isClosable: true,
+                status: 'error',
+                title: error + '',
+            });
+        }
     };
 
     //Helper function to sort images by name A -> Z
@@ -254,14 +288,14 @@ const Uploads = () => {
                     </Flex>
                 </Box>
             </Flex >
-            <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '13rem', '15rem']} overflowY='auto' padding={'1.7rem'} spacing='2rem'>
+            <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '13rem', '15rem']} overflowY='auto' spacing='2rem'>
                 {images.length > 0 ?
                     (displayImages.length > 0 ? displayImages.map(image => {
                         return (<PhotoCard
                             caption={image.caption}
                             categories={image.categories}
                             date={convertEpochToDate(parseInt(image.uploadedDateTime))}
-                            deleteImageCallback={deleteImage}
+                            deleteImageCallback={deleteImageHandler}
                             format={image.format}
                             id={image.id}
                             imageURL={image.url}
