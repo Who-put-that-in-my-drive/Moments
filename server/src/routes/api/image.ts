@@ -127,7 +127,7 @@ router
             const updateImageDTO: UpdateImageDTO = req.body;
 
             if (await Image.findOneAndUpdate({_id: updateImageDTO.id, email}, {...updateImageDTO})) {
-                return res.status(204).json(new ServerResponse('Image Updated Successfully'));
+                return res.status(200).json(new ServerResponse('Image Updated Successfully'));
             } else {
                 return res.status(400).json(new ServerResponse('Bad Request'));
             }

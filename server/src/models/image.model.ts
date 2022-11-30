@@ -30,11 +30,7 @@ const imageSchema = new Schema(
             maxLength: 120
         },
         tags: {
-            type: [String],
-            required: true
-        },
-        categories: {
-            type: [String],
+            type: String,
             required: true
         },
         location: {

@@ -5,7 +5,6 @@ export interface Image {
     size: number,
     caption: string,
     tags: string,
-    categories: string,
     url: string,
     location: string,
     lastModifiedDateTime: string,
