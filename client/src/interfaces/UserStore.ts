@@ -1,3 +1,4 @@
+import { UpdateImageFormDTO } from '../components/PhotoCard';
 import { User } from './User';
 
 export interface UserStore {
@@ -13,4 +14,5 @@ export interface UserStore {
     deleteImage: (imageId: string) => void
     addImage: (image: any) => void
     updateProfilePicture: (pictureURL: string) => void
+    updateImageInfo: (newImageInfo: UpdateImageFormDTO) => void
 }
