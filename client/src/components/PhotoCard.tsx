@@ -276,8 +276,7 @@ const EditImageInfoDialog = (props: EditImageInfoDialogProps) => {
         //Update data obj with id attribute
         data.id = props.id;
         try {
-            const updateImagePromise: any = updateImageInfo(data);
-            console.log(updateImagePromise);
+            const updateImagePromise: any = await updateImageInfo(data);
             if (successResponse(updateImagePromise)) {
                 //Update the local store if successful
                 store.updateImageInfo(data);
@@ -317,22 +316,22 @@ const EditImageInfoDialog = (props: EditImageInfoDialogProps) => {
                     <form onSubmit={handleSubmit(handleSubmitForm)}>
                         <ModalBody>
                             <FormControl isInvalid={Boolean(errors.title)} p={2} >
-                                <FormLabel>Title</FormLabel>
-                                <Input {...register('title', { value: props.title })} shadow={'md'} type='string' />
+                                <FormLabel>Title <span style={{ color: 'red' }}>*</span></FormLabel>
+                                <Input {...register('title', { required: 'Please enter a valid title', value: props.title, })} shadow={'md'} type='string' />
                                 <FormErrorMessage>{errors.title && errors.title.message}</FormErrorMessage>
                             </FormControl>
-                            <FormControl isInvalid={Boolean(errors.title)} p={2} >
-                                <FormLabel>Caption</FormLabel>
-                                <Input {...register('caption', { value: props.caption })} shadow={'md'} type='string' />
+                            <FormControl isInvalid={Boolean(errors.caption)} p={2} >
+                                <FormLabel>Caption <span style={{ color: 'red' }}>*</span></FormLabel>
+                                <Input {...register('caption', { required: 'Please enter a valid caption', value: props.caption, })} shadow={'md'} type='string' />
                                 <FormErrorMessage>{errors.caption && errors.caption.message}</FormErrorMessage>
                             </FormControl>
-                            <FormControl isInvalid={Boolean(errors.title)} p={2} >
+                            <FormControl isInvalid={Boolean(errors.tags)} p={2} >
                                 <FormLabel>Tags
                                     <Menu>
-                                        <MenuButton as={IconButton} colorScheme='gray' icon={<ChevronDownIcon />} isActive={isOpen} mx={2} size='xs' variant='outline'>
+                                        <MenuButton as={IconButton} colorScheme='gray' icon={<ChevronDownIcon />} isActive={isOpen} mx={2} size='xs' variant='solid'>
                                         </MenuButton>
                                         <MenuList>
-                                            <MenuOptionGroup defaultValue={props.tags.length === 0 ? undefined : [props.tags]} onChange={(value) => (handleCollectionMenuChange(value))} title='Collections' type='checkbox'>
+                                            <MenuOptionGroup defaultValue={props.tags?.length === 0 ? undefined : props.tags.split(',')} onChange={(value) => (handleCollectionMenuChange(value))} title='Collections' type='checkbox'>
                                                 <MenuItemOption value='Personal'>Personal</MenuItemOption>
                                                 <MenuItemOption value='Work'>Work</MenuItemOption>
                                                 <MenuItemOption value='Vacation'>Vacation</MenuItemOption>
@@ -345,7 +344,7 @@ const EditImageInfoDialog = (props: EditImageInfoDialogProps) => {
                                 <Input disabled {...register('tags', { value: props.tags })} shadow={'md'} type='string' />
                                 <FormErrorMessage>{errors.tags && errors.tags.message}</FormErrorMessage>
                             </FormControl>
-                            <FormControl isInvalid={Boolean(errors.title)} p={2} >
+                            <FormControl isInvalid={Boolean(errors.location)} p={2} >
                                 <FormLabel>Location</FormLabel>
                                 <Input {...register('location', { value: props.location })} shadow={'md'} type='string' />
                                 <FormErrorMessage>{errors.location && errors.location.message}</FormErrorMessage>
