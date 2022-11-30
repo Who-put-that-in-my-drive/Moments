@@ -209,7 +209,7 @@ export const UploadModal = ({ refreshImagesArray }: UploadModalProps) => {
                             <FormControl my={3}>
                                 <FormLabel flexDirection={'row'} zIndex={1000}>Collection
                                     <Menu>
-                                        <MenuButton as={IconButton} icon={<ChevronDownIcon />} isActive={isOpen} mx={2} p='1'>
+                                        <MenuButton as={IconButton} colorScheme='gray' icon={<ChevronDownIcon />} isActive={isOpen} mx={2} size='xs' variant='outline'>
                                         </MenuButton>
                                         <MenuList>
                                             <MenuOptionGroup onChange={(value) => (handleCollectionMenuChange(value))} title='Collections' type='checkbox'>

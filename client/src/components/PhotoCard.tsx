@@ -329,7 +329,7 @@ const EditImageInfoDialog = (props: EditImageInfoDialogProps) => {
                             <FormControl isInvalid={Boolean(errors.title)} p={2} >
                                 <FormLabel>Tags
                                     <Menu>
-                                        <MenuButton as={IconButton} icon={<ChevronDownIcon />} isActive={isOpen} mx={2} p='1'>
+                                        <MenuButton as={IconButton} colorScheme='gray' icon={<ChevronDownIcon />} isActive={isOpen} mx={2} size='xs' variant='outline'>
                                         </MenuButton>
                                         <MenuList>
                                             <MenuOptionGroup defaultValue={props.tags.length === 0 ? undefined : [props.tags]} onChange={(value) => (handleCollectionMenuChange(value))} title='Collections' type='checkbox'>
