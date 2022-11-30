@@ -243,7 +243,7 @@ const Uploads = () => {
         image['format'] = obj.data.format;
         image['size'] = parseInt(obj.data.size);
         image['caption'] = obj.data.caption;
-        image['tags'] = obj.data.tags;
+        image['tags'] = obj.data.tags[0];
         image['categories'] = obj.data.categories;
         image['url'] = obj.presignedUrl;
         image['location'] = obj.data.location;

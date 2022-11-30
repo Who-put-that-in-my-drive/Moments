@@ -59,4 +59,11 @@ export type DeleteImageDialogProps = {
     deleteImageCallback: any
 }
 
+export type EditImageInfoDialogProps = {
+    id: string
+    title: string
+    caption: string,
+    tags: string,
+    location: string
+}
 export {};
