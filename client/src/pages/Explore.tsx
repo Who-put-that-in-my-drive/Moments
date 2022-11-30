@@ -119,7 +119,7 @@ export const Explore = () => {
                     </Heading>
                     <Flex alignItems='center' direction={['column', 'column', 'row', 'row']} justifyContent={'space-between'}>
                         <Heading as='h2' fontWeight='normal' noOfLines={1} pb={['1rem', '1rem', '', '']} size={['sm', 'md', 'lg', 'xl']} textAlign='left'>
-                            Collections{showCollection === 0 ? null : <>: {collectionName} </>}
+                            Collections{showCollection === 0 ? null : <>: <span style={{fontWeight: '500'}}>{collectionName}</span> </>}
                         </Heading>
                         <Spacer display={['none', 'none', 'block', 'block']} />
                         <InputGroup maxWidth={['100%', '100%', '16rem', '16rem']}>
