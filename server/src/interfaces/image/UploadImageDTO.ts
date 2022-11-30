@@ -3,8 +3,7 @@ export interface UploadImageDTO {
     format: string,
     size: string,
     caption: string,
-    tags: string[],
-    categories: string[],
+    tags: string,
     ownerId: string,
     location: string,
 }

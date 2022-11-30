@@ -81,7 +81,6 @@ router
                 size: uploadImageDTO.size,
                 caption: uploadImageDTO.caption,
                 tags: uploadImageDTO.tags,
-                categories: uploadImageDTO.categories,
                 location: uploadImageDTO.location || 'N/A',
                 lastModifiedDateTime: dateTime,
                 uploadedDateTime: dateTime,

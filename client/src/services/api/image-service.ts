@@ -53,13 +53,6 @@ export const deleteImage = async (imageIDObj: DeleteImageDTO): Promise<Response>
 };
 
 export const updateImageInfo = async (newImageInfo: UpdateImageFormDTO): Promise<Response> => {
-    const updatedTags = [];
-    if (newImageInfo.tags.length > 0){
-        updatedTags.push(newImageInfo.tags);
-    }
-    const newImageInfoAlt = {
-        ...newImageInfo,
-        tags: updatedTags
-    };
-    return await axios.put('/image', newImageInfoAlt);
+    newImageInfo.tags = newImageInfo.tags.toString();
+    return await axios.put('/image', newImageInfo);
 };

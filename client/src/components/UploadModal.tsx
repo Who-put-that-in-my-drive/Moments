@@ -34,7 +34,7 @@ export interface UploadFormDTO {
     format: any,
     size: string,
     caption: string,
-    tags: string[],
+    tags: string,
     location: string,
 }
 
@@ -43,7 +43,7 @@ let formData = {
     format: '',
     location: '',
     size: '',
-    tags: [],
+    tags: '',
     title: '',
 };
 
@@ -139,7 +139,7 @@ export const UploadModal = ({ refreshImagesArray }: UploadModalProps) => {
                         format: '',
                         location: '',
                         size: '',
-                        tags: [],
+                        tags: '',
                         title: '',
                     };
                     onClose();

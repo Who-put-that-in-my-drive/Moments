@@ -33,7 +33,6 @@ type ImageDto = {
     size: number,
     caption: string,
     tags: string,
-    categories: string,
     url: string,
     location: string,
     lastModifiedDateTime: string,
@@ -146,7 +145,6 @@ export const Explore = () => {
                             return (
                                 <PhotoCard
                                     caption={image.caption}
-                                    categories={image.categories}
                                     date={'Nov 9, 2022'}
                                     deleteImageCallback={deleteImage}
                                     format={image.format}

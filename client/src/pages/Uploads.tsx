@@ -297,7 +297,6 @@ const Uploads = () => {
                             (displayImages.length > 0 ? displayImages.map(image => {
                                 return (<PhotoCard
                                     caption={image.caption}
-                                    categories={image.categories}
                                     date={convertEpochToDate(parseInt(image.uploadedDateTime))}
                                     deleteImageCallback={deleteImageHandler}
                                     format={image.format}
