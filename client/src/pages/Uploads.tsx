@@ -1,4 +1,4 @@
-import { Box, Button, Center, Flex, Heading, Input, InputGroup, InputLeftElement, Menu, MenuButton, SimpleGrid, Spacer, Text, MenuItemOption, MenuList, MenuOptionGroup, useToast } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Heading, Input, InputGroup, InputLeftElement, Menu, MenuButton, SimpleGrid, Spacer, Text, MenuItemOption, MenuList, MenuOptionGroup, useToast, Spinner } from '@chakra-ui/react';
 import { PhotoCard } from '../components/PhotoCard';
 import { ChevronDownIcon, Search2Icon } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
@@ -288,37 +288,42 @@ const Uploads = () => {
                     </Flex>
                 </Box>
             </Flex >
-            <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['18rem', '15rem', '13rem', '15rem']} overflowY='auto' spacing='2rem'>
-                {images.length > 0 ?
-                    (displayImages.length > 0 ? displayImages.map(image => {
-                        return (<PhotoCard
-                            caption={image.caption}
-                            categories={image.categories}
-                            date={convertEpochToDate(parseInt(image.uploadedDateTime))}
-                            deleteImageCallback={deleteImageHandler}
-                            format={image.format}
-                            id={image.id}
-                            imageURL={image.url}
-                            isLoaded={imagesLoadingFlag}
-                            key={image.id}
-                            location={image.location}
-                            size={formatBytes(image.size)}
-                            tags={image.tags}
-                            title={image.title}
-                        />);
-                    }) : <Center>
-                        <Text as='h1' noOfLines={2} paddingBottom='3rem' size='lg'>
-                            No images matched your search!
-                        </Text>
-                    </Center>)
-                    : <Center>
-                        <Text as='h1' noOfLines={2} paddingBottom='3rem' size='lg'>
-                            No images found. Please upload images!
-                        </Text>
-                    </Center>
-                }
-            </SimpleGrid>
-
+            {
+                !imagesLoadingFlag ?
+                    <Center height='10rem'>
+                        <Spinner color='blue.500' size='xl' />
+                    </Center> :
+                    <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['18rem', '15rem', '13rem', '15rem']} overflowY='auto' spacing='2rem'>
+                        {images.length > 0 ?
+                            (displayImages.length > 0 ? displayImages.map(image => {
+                                return (<PhotoCard
+                                    caption={image.caption}
+                                    categories={image.categories}
+                                    date={convertEpochToDate(parseInt(image.uploadedDateTime))}
+                                    deleteImageCallback={deleteImageHandler}
+                                    format={image.format}
+                                    id={image.id}
+                                    imageURL={image.url}
+                                    isLoaded={imagesLoadingFlag}
+                                    key={image.id}
+                                    location={image.location}
+                                    size={formatBytes(image.size)}
+                                    tags={image.tags}
+                                    title={image.title}
+                                />);
+                            }) : <Center>
+                                <Text as='h1' noOfLines={2} paddingBottom='3rem' size='lg'>
+                                    No images matched your search!
+                                </Text>
+                            </Center>)
+                            : <Center>
+                                <Text as='h1' noOfLines={2} paddingBottom='3rem' size='lg'>
+                                    No images found. Please upload images!
+                                </Text>
+                            </Center>
+                        }
+                    </SimpleGrid>
+            }
             <Flex float={'right'} height='100%' justifyContent='space-between' paddingTop='2.75rem'>
                 <Spacer />
                 <UploadModal refreshImagesArray={getImages} />
