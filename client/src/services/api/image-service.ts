@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { UpdateImageFormDTO } from '../../components/PhotoCard';
 import { UploadFormDTO } from '../../components/UploadModal';
 import { AvatarFormatDTO } from '../../pages/Profile';
 import { DeleteImageDTO } from '../../pages/Uploads';
@@ -49,4 +50,16 @@ export const getAllImages = async (): Promise<Response> => {
 
 export const deleteImage = async (imageIDObj: DeleteImageDTO): Promise<Response> => {
     return await axios.delete('/image', { data: imageIDObj });
+};
+
+export const updateImageInfo = async (newImageInfo: UpdateImageFormDTO): Promise<Response> => {
+    const updatedTags = [];
+    if (newImageInfo.tags.length > 0){
+        updatedTags.push(newImageInfo.tags);
+    }
+    const newImageInfoAlt = {
+        ...newImageInfo,
+        tags: updatedTags
+    };
+    return await axios.put('/image', newImageInfoAlt);
 };
