@@ -158,9 +158,6 @@ export default function Post() {
                                             </Tag>
                                         </HStack>
 
-                                        <Text as={'u'} color={colorMode === 'light' ? 'white' : 'black'}>
-                                            Categories
-                                        </Text>
                                         <HStack spacing={2}>
                                             <Tag
                                                 colorScheme={'orange'}

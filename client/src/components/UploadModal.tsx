@@ -2,7 +2,13 @@ import {
     Button,
     FormControl,
     FormLabel,
+    IconButton,
     Input,
+    Menu,
+    MenuButton,
+    MenuItemOption,
+    MenuList,
+    MenuOptionGroup,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -19,13 +25,16 @@ import { uploadImage, uploadImageToS3 } from '../services/api/image-service';
 import { successResponse } from '../utils/ResponseUtils';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import DragAndDrop from './DragAndDrop';
+import { UploadModalProps } from '../utils/ComponentPropTypes';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
 
 export interface UploadFormDTO {
     title: string,
     format: any,
     size: string,
     caption: string,
-    tags: string[],
+    tags: string,
     location: string,
 }
 
@@ -34,16 +43,27 @@ let formData = {
     format: '',
     location: '',
     size: '',
-    tags: [],
+    tags: '',
     title: '',
 };
 
 let imageBytes: any;
 
-export const UploadModal = () => {
+export const UploadModal = ({ refreshImagesArray }: UploadModalProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
+    const [inputTags, setInputTags] = useState('');
 
+
+    const handleCollectionMenuChange = (e: any) => {
+        let tagsString = '';
+        e.map((tag: string) => {
+            tagsString = tagsString + tag + ', ';
+        });
+        //removes the last comma from string to avoid displaying empty tags
+        tagsString = tagsString.slice(0, -2);
+        setInputTags(tagsString);
+    };
     // Handle form submit
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -79,7 +99,6 @@ export const UploadModal = () => {
                 title: 'Enter a caption for the image',
             });
         } else {
-            console.log(formData);
             await sendFormData(formData);
         }
 
@@ -120,10 +139,12 @@ export const UploadModal = () => {
                         format: '',
                         location: '',
                         size: '',
-                        tags: [],
+                        tags: '',
                         title: '',
                     };
                     onClose();
+                    //This will call the getImages() in the parent component to refresh the view
+                    refreshImagesArray();
                 } else {
                     toast({
                         duration: 5000,
@@ -154,7 +175,6 @@ export const UploadModal = () => {
     return (
         <>
             <Button height='3.5rem' leftIcon={<AiOutlineCloudUpload />} minW='15rem' onClick={onOpen}>Upload Images</Button>
-
             <Modal isOpen={isOpen} onClose={onClose} size='2xl'>
                 <ModalOverlay />
                 <ModalContent>
@@ -172,6 +192,7 @@ export const UploadModal = () => {
                                 <FormLabel>Title <span style={{ color: 'red' }}>*</span></FormLabel>
                                 <Input
                                     name='title'
+                                    placeholder='Sunset'
                                     type='text'
                                 ></Input>
                             </FormControl>
@@ -180,15 +201,34 @@ export const UploadModal = () => {
                                 <FormLabel>Caption <span style={{ color: 'red' }}>*</span></FormLabel>
                                 <Input
                                     name='caption'
+                                    placeholder='Fun evening with friends'
                                     type='text'
                                 ></Input>
                             </FormControl>
 
                             <FormControl my={3}>
-                                <FormLabel>Tags</FormLabel>
+                                <FormLabel>Collection
+                                    <Menu>
+                                        <MenuButton as={IconButton} colorScheme='gray' icon={<ChevronDownIcon />} isActive={isOpen} mx={2} size='xs' variant='solid'>
+                                        </MenuButton>
+                                        <MenuList>
+                                            <MenuOptionGroup onChange={(value) => (handleCollectionMenuChange(value))} title='Collections' type='checkbox'>
+                                                <MenuItemOption value='Personal'>Personal</MenuItemOption>
+                                                <MenuItemOption value='Work'>Work</MenuItemOption>
+                                                <MenuItemOption value='Vacation'>Vacation</MenuItemOption>
+                                                <MenuItemOption value='Family'>Family</MenuItemOption>
+                                                <MenuItemOption value='Summer'>Summer</MenuItemOption>
+                                                <MenuItemOption value='School'>School</MenuItemOption>
+                                            </MenuOptionGroup>
+                                        </MenuList>
+                                    </Menu>
+                                </FormLabel>
                                 <Input
+                                    disabled
                                     name='tags'
+                                    placeholder='Personal, Work, Family, Friends...'
                                     type='text'
+                                    value={inputTags}
                                 ></Input>
                             </FormControl>
 
@@ -196,6 +236,7 @@ export const UploadModal = () => {
                                 <FormLabel>Location</FormLabel>
                                 <Input
                                     name='location'
+                                    placeholder='Blue Mountain'
                                     type='text'
                                 ></Input>
                             </FormControl>

@@ -23,6 +23,7 @@ import { Link as ReactLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo_transparent.png';
 import { login } from '../services/api/auth-service';
 import useStore from '../store/store';
+// eslint-disable-next-line
 import { User } from '../interfaces/User';
 import { UserStore } from '../interfaces/UserStore';
 import { successResponse } from '../utils/ResponseUtils';

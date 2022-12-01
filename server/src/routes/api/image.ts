@@ -15,13 +15,15 @@ import User from '../../models/user.model';
 import { s3Client } from '../../utilities/s3Client';
 import {getCurrentDateTime, getEmail} from '../../utilities/server';
 import ServerResponse from '../../utilities/serverResponse';
+import {DeleteImageDTO} from '../../interfaces/image/DeleteImageDTO';
+import {UpdateImageDTO} from '../../interfaces/image/UpdateImageDTO';
 
 AWS.config.update({accessKeyId: process.env.ACCESS_KEY_ID, secretAccessKey: process.env.SECRET_ACCESS_KEY});
 AWS.config.update({region: 'us-east-1'});
 const s3: AWS.S3 = new AWS.S3();
 
 const myBucket = 'moments-gallery'; // Moments Bucket
-const signedUrlExpireSeconds = 3600; // 1 hour
+const signedUrlExpireSeconds = 86400; // 24 hours
 
 const router = express.Router();
 
@@ -79,7 +81,6 @@ router
                 size: uploadImageDTO.size,
                 caption: uploadImageDTO.caption,
                 tags: uploadImageDTO.tags,
-                categories: uploadImageDTO.categories,
                 location: uploadImageDTO.location || 'N/A',
                 lastModifiedDateTime: dateTime,
                 uploadedDateTime: dateTime,
@@ -89,7 +90,13 @@ router
 
             if (await newImage.save()) {
                 // @ts-ignore
-                const user: UserModel = await User.findOneAndUpdate({email}, { '$set': { images: {[imageId]: imageId } } });
+                const user: UserModel = await User.findOne({email});
+
+                // @ts-ignore
+                const images = Object.fromEntries(user._doc.images);
+                images[imageId] = imageId;
+
+                await User.updateOne({email}, { '$set': { images } });
 
                 const command = new PutObjectCommand({
                     Bucket: myBucket,
@@ -113,15 +120,43 @@ router
             return res.status(500).json(new ServerResponse(String(e)));
         }
     })
-    .put(authenticateToken, (req: Request, res: Response) => {
+    .put(authenticateToken, async (req: Request, res: Response) => {
         try {
+            const email = getEmail(req);
+            const updateImageDTO: UpdateImageDTO = req.body;
+
+            if (updateImageDTO.title === '' || updateImageDTO.caption === '') {
+                return res.status(400).json(new ServerResponse('Title/Caption is Required'));
+            }
+
+            if (await Image.findOneAndUpdate({_id: updateImageDTO.id, email}, {...updateImageDTO})) {
+                return res.status(200).json(new ServerResponse('Image Updated Successfully'));
+            } else {
+                return res.status(400).json(new ServerResponse('Bad Request'));
+            }
         } catch (e) {
             console.error(e);
             return res.status(500).json(new ServerResponse(String(e)));
         }
     })
-    .delete(authenticateToken, (req: Request, res: Response) => {
+    .delete(authenticateToken, async (req: Request, res: Response) => {
         try {
+            const email = getEmail(req);
+            const imageId  = (req.body as DeleteImageDTO).id;
+
+            // @ts-ignore
+            const user: UserModel = await User.findOne({email});
+
+            // @ts-ignore
+            const images = Object.fromEntries(user._doc.images);
+
+            delete images[imageId];
+
+            if (await Image.deleteOne({_id: imageId}) && await User.updateOne({email}, {'$set': {images}})) {
+                return res.status(204).json(new ServerResponse('Image Deleted Successfully'));
+            } else {
+                return res.status(400).json(new ServerResponse('Bad Request'));
+            }
         } catch (e) {
             console.error(e);
             return res.status(500).json(new ServerResponse(String(e)));
