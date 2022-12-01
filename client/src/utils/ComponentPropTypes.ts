@@ -14,7 +14,6 @@ export type PhotoCardProps = {
     caption: string
     isLoaded: boolean
     tags: string
-    categories: string
     location: string
     deleteImageCallback: (imageID: string) => void
 };
@@ -42,12 +41,12 @@ export type CollectionProps = {
     count: number,
     collectionName: string,
     thumbnail: string,
-    // displayCollection is for development testing 
+    // displayCollection is for development testing
     displayCollection: any[],
     setShowCollection: (showCollection: number) => void;
     setDisplayCollection: (displayCollection : any) => void;
     setCollectionName: (collectionName: string) => void;
-    
+
 }
 
 export type UploadModalProps = {
@@ -59,4 +58,11 @@ export type DeleteImageDialogProps = {
     deleteImageCallback: any
 }
 
+export type EditImageInfoDialogProps = {
+    id: string
+    title: string
+    caption: string,
+    tags: string,
+    location: string
+}
 export {};

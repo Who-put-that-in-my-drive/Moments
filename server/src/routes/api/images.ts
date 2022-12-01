@@ -11,7 +11,7 @@ import {s3Client} from '../../utilities/s3Client';
 import ServerResponse from '../../utilities/serverResponse';
 
 const myBucket = 'moments-gallery'; // Moments Bucket
-const signedUrlExpireSeconds = 300; // 5 Minutes
+const signedUrlExpireSeconds = 86400; // 24 hours
 
 const router = express.Router();
 

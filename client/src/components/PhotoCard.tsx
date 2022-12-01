@@ -17,12 +17,22 @@ import {
     Editable,
     EditableInput,
     EditablePreview,
-    Flex, IconButton, Image,
+    Flex, FormControl, FormErrorMessage, FormLabel, IconButton, Image,
+    Input,
     Link,
     Menu,
     MenuButton,
     MenuItem,
+    MenuItemOption,
     MenuList,
+    MenuOptionGroup,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     Skeleton,
     Table,
     TableContainer,
@@ -34,12 +44,17 @@ import {
     Thead,
     Tr,
     useColorMode,
-    useDisclosure
+    useDisclosure,
+    useToast
 } from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
 // eslint-disable-next-line
-import { DeleteImageDialogProps, DrawerImageInfoProps, PhotoCardProps } from '../utils/ComponentPropTypes';
-import React from 'react';
-import { DeleteIcon, DownloadIcon } from '@chakra-ui/icons';
+import { DeleteImageDialogProps, DrawerImageInfoProps, EditImageInfoDialogProps, PhotoCardProps } from '../utils/ComponentPropTypes';
+import React, { useState } from 'react';
+import { ChevronDownIcon, DeleteIcon, DownloadIcon, EditIcon } from '@chakra-ui/icons';
+import useStore from '../store/store';
+import { updateImageInfo } from '../services/api/image-service';
+import { successResponse } from '../utils/ResponseUtils';
 export const PhotoCard = (props: PhotoCardProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
@@ -74,6 +89,12 @@ export const PhotoCard = (props: PhotoCardProps) => {
                                         Download
                                     </MenuItem>
                                 </Link>
+                                <EditImageInfoDialog
+                                    caption={props.caption}
+                                    id={props.id}
+                                    location={props.location}
+                                    tags={props.tags}
+                                    title={props.title} />
                                 <DeleteImageDialog deleteImageCallback={props.deleteImageCallback} imageId={props.id} />
                             </MenuList>
                         </Menu>
@@ -222,5 +243,124 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
 
             </DrawerContent>
         </Drawer >
+    );
+};
+
+
+
+export type UpdateImageFormDTO = {
+    id: string
+    title: string
+    caption: string,
+    tags: string,
+    location: string
+}
+
+const EditImageInfoDialog = (props: EditImageInfoDialogProps) => {
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setValue,
+        reset
+    } = useForm<UpdateImageFormDTO>();
+    const store = useStore();
+
+    const [isFormLoading, setIsFormLoading] = useState(false);
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const toast = useToast();
+
+    const handleSubmitForm = async (data: UpdateImageFormDTO) => {
+        setIsFormLoading(true);
+        //Update data obj with id attribute
+        data.id = props.id;
+        try {
+            const updateImagePromise: any = await updateImageInfo(data);
+            if (successResponse(updateImagePromise)) {
+                //Update the local store if successful
+                store.updateImageInfo(data);
+                setIsFormLoading(false);
+                onClose();
+                toast({
+                    duration: 5000,
+                    isClosable: false,
+                    status: 'success',
+                    title: 'Image updated successfully!',
+                });
+
+            }
+        } catch (error) {
+            setIsFormLoading(false);
+            toast({
+                duration: 5000,
+                isClosable: false,
+                status: 'error',
+                title: error + '',
+            });
+        }
+    };
+
+    const handleCollectionMenuChange = (tagsStringArray: any) => {
+        setValue('tags', tagsStringArray);
+    };
+    return (
+        <>
+            <MenuItem icon={<EditIcon />} onClick={onOpen}>Edit Image Info</MenuItem>
+            <Modal isCentered isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay backdropFilter='blur(10px)'
+                    bg='blackAlpha.300' />
+                <ModalContent>
+                    <ModalHeader>Edit Image Info</ModalHeader>
+                    <ModalCloseButton />
+                    <form onSubmit={handleSubmit(handleSubmitForm)}>
+                        <ModalBody>
+                            <FormControl isInvalid={Boolean(errors.title)} p={2} >
+                                <FormLabel>Title <span style={{ color: 'red' }}>*</span></FormLabel>
+                                <Input {...register('title', { required: 'Please enter a valid title', value: props.title, })} shadow={'md'} type='string' />
+                                <FormErrorMessage>{errors.title && errors.title.message}</FormErrorMessage>
+                            </FormControl>
+                            <FormControl isInvalid={Boolean(errors.caption)} p={2} >
+                                <FormLabel>Caption <span style={{ color: 'red' }}>*</span></FormLabel>
+                                <Input {...register('caption', { required: 'Please enter a valid caption', value: props.caption, })} shadow={'md'} type='string' />
+                                <FormErrorMessage>{errors.caption && errors.caption.message}</FormErrorMessage>
+                            </FormControl>
+                            <FormControl isInvalid={Boolean(errors.tags)} p={2} >
+                                <FormLabel>Tags
+                                    <Menu>
+                                        <MenuButton as={IconButton} colorScheme='gray' icon={<ChevronDownIcon />} isActive={isOpen} mx={2} size='xs' variant='solid'>
+                                        </MenuButton>
+                                        <MenuList>
+                                            <MenuOptionGroup defaultValue={props.tags?.length === 0 ? undefined : props.tags.split(',')} onChange={(value) => (handleCollectionMenuChange(value))} title='Collections' type='checkbox'>
+                                                <MenuItemOption value='Personal'>Personal</MenuItemOption>
+                                                <MenuItemOption value='Work'>Work</MenuItemOption>
+                                                <MenuItemOption value='Vacation'>Vacation</MenuItemOption>
+                                                <MenuItemOption value='Family'>Family</MenuItemOption>
+                                                <MenuItemOption value='Summer'>Summer</MenuItemOption>
+                                                <MenuItemOption value='School'>School</MenuItemOption>
+                                            </MenuOptionGroup>
+                                        </MenuList>
+                                    </Menu></FormLabel>
+                                <Input disabled {...register('tags', { value: props.tags })} shadow={'md'} type='string' />
+                                <FormErrorMessage>{errors.tags && errors.tags.message}</FormErrorMessage>
+                            </FormControl>
+                            <FormControl isInvalid={Boolean(errors.location)} p={2} >
+                                <FormLabel>Location</FormLabel>
+                                <Input {...register('location', { value: props.location })} shadow={'md'} type='string' />
+                                <FormErrorMessage>{errors.location && errors.location.message}</FormErrorMessage>
+                            </FormControl>
+
+                        </ModalBody>
+
+                        <ModalFooter>
+                            <Button colorScheme='red' mr={3} onClick={() => { reset(); onClose(); }} type='reset'>
+                                Cancel
+                            </Button>
+                            <Button colorScheme='green' isLoading={isFormLoading} loadingText='Saving..' type='submit'>Save</Button>
+                        </ModalFooter>
+                    </form>
+                </ModalContent>
+            </Modal>
+        </>
     );
 };

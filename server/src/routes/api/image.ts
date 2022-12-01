@@ -23,7 +23,7 @@ AWS.config.update({region: 'us-east-1'});
 const s3: AWS.S3 = new AWS.S3();
 
 const myBucket = 'moments-gallery'; // Moments Bucket
-const signedUrlExpireSeconds = 3600; // 1 hour
+const signedUrlExpireSeconds = 86400; // 24 hours
 
 const router = express.Router();
 
@@ -81,7 +81,6 @@ router
                 size: uploadImageDTO.size,
                 caption: uploadImageDTO.caption,
                 tags: uploadImageDTO.tags,
-                categories: uploadImageDTO.categories,
                 location: uploadImageDTO.location || 'N/A',
                 lastModifiedDateTime: dateTime,
                 uploadedDateTime: dateTime,
@@ -127,7 +126,7 @@ router
             const updateImageDTO: UpdateImageDTO = req.body;
 
             if (await Image.findOneAndUpdate({_id: updateImageDTO.id, email}, {...updateImageDTO})) {
-                return res.status(204).json(new ServerResponse('Image Updated Successfully'));
+                return res.status(200).json(new ServerResponse('Image Updated Successfully'));
             } else {
                 return res.status(400).json(new ServerResponse('Bad Request'));
             }

@@ -34,7 +34,7 @@ export interface UploadFormDTO {
     format: any,
     size: string,
     caption: string,
-    tags: string[],
+    tags: string,
     location: string,
 }
 
@@ -43,7 +43,7 @@ let formData = {
     format: '',
     location: '',
     size: '',
-    tags: [],
+    tags: '',
     title: '',
 };
 
@@ -139,7 +139,7 @@ export const UploadModal = ({ refreshImagesArray }: UploadModalProps) => {
                         format: '',
                         location: '',
                         size: '',
-                        tags: [],
+                        tags: '',
                         title: '',
                     };
                     onClose();
@@ -207,9 +207,9 @@ export const UploadModal = ({ refreshImagesArray }: UploadModalProps) => {
                             </FormControl>
 
                             <FormControl my={3}>
-                                <FormLabel flexDirection={'row'} zIndex={1000}>Collection
+                                <FormLabel>Collection
                                     <Menu>
-                                        <MenuButton as={IconButton} icon={<ChevronDownIcon />} isActive={isOpen} mx={2} p='1'>
+                                        <MenuButton as={IconButton} colorScheme='gray' icon={<ChevronDownIcon />} isActive={isOpen} mx={2} size='xs' variant='solid'>
                                         </MenuButton>
                                         <MenuList>
                                             <MenuOptionGroup onChange={(value) => (handleCollectionMenuChange(value))} title='Collections' type='checkbox'>

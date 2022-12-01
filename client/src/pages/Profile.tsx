@@ -57,7 +57,8 @@ export const Profile = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
+        resetField
     } = useForm<UpdateFormDTO>();
     const user = store.user;
     const minNameLength: number = 2;
@@ -70,6 +71,11 @@ export const Profile = () => {
 
     const capitalizeFirstChar = (str: string): string => {
         return str.charAt(0).toUpperCase() + str.slice(1);
+    };
+
+    const resetForm = () => {
+        resetField('firstName');
+        resetField('lastName');
     };
 
     const handleProfileUpload = async (e: any) => {
@@ -284,7 +290,7 @@ export const Profile = () => {
                             </div>
                             <Center>
                                 <HStack mt='1rem' spacing='2rem'>
-                                    <Button colorScheme='gray' size='sm'>
+                                    <Button colorScheme='gray' onClick={resetForm} size='sm'>
                                         Cancel
                                     </Button>
                                     <Button colorScheme='teal' isLoading={loading} loadingText='Updating..' size='sm' type='submit'>
