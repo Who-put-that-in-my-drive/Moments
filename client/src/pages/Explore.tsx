@@ -75,29 +75,47 @@ export const Explore = () => {
     const gatherTags = () => {
         if (images.length > 0) {
             let gatheredTags: TagStructure[] = [];
+            let notagFlag = 0;
+            let notagPosition = 0;
             images.map(img => {
-                img.tags.toString().split(',').map((tag: string) => {
-                    let positionIndex = -1;
-                    gatheredTags.forEach((item, index) => {
-                        if (item.name === tag) {
-                            positionIndex = index;
-                            return;
-                        }
-                    });
-
-
-                    if (positionIndex === -1) {
+                if (img.tags.toString().length === 0) {
+                    if (notagFlag === 0) {
+                        notagFlag++;
                         gatheredTags.push({
                             count: 1,
                             imageData: [img],
-                            name: tag
+                            name: 'Other'
                         });
+                        notagPosition = gatheredTags.length;
                     } else {
-                        gatheredTags[positionIndex].count++;
-                        gatheredTags[positionIndex].imageData.push(img);
+                        gatheredTags[notagPosition].count++;
+                        gatheredTags[notagPosition].imageData.push(img);
                     }
+                } else {
+                    img.tags.toString().split(',').map((tag: string) => {
+                        let positionIndex = -1;
+                        gatheredTags.forEach((item, index) => {
+                            if (item.name === tag) {
+                                positionIndex = index;
+                                return;
+                            }
+                        });
 
-                });
+
+                        if (positionIndex === -1) {
+                            gatheredTags.push({
+                                count: 1,
+                                imageData: [img],
+                                name: tag
+                            });
+                        } else {
+                            gatheredTags[positionIndex].count++;
+                            gatheredTags[positionIndex].imageData.push(img);
+                        }
+
+                    });
+                }
+
 
             });
             setDisplayTags(gatheredTags);
