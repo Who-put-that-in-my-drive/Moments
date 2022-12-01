@@ -22,7 +22,7 @@ import {
     useColorMode, useToast,
     VStack,
 } from '@chakra-ui/react';
-// eslint-disable-next-line 
+// eslint-disable-next-line
 import { MouseEventHandler } from 'react';
 import { NavLink as ReactLink, useNavigate } from 'react-router-dom';
 
@@ -99,7 +99,7 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
             <Image
                 alt={'Login Image'}
                 src={logo}
-                w={['60%', '50%', '50%', '90%']}
+                w={['60%', '70%', '60%', '90%']}
             />
 
             <Flex
