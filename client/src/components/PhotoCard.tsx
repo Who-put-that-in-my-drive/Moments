@@ -133,6 +133,9 @@ const DeleteImageDialog = (props: DeleteImageDialogProps) => {
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
+                            <Button colorScheme='blue' mr={3} onClick={() => { onClose(); }}>
+                                Cancel
+                            </Button>
                             <Button colorScheme='red' ml={3} onClick={() => { props.deleteImageCallback(props.imageId); onClose(); }} type='submit'>
                                 Delete
                             </Button>
