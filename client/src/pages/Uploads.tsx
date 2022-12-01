@@ -260,7 +260,7 @@ const Uploads = () => {
                     </Heading>
                     <Flex direction={['column-reverse', 'column-reverse', 'row', 'row']} justifyContent='space-between'>
                         <Menu>
-                            <MenuButton as={Button} disabled={images.length <= 0 ? true : false} rightIcon={<ChevronDownIcon />} width={['100%', '100%', '32%', '22%']}>
+                            <MenuButton as={Button} disabled={images.length <= 0 ? true : false} rightIcon={<ChevronDownIcon />} width={['100%', '100%', '16rem', '16rem']}>
                                 Filters
                             </MenuButton>
                             <br />
@@ -276,7 +276,7 @@ const Uploads = () => {
                             </MenuList>
                         </Menu>
                         <Spacer />
-                        <Flex width={['100%', '100%', '32%', '22%']}>
+                        <Flex maxWidth={['100%', '100%', '16rem', '16rem']}>
                             <InputGroup>
                                 <InputLeftElement pointerEvents={'none'}>
                                     <Search2Icon />
