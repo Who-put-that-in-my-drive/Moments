@@ -129,7 +129,7 @@ const DeleteImageDialog = (props: DeleteImageDialogProps) => {
                         </AlertDialogHeader>
 
                         <AlertDialogBody>
-                            Are you sure?
+                            Are you sure you would like to delete this image?
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
