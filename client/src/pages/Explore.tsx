@@ -9,7 +9,8 @@ import {
     SimpleGrid,
     Spacer,
     Text,
-    Button
+    Button,
+    Center
 } from '@chakra-ui/react';
 import { Collection } from '../components/Collection';
 import { AiOutlineRollback } from 'react-icons/ai';
@@ -136,8 +137,8 @@ export const Explore = () => {
                         Explore
                     </Heading>
                     <Flex alignItems='center' direction={['column', 'column', 'row', 'row']} justifyContent={'space-between'}>
-                        <Heading as='h2' fontWeight='normal' noOfLines={1} pb={['1rem', '1rem', '', '']} size={['sm', 'md', 'lg', 'xl']} textAlign='left'>
-                            Collections{showCollection === 0 ? null : <>: <span style={{fontWeight: '500'}}>{collectionName}</span> </>}
+                        <Heading as='h2' fontWeight='normal' noOfLines={1} size={['sm', 'md', 'lg', 'xl']} textAlign='left'>
+                            Collections{showCollection === 0 ? null : <>: <span style={{ fontWeight: '500' }}>{collectionName}</span> </>}
                         </Heading>
                         <Spacer display={['none', 'none', 'block', 'block']} />
                         <InputGroup maxWidth={['100%', '100%', '16rem', '16rem']}>
@@ -147,18 +148,18 @@ export const Explore = () => {
                     </Flex>
                 </Box>
             </Flex>
-            {showCollection === 0 ? <SimpleGrid maxH={['67vh', '66vh', '75vh', '75vh']} minChildWidth={['13rem', '13rem', '13rem', '15rem']} overflowY='auto' padding={'1.7rem'} spacing='2rem'>
+            {showCollection === 0 ? <SimpleGrid maxH={['67vh', '66vh', '75vh', '75vh']} minChildWidth={['13rem', '13rem', '13rem', '15rem']} overflowY='auto' p={['1rem', '2rem', '4rem', '3rem']} spacing='2rem'>
                 {displayTags.length > 0 ?
                     displayTags.map((tag, index) => <Collection collectionName={tag.name} count={tag.count} displayCollection={displayCollection} images={tag.imageData} key={index} setCollectionName={setCollectionName} setDisplayCollection={setDisplayCollection} setShowCollection={setShowCollection} thumbnail={tag.imageData[0].url} />)
-                    : <> {tags.length > 0 ? <Text> No collections was found.</Text>
-                        : <Text> No collections created. Add tags to uploaded images to get started.</Text>}</>
+                    : <> {tags.length > 0 ? <Center><Text> No collections was found.</Text></Center>
+                        : <Center><Text> No collections created. Add tags to uploaded images to get started.</Text></Center>}</>
 
                 }
             </SimpleGrid> :
 
                 <Flex align={['center', 'normal', 'normal', 'normal']} direction='column' maxH={'100vh'} p={['1rem', '2rem', '4rem', '3rem']} width='100%'>
 
-                    <SimpleGrid marginTop={'1rem'} maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '14rem', '15rem']} overflowY='auto' spacing='2rem'>
+                    <SimpleGrid maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '14rem', '15rem']} overflowY='auto' spacing='2rem'>
                         {displayCollection.map(image => {
                             return (
                                 <PhotoCard
