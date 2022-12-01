@@ -72,7 +72,7 @@ npm start -w client
 
 ### To build front-end
 ```sh
-npm build -w client
+npm run build -w client
 ```
 
 ### To run back-end ONLY
@@ -82,7 +82,7 @@ npm start -w server
 
 ### To build the back-end
 ```sh
-npm build -w server
+npm run build -w server
 ```
 
 ### To run cloud services ONLY
@@ -92,5 +92,20 @@ npm start -w aws
 
 ### To deploy cloud services
 ```sh
-npm deploy -w aws
+npm run deploy -w aws
+```
+
+### Lint Repository
+```sh
+npm run lint 
+```
+
+### Lint Client
+```sh
+npm run lint -w client
+```
+
+### Lint Server
+```sh
+npm run lint -w server
 ```
