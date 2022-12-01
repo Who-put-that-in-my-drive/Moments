@@ -125,7 +125,7 @@ const SidebarContent = ({ onClick }: { onClick: MouseEventHandler }) => {
                     <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} colorScheme={'gray'} onClick={onClick} size='md' style={{ color: 'inherit', textDecoration: 'none' }} to='/dashboard/profile' w="100%">
                         Profile
                     </Button>
-                    <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} colorScheme={'gray'} disabled={true} onClick={onClick} size='md' style={{ color: 'inherit', textDecoration: 'none' }} to='/dashboard/explore' w="100%">
+                    <Button _activeLink={{ background: 'blackAlpha.500', color: 'whiteAlpha.800' }} as={ReactLink} colorScheme={'gray'} onClick={onClick} size='md' style={{ color: 'inherit', textDecoration: 'none' }} to='/dashboard/explore' w="100%">
                         Explore
                     </Button>
                 </VStack>
