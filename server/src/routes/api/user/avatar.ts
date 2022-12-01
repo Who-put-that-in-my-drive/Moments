@@ -9,7 +9,7 @@ import User from '../../../models/user.model';
 import {UpdateAvatarImageDTO} from '../../../interfaces/user/UpdateAvatarImageDTO';
 
 const myBucket = 'moments-gallery'; // Moments Bucket
-const signedUrlExpireSeconds = 300; // 5 Minutes
+const signedUrlExpireSeconds = 86400; // 24 hours
 
 const router = express.Router();
 

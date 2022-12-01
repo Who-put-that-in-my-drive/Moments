@@ -23,7 +23,7 @@ AWS.config.update({region: 'us-east-1'});
 const s3: AWS.S3 = new AWS.S3();
 
 const myBucket = 'moments-gallery'; // Moments Bucket
-const signedUrlExpireSeconds = 3600; // 1 hour
+const signedUrlExpireSeconds = 86400; // 24 hours
 
 const router = express.Router();
 
