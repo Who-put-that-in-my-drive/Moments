@@ -166,15 +166,13 @@ const DrawerImageInfo = (props: DrawerImageInfoProps) => {
             <DrawerContent overflowY='auto' >
                 <DrawerCloseButton />
                 <Flex align='center' alignContent='center' direction={'column'} justifyContent='space-between' marginBottom={['1rem', '1rem', '1rem', '1rem']} paddingTop='5rem' paddingX={'1.5rem'} w='full'>
-                    <AspectRatio ratio={16 / 9} w='100%'>
-                        <Image
-                            alt={props.imageInfo.title}
-                            src={props.imageInfo.imageURL}
-                            style={{
-                                objectFit: 'contain'
-                            }}
-                        />
-                    </AspectRatio>
+                    <Image
+                        alt={props.imageInfo.title}
+                        src={props.imageInfo.imageURL}
+                        style={{
+                            objectFit: 'contain'
+                        }}
+                    />
                     <Box paddingY={5}>
                         <Text as='b' fontSize='2xl' textAlign='left'>{props.imageInfo.title}</Text>
                     </Box>
