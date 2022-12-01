@@ -332,7 +332,7 @@ const EditImageInfoDialog = (props: EditImageInfoDialogProps) => {
                                         <MenuButton as={IconButton} colorScheme='gray' icon={<ChevronDownIcon />} isActive={isOpen} mx={2} size='xs' variant='solid'>
                                         </MenuButton>
                                         <MenuList>
-                                            <MenuOptionGroup defaultValue={props.tags?.length === 0 ? undefined : props.tags.split(',')} onChange={(value) => (handleCollectionMenuChange(value))} title='Collections' type='checkbox'>
+                                            <MenuOptionGroup defaultValue={props.tags?.length === 0 ? undefined : props.tags.replaceAll(', ', ',').split(',')} onChange={(value) => (handleCollectionMenuChange(value))} title='Collections' type='checkbox'>
                                                 <MenuItemOption value='Personal'>Personal</MenuItemOption>
                                                 <MenuItemOption value='Work'>Work</MenuItemOption>
                                                 <MenuItemOption value='Vacation'>Vacation</MenuItemOption>

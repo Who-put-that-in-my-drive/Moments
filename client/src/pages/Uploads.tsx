@@ -1,6 +1,6 @@
 import { Box, Button, Center, Flex, Heading, Input, InputGroup, InputLeftElement, Menu, MenuButton, SimpleGrid, Spacer, Text, MenuItemOption, MenuList, MenuOptionGroup, useToast, Spinner } from '@chakra-ui/react';
 import { PhotoCard } from '../components/PhotoCard';
-import { ChevronDownIcon, Search2Icon } from '@chakra-ui/icons';
+import { ChevronDownIcon, SearchIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
 
 import useStore from '../store/store';
@@ -275,11 +275,11 @@ const Uploads = () => {
                                 </MenuOptionGroup>
                             </MenuList>
                         </Menu>
-                        <Spacer />
-                        <Flex maxWidth={['100%', '100%', '16rem', '16rem']}>
-                            <InputGroup>
+                        <Spacer display={['none', 'none', 'block', 'block']} />
+                        <Flex >
+                            <InputGroup width={['100%', '100%', '16rem', '16rem']}>
                                 <InputLeftElement pointerEvents={'none'}>
-                                    <Search2Icon />
+                                    <SearchIcon />
                                 </InputLeftElement>
                                 <Input disabled={images.length <= 0 ? true : false} onChange={(e) => onSearchBarChange(e.target.value)} placeholder={'Search'} type={'search'} />
                             </InputGroup>

@@ -132,7 +132,7 @@ export const Explore = () => {
         <Flex align={['center', 'center', 'normal', 'normal']} direction='column' p={['1rem', '2rem', '2rem', '2rem']}>
             <Flex align={['center', '', '', '']} minWidth='100%' zIndex={1000}>
                 <Box w='100%'>
-                    <Heading as='h2' noOfLines={2} paddingBottom={['.5rem', '2rem', '2.5rem']}
+                    <Heading as='h2' noOfLines={2} paddingBottom={['1rem', '2rem', '3rem']}
                         size={['xl', 'xl', '2xl', '3xl']} textAlign={['center', 'center', 'left', 'left']}>
                         Explore
                     </Heading>
@@ -141,14 +141,14 @@ export const Explore = () => {
                             Collections{showCollection === 0 ? null : <>: <span style={{ fontWeight: '500' }}>{collectionName}</span> </>}
                         </Heading>
                         <Spacer display={['none', 'none', 'block', 'block']} />
-                        <InputGroup maxWidth={['100%', '100%', '16rem', '16rem']}>
+                        <InputGroup width={['100%', '100%', '16rem', '16rem']}>
                             <InputLeftElement pointerEvents='none'><SearchIcon /></InputLeftElement>
                             <Input onChange={(e) => onSearchBarChange(e.target.value)} placeholder='Search' type='text' />
                         </InputGroup>
                     </Flex>
                 </Box>
             </Flex>
-            {showCollection === 0 ? <SimpleGrid maxH={['67vh', '66vh', '75vh', '75vh']} minChildWidth={['13rem', '13rem', '13rem', '15rem']} overflowY='auto' p={['1rem', '2rem', '4rem', '3rem']} spacing='2rem'>
+            {showCollection === 0 ? <SimpleGrid marginTop='1rem' maxH={['67vh', '66vh', '75vh', '75vh']} minChildWidth={['13rem', '13rem', '13rem', '15rem']} overflowY='auto' spacing='2rem'>
                 {displayTags.length > 0 ?
                     displayTags.map((tag, index) => <Collection collectionName={tag.name} count={tag.count} displayCollection={displayCollection} images={tag.imageData} key={index} setCollectionName={setCollectionName} setDisplayCollection={setDisplayCollection} setShowCollection={setShowCollection} thumbnail={tag.imageData[0].url} />)
                     : <> {tags.length > 0 ? <Center><Text> No collections was found.</Text></Center>
@@ -157,9 +157,9 @@ export const Explore = () => {
                 }
             </SimpleGrid> :
 
-                <Flex align={['center', 'normal', 'normal', 'normal']} direction='column' maxH={'100vh'} p={['1rem', '2rem', '4rem', '3rem']} width='100%'>
+                <Flex align={['center', 'normal', 'normal', 'normal']} direction='column' maxH={'100vh'} width='100%'>
 
-                    <SimpleGrid maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '14rem', '15rem']} overflowY='auto' spacing='2rem'>
+                    <SimpleGrid marginTop='1rem' maxH={['67vh', '66vh', '77vh', '77vh']} minChildWidth={['13rem', '13rem', '14rem', '15rem']} overflowY='auto' spacing='2rem'>
                         {displayCollection.map(image => {
                             return (
                                 <PhotoCard
